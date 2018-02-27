@@ -97,6 +97,11 @@ h2.title .back {
   color: #aaa;
   text-decoration: none;
 }
+
+.entry .actions {
+  padding: 8px;
+  background: #f3f3f3;
+}
 </style>
 
 
@@ -163,7 +168,7 @@ h2.title .back {
     </div>
 
     <div class="actions">
-
+      <a href="#" class="button is-rounded" data-action="favorite" data-url="<?= e($entry['url']) ?>"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
     </div>
   </div>
 <? endforeach ?>
@@ -176,6 +181,29 @@ h2.title .back {
 -->
 
 </div></div>
+
+<script>
+$(function(){
+
+  $(".actions a").click(function(e){
+    e.preventDefault();
+    var btn = $(this);
+
+    switch($(this).data("action")) {
+      case "favorite":
+        btn.addClass("is-loading");
+        $.post("/micropub", {
+          "like-of": $(this).data("url")
+        }, function(){
+          btn.removeClass("is-loading");
+        });
+        break;
+    }
+
+  });
+
+});
+</script>
 
 <!--
 <pre>

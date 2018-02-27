@@ -45,6 +45,19 @@ class Controller {
     return $response;
   }
 
+  public function micropub(ServerRequestInterface $request, ResponseInterface $response) {
+    $this->requireLogin();
+    $body = $request->getParsedBody();
+
+    $r = micropub_post($_SESSION['micropub']['endpoint'], $_SESSION['token']['access_token'], [
+      'type' => ['h-entry'],
+      'properties' => $body
+    ]);
+
+    $response->getBody()->write(json_encode($r));
+    return $response;
+  }
+
   public function reload_channels(ServerRequestInterface $request, ResponseInterface $response) {
     $this->requireLogin();
 
