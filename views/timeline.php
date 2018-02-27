@@ -174,11 +174,17 @@ h2.title .back {
       <div class="action-buttons">
         <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
         <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
-        <!--
         <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
-        -->
       </div>
       <div class="action-responses">
+        <div class="new-reply hidden">
+          <textarea class="textarea" rows="2"></textarea>
+          <a style="font-size: 0.8em;" href="https://quill.p3k.io/new?reply=<?= urlencode($entry['url']) ?>" target="_blank">reply with quill</a>
+          <div class="control" style="margin-top: 6px; float: right;">
+            <button class="button is-primary is-small post-reply">Reply</button>
+          </div>
+          <div style="clear:both;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -200,7 +206,7 @@ $(function(){
     $(".entry[data-entry='"+i+"'] .action-responses").append('<div><a href="'+url+'">'+url+'</a></div>');
   }
 
-  $(".actions a").click(function(e){
+  $(".actions .action-buttons a").click(function(e){
     e.preventDefault();
     var btn = $(this);
 
@@ -228,11 +234,33 @@ $(function(){
         });
         break;
       case "reply":
-        btn.addClass("is-loading");
-
+        $(this).parents(".actions").find(".new-reply").removeClass("hidden");
+        $(this).parents(".actions").find(".new-reply textarea").focus();
         break;
     }
+  });
 
+  $(".actions .post-reply").click(function(){
+    if($(this).parents(".actions").find(".new-reply textarea").val() == "") {
+      return false;
+    }
+
+    var btn = $(this);
+    btn.addClass("is-loading");
+    $.post("/micropub", {
+      "in-reply-to": [$(this).parents(".actions").data("url")],
+      "content": [$(this).parents(".actions").find(".new-reply textarea").val()]
+    }, function(response){
+      btn.removeClass("is-loading");
+      if(response.location) {
+        btn.parents(".actions").find(".new-reply textarea").val("");
+        btn.parents(".actions").find(".new-reply").addClass("hidden");
+        btn.removeClass("is-danger");
+        addResponseUrl(btn.parents(".entry").data("entry"), response.location);
+      } else {
+        btn.addClass("is-danger");
+      }
+    });
   });
 
 });
