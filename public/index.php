@@ -18,7 +18,12 @@ $route = new League\Route\RouteCollection($container);
 
 $route->map('GET', '/', 'App\\Controller::index');
 
+$route->map('GET', '/login', 'App\\LoginController::login');
+$route->map('POST', '/login', 'App\\LoginController::login_start');
+$route->map('GET', '/login/callback', 'App\\LoginController::login_callback');
+$route->map('GET', '/logout', 'App\\LoginController::logout');
 
+$route->map('GET', '/channel/{uid}', 'App\\Controller::timeline');
 
 
 $templates = new League\Plates\Engine(dirname(__FILE__).'/../views');

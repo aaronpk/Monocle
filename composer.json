@@ -3,9 +3,10 @@
         "league/route": "^3.0",
         "league/plates": "^3.3",
         "guzzlehttp/guzzle": "^6.3",
-        "indieauth/client": "^0.2.4",
+        "indieauth/client": "dev-master",
         "p3k/utils": "^1.1",
-        "zendframework/zend-diactoros": "^1.7"
+        "zendframework/zend-diactoros": "^1.7",
+        "p3k/http": "^0.1.6"
     },
     "autoload": {
       "psr-4": {
@@ -14,5 +15,11 @@
       "files": [
         "lib/helpers.php"
       ]
-    }
+    },
+    "repositories": [
+      {
+        "type": "path",
+        "url": "/Users/aaronpk/Code/indieauth-client-php"
+      }
+    ]
 }

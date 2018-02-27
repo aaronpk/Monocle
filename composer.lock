@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b63f4d695c9c1a8b5036480f12a14164",
+    "content-hash": "455b02dc1e909d3e9beeee80c0dca01e",
     "packages": [
         {
             "name": "barnabywalters/mf-cleaner",
@@ -260,22 +260,17 @@
         },
         {
             "name": "indieauth/client",
-            "version": "0.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/indieweb/indieauth-client-php.git",
-                "reference": "2a7f8186085d06f0371a0199e103e10729782aea"
-            },
+            "version": "dev-master",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/indieweb/indieauth-client-php/zipball/2a7f8186085d06f0371a0199e103e10729782aea",
-                "reference": "2a7f8186085d06f0371a0199e103e10729782aea",
-                "shasum": ""
+                "type": "path",
+                "url": "/Users/aaronpk/Code/indieauth-client-php",
+                "reference": "444f802a4ac36edc918c47a393afa9c4b0e81ebe",
+                "shasum": null
             },
             "require": {
-                "barnabywalters/mf-cleaner": "0.*",
-                "indieweb/link-rel-parser": "0.1.*",
+                "indieweb/representative-h-card": "^0.1.2",
                 "mf2/mf2": "~0.3",
+                "p3k/http": ">=0.1.6",
                 "php": ">5.3.0"
             },
             "require-dev": {
@@ -287,18 +282,16 @@
                     "IndieAuth": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache 2.0"
             ],
             "authors": [
                 {
                     "name": "Aaron Parecki",
-                    "homepage": "http://aaronparecki.com"
+                    "homepage": "https://aaronparecki.com"
                 }
             ],
-            "description": "IndieAuth Client Library",
-            "time": "2017-11-23T17:22:16+00:00"
+            "description": "IndieAuth Client Library"
         },
         {
             "name": "indieweb/link-rel-parser",
@@ -345,6 +338,51 @@
                 "microformats2"
             ],
             "time": "2017-01-11T17:14:49+00:00"
+        },
+        {
+            "name": "indieweb/representative-h-card",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/indieweb/representative-h-card-php.git",
+                "reference": "b70b01bd0dd7f2a940602137335dbf46ab6e2e38"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/indieweb/representative-h-card-php/zipball/b70b01bd0dd7f2a940602137335dbf46ab6e2e38",
+                "reference": "b70b01bd0dd7f2a940602137335dbf46ab6e2e38",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "mf2/mf2": "0.2.*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/mf2/representative-h-card.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Parecki",
+                    "homepage": "http://aaronparecki.com"
+                }
+            ],
+            "keywords": [
+                "h-card",
+                "indieweb",
+                "mf2",
+                "microformats"
+            ],
+            "time": "2015-12-23T18:11:19+00:00"
         },
         {
             "name": "league/container",
@@ -629,6 +667,44 @@
             "time": "2017-01-19T11:35:12+00:00"
         },
         {
+            "name": "p3k/http",
+            "version": "0.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aaronpk/p3k-http.git",
+                "reference": "171fe2e71a83b1155cdfc93cdc3156ad97165712"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aaronpk/p3k-http/zipball/171fe2e71a83b1155cdfc93cdc3156ad97165712",
+                "reference": "171fe2e71a83b1155cdfc93cdc3156ad97165712",
+                "shasum": ""
+            },
+            "require": {
+                "indieweb/link-rel-parser": "0.1.*",
+                "mf2/mf2": ">=0.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "p3k\\": "src/p3k"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Parecki",
+                    "homepage": "https://aaronparecki.com"
+                }
+            ],
+            "description": "A simple wrapper API around the PHP curl functions",
+            "homepage": "https://github.com/aaronpk/p3k-http",
+            "time": "2018-01-22T20:06:21+00:00"
+        },
+        {
             "name": "p3k/utils",
             "version": "1.1.1",
             "source": {
@@ -829,7 +905,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "indieauth/client": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
