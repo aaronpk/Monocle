@@ -7,6 +7,8 @@
 
   <link href="/assets/styles.css" rel="stylesheet" type="text/css">
 
+  <?php include('views/components/favicon.php') ?>
+
   <title><?= e($title) ?></title>
 </head>
 <body>
