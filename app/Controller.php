@@ -8,6 +8,14 @@ use Config;
 
 class Controller {
 
+  private function requireLogin() {
+    \p3k\session_setup();
+    if(!isset($_SESSION['token'])) {
+      header('Location: /');
+      die();
+    }
+  }
+
   public function index(ServerRequestInterface $request, ResponseInterface $response) {
     \p3k\session_setup();
 
@@ -20,7 +28,6 @@ class Controller {
           $_SESSION['channels'] = $channels['channels'];
         } else {
           echo '<pre>';
-          print_r($_SESSION['token']);
           print_r($r);
           echo '</pre>';
           die();
@@ -38,12 +45,17 @@ class Controller {
     return $response;
   }
 
-  private function requireLogin() {
-    \p3k\session_setup();
-    if(!isset($_SESSION['token'])) {
-      header('Location: /');
-      die();
+  public function reload_channels(ServerRequestInterface $request, ResponseInterface $response) {
+    $this->requireLogin();
+
+    $r = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'channels');
+    if($r && $r['code'] == 200) {
+      $channels = json_decode($r['body'], true);
+      $_SESSION['channels'] = $channels['channels'];
     }
+
+    $response->getBody()->write(view('components/channel-list'));
+    return $response;
   }
 
   public function timeline(ServerRequestInterface $request, ResponseInterface $response) {

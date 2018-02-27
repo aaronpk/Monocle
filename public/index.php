@@ -24,6 +24,7 @@ $route->map('GET', '/login/callback', 'App\\LoginController::login_callback');
 $route->map('GET', '/logout', 'App\\LoginController::logout');
 
 $route->map('GET', '/channel/{uid}', 'App\\Controller::timeline');
+$route->map('POST', '/channels/reload', 'App\\Controller::reload_channels');
 
 
 $templates = new League\Plates\Engine(dirname(__FILE__).'/../views');

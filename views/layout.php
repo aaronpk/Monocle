@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link href="/assets/styles.css" rel="stylesheet" type="text/css">
+  <link href="/assets/bulma-0.6.2/css/bulma.css" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <script src="/assets/jquery-3.3.1.min.js"></script>
 
   <?php include('views/components/favicon.php') ?>
 

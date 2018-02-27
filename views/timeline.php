@@ -1,11 +1,17 @@
 <?php $this->layout('layout', ['title' => $channel['name']]) ?>
 
 <style>
-.timeline {
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+h2.title {
+  position: relative;
+  width: 100%;
 }
+h2.title .back {
+  font-size: 12pt;
+  position: absolute;
+  right: 0;
+  top: 12px;
+}
+
 .entry {
   margin-bottom: 12px;
   border: 1px #E6E6E6 solid;
@@ -13,17 +19,6 @@
   background: #fff;
   line-height: 1.4;
   word-wrap: break-word;
-}
-@media(max-width: 600px) {
-  .timeline {
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .container {
-    margin: 0 6px;
-  }
 }
 
 .entry .author {
@@ -64,6 +59,7 @@
 
 .entry .content {
   padding: 8px;
+  margin-bottom: 0;
 }
 .entry .content.text {
   white-space: pre-wrap;
@@ -95,7 +91,7 @@
 .entry .meta {
   padding: 0 8px 8px 8px;
   color: #aaa;
-  font-size: 10pt;
+  font-size: 9pt;
 }
 .entry .meta a {
   color: #aaa;
@@ -104,9 +100,12 @@
 </style>
 
 
-<div class="timeline"><div class="container">
+<div class="column"><div class="inner">
 
-  <h2><?= $channel['name'] ?></h2>
+  <h2 class="title">
+    <?= $channel['name'] ?>
+    <a href="/" class="back"><span class="icon is-small"><i class="fas fa-home"></i></span></a>
+  </h2>
 
 <? foreach($entries as $entry): ?>
   <div class="entry">
@@ -168,6 +167,13 @@
     </div>
   </div>
 <? endforeach ?>
+
+<!--
+<nav class="pagination" role="navigation" aria-label="pagination">
+  <a class="pagination-previous">Previous</a>
+  <a class="pagination-next">Next page</a>
+</nav>
+-->
 
 </div></div>
 
