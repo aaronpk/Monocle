@@ -102,6 +102,9 @@ h2.title .back {
   padding: 8px;
   background: #f3f3f3;
 }
+.entry .actions .action-responses > div {
+  margin-top: 12px;
+}
 </style>
 
 
@@ -112,8 +115,8 @@ h2.title .back {
     <a href="/" class="back"><span class="icon is-small"><i class="fas fa-home"></i></span></a>
   </h2>
 
-<? foreach($entries as $entry): ?>
-  <div class="entry">
+<? foreach($entries as $i=>$entry): ?>
+  <div class="entry" data-entry="<?= $i ?>">
 
     <div class="author">
       <? if(!empty($entry['author']['name']) && !empty($entry['author']['photo']) && !empty($entry['author']['url'])): ?>
@@ -167,8 +170,16 @@ h2.title .back {
       <? endif ?>
     </div>
 
-    <div class="actions">
-      <a href="#" class="button is-rounded" data-action="favorite" data-url="<?= e($entry['url']) ?>"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
+    <div class="actions" data-url="<?= e($entry['url']) ?>">
+      <div class="action-buttons">
+        <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
+        <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
+        <!--
+        <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
+        -->
+      </div>
+      <div class="action-responses">
+      </div>
     </div>
   </div>
 <? endforeach ?>
@@ -185,6 +196,10 @@ h2.title .back {
 <script>
 $(function(){
 
+  function addResponseUrl(i, url) {
+    $(".entry[data-entry='"+i+"'] .action-responses").append('<div><a href="'+url+'">'+url+'</a></div>');
+  }
+
   $(".actions a").click(function(e){
     e.preventDefault();
     var btn = $(this);
@@ -193,10 +208,28 @@ $(function(){
       case "favorite":
         btn.addClass("is-loading");
         $.post("/micropub", {
-          "like-of": $(this).data("url")
-        }, function(){
+          "like-of": [$(this).parents(".actions").data("url")]
+        }, function(response){
           btn.removeClass("is-loading");
+          if(response.location) {
+            addResponseUrl(btn.parents(".entry").data("entry"), response.location);
+          }
         });
+        break;
+      case "repost":
+        btn.addClass("is-loading");
+        $.post("/micropub", {
+          "repost-of": [$(this).parents(".actions").data("url")]
+        }, function(response){
+          btn.removeClass("is-loading");
+          if(response.location) {
+            addResponseUrl(btn.parents(".entry").data("entry"), response.location);
+          }
+        });
+        break;
+      case "reply":
+        btn.addClass("is-loading");
+
         break;
     }
 

@@ -54,8 +54,17 @@ class Controller {
       'properties' => $body
     ]);
 
-    $response->getBody()->write(json_encode($r));
-    return $response;
+    $location = false;
+    if(isset($r['headers']['Location'])) {
+      $location = $r['headers']['Location'];
+    }
+
+    // $location = 'http://example.com/foo';
+
+    $response->getBody()->write(json_encode([
+      'location' => $location
+    ]));
+    return $response->withHeader('Content-type', 'application/json');
   }
 
   public function reload_channels(ServerRequestInterface $request, ResponseInterface $response) {
