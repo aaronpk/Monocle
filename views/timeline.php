@@ -197,6 +197,9 @@ h2.title .back {
 </nav>
 -->
 
+<input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?>">
+<input type="hidden" id="channel-uid" value="<?= $channel['uid'] ?>">
+
 </div></div>
 
 <script>
@@ -264,6 +267,27 @@ $(function(){
   });
 
 });
+
+function scrolled_to_bottom() {
+  console.log("you're at the bottom of the page");
+  $.post("/microsub/mark_read", {
+    channel: $("#channel-uid").val(),
+    last_read_entry: $("#last-id").val()
+  });
+}
+
+var is_at_bottom = false;
+window.onscroll = function(ev) {
+  if((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 10) {
+    if(!is_at_bottom) {
+      scrolled_to_bottom();
+      is_at_bottom = true;
+    }
+  } else {
+    is_at_bottom = false;
+  }
+};
+
 </script>
 
 <!--

@@ -16,17 +16,23 @@ class Controller {
     }
   }
 
+  private function _reloadChannels() {
+    $r = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'channels');
+    if($r && $r['code'] == 200) {
+      $channels = json_decode($r['body'], true);
+      $_SESSION['channels'] = $channels['channels'];
+    }
+    return $r;
+  }
+
   public function index(ServerRequestInterface $request, ResponseInterface $response) {
     \p3k\session_setup();
 
     if(isset($_SESSION['token'])) {
 
       if(!isset($_SESSION['channels'])) {
-        $r = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'channels');
-        if($r && $r['code'] == 200) {
-          $channels = json_decode($r['body'], true);
-          $_SESSION['channels'] = $channels['channels'];
-        } else {
+        $r = $this->_reloadChannels();
+        if(!$r || $r['code'] != 200) {
           echo '<pre>';
           print_r($r);
           echo '</pre>';
@@ -67,14 +73,25 @@ class Controller {
     return $response->withHeader('Content-type', 'application/json');
   }
 
+  public function mark_as_read(ServerRequestInterface $request, ResponseInterface $response) {
+    $this->requireLogin();
+    $body = $request->getParsedBody();
+
+    microsub_post($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', [
+      'channel' => $body['channel'],
+      'method' => 'mark_read',
+      'last_read_entry' => $body['last_read_entry'],
+    ]);
+
+    $r = $this->_reloadChannels();
+
+    return $response;
+  }
+
   public function reload_channels(ServerRequestInterface $request, ResponseInterface $response) {
     $this->requireLogin();
 
-    $r = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'channels');
-    if($r && $r['code'] == 200) {
-      $channels = json_decode($r['body'], true);
-      $_SESSION['channels'] = $channels['channels'];
-    }
+    $r = $this->_reloadChannels();
 
     $response->getBody()->write(view('components/channel-list'));
     return $response;

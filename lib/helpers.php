@@ -66,11 +66,13 @@ function microsub_get($endpoint, $token, $action, $params=[]) {
   return http_client()->get(\p3k\url\add_query_params_to_url($endpoint, $params), $headers);
 }
 
-function microsub_post($endpoint, $token, $params=[]) {
+function microsub_post($endpoint, $token, $action, $params=[]) {
   $headers = [
     'Accept: application/json',
     'Authorization: Bearer '.$token,
   ];
+
+  $params['action'] = $action;
 
   return http_client()->post($endpoint, http_build_query($params), $headers);
 }
