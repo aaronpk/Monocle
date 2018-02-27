@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "455b02dc1e909d3e9beeee80c0dca01e",
+    "content-hash": "45e003e06a72257dd46f9ba77f5468a7",
     "packages": [
         {
             "name": "barnabywalters/mf-cleaner",
@@ -260,12 +260,17 @@
         },
         {
             "name": "indieauth/client",
-            "version": "dev-master",
+            "version": "0.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/indieweb/indieauth-client-php.git",
+                "reference": "eddcbc2c4372b0cb4ffcc525804f3fc831275d28"
+            },
             "dist": {
-                "type": "path",
-                "url": "/Users/aaronpk/Code/indieauth-client-php",
-                "reference": "444f802a4ac36edc918c47a393afa9c4b0e81ebe",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/indieweb/indieauth-client-php/zipball/eddcbc2c4372b0cb4ffcc525804f3fc831275d28",
+                "reference": "eddcbc2c4372b0cb4ffcc525804f3fc831275d28",
+                "shasum": ""
             },
             "require": {
                 "indieweb/representative-h-card": "^0.1.2",
@@ -282,8 +287,9 @@
                     "IndieAuth": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache 2.0"
+                "Apache-2.0"
             ],
             "authors": [
                 {
@@ -291,7 +297,8 @@
                     "homepage": "https://aaronparecki.com"
                 }
             ],
-            "description": "IndieAuth Client Library"
+            "description": "IndieAuth Client Library",
+            "time": "2018-02-27T16:36:32+00:00"
         },
         {
             "name": "indieweb/link-rel-parser",
@@ -905,9 +912,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "indieauth/client": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
