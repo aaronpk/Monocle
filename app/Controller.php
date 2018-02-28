@@ -80,7 +80,7 @@ class Controller {
     microsub_post($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', [
       'channel' => $body['channel'],
       'method' => 'mark_read',
-      'last_read_entry' => $body['last_read_entry'],
+      'entry' => $body['entry'],
     ]);
 
     $r = $this->_reloadChannels();

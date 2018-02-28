@@ -116,7 +116,8 @@ h2.title .back {
   </h2>
 
 <? foreach($entries as $i=>$entry): ?>
-  <div class="entry" data-entry="<?= $i ?>">
+  <div class="entry" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
+    data-is-read="<?= $entry['_is_read'] ? 1 : 0 ?>">
 
     <div class="author">
       <? if(!empty($entry['author']['name']) && !empty($entry['author']['photo']) && !empty($entry['author']['url'])): ?>
@@ -268,25 +269,50 @@ $(function(){
 
 });
 
-function scrolled_to_bottom() {
-  console.log("you're at the bottom of the page");
+function mark_read(entry_ids) {
   $.post("/microsub/mark_read", {
     channel: $("#channel-uid").val(),
-    last_read_entry: $("#last-id").val()
+    entry: entry_ids
   });
 }
 
-var is_at_bottom = false;
-window.onscroll = function(ev) {
-  if((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 10) {
-    if(!is_at_bottom) {
-      scrolled_to_bottom();
-      is_at_bottom = true;
+var marked = {};
+
+$(window).scroll(function() {
+  clearTimeout($.data(this, 'scrollTimer'));
+  $.data(this, 'scrollTimer', setTimeout(function() {
+    // If you're scrolled to the bottom, mark all as read
+    if((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 10) {
+      var entryIds = [];
+      document.querySelectorAll(".entry").forEach(function(entry){
+        var entryNum = $(entry).data("entry");
+        if(marked[entryNum] == null && $(entry).data("is-read") == 0) {
+          marked[entryNum] = true;
+          entryIds.push($(entry).data("entry-id"));
+        }
+      });
+      if(entryIds.length > 0) {
+        mark_read(entryIds);
+      }
+    } else {
+      // Find all entries that are scrolled off the page
+      var entryIds = [];
+      document.querySelectorAll(".entry").forEach(function(entry){
+        var bounds = entry.getBoundingClientRect();
+        if(bounds.top + bounds.height < 0) {
+          var entryNum = $(entry).data("entry");
+          if(marked[entryNum] == null && $(entry).data("is-read") == 0) {
+            marked[entryNum] = true;
+            entryIds.push($(entry).data("entry-id"));
+          }
+        }
+      });
+      if(entryIds.length > 0) {
+        mark_read(entryIds);
+      }
     }
-  } else {
-    is_at_bottom = false;
-  }
-};
+  }, 400));
+});
 
 </script>
 
