@@ -313,7 +313,7 @@ $(window).scroll(function() {
         mark_read(entryIds);
       }
     }
-  }, 400));
+  }, 200));
 });
 
 </script>
