@@ -118,7 +118,11 @@ class Controller {
         return $response->withStatus(404);
       }
 
-      $data = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', ['channel'=>$uid]);
+      $q = ['channel'=>$uid];
+      if(isset($params['after']))
+        $q['after'] = $params['after'];
+
+      $data = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', $q);
       $data = json_decode($data['body'], true);
 
       $entries = $data['items'] ?? [];

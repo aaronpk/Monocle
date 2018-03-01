@@ -191,12 +191,11 @@ h2.title .back {
   </div>
 <? endforeach ?>
 
-<!--
+<? if(isset($paging['after'])): ?>
 <nav class="pagination" role="navigation" aria-label="pagination">
-  <a class="pagination-previous">Previous</a>
-  <a class="pagination-next">Next page</a>
+  <a class="pagination-next" href="?after=<?= e($paging['after']) ?>">More</a>
 </nav>
--->
+<? endif ?>
 
 <input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?>">
 <input type="hidden" id="channel-uid" value="<?= $channel['uid'] ?>">
