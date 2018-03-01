@@ -218,6 +218,7 @@ $(function(){
 
     switch($(this).data("action")) {
       case "favorite":
+        mark_read($(this).parents(".entry").data("entry-id"));
         btn.addClass("is-loading");
         $.post("/micropub", {
           "like-of": [$(this).parents(".actions").data("url")]
@@ -229,6 +230,7 @@ $(function(){
         });
         break;
       case "repost":
+        mark_read($(this).parents(".entry").data("entry-id"));
         btn.addClass("is-loading");
         $.post("/micropub", {
           "repost-of": [$(this).parents(".actions").data("url")]
@@ -240,6 +242,7 @@ $(function(){
         });
         break;
       case "reply":
+        mark_read($(this).parents(".entry").data("entry-id"));
         $(this).parents(".actions").find(".new-reply").removeClass("hidden");
         $(this).parents(".actions").find(".new-reply textarea").focus();
         break;
