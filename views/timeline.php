@@ -105,6 +105,9 @@ h2.title .back {
 .entry .actions .action-responses > div {
   margin-top: 12px;
 }
+.entry .action-buttons {
+  text-align: right;
+}
 </style>
 
 
@@ -197,7 +200,7 @@ h2.title .back {
 </nav>
 <? endif ?>
 
-<input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?>">
+<input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?? '' ?>">
 <input type="hidden" id="channel-uid" value="<?= $channel['uid'] ?>">
 
 </div></div>
@@ -314,11 +317,3 @@ $(window).scroll(function() {
 });
 
 </script>
-
-<!--
-<pre>
-<?php
-print_r($entries);
-?>
-</pre>
--->

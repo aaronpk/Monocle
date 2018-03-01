@@ -4,10 +4,11 @@
 .channels {
   width: 240px;
   margin: 0 auto;
-  line-height: 1.8;
+  line-height: 2.4;
 }
 .channels .tag {
   float: right;
+  margin-top: 7px;
 }
 .channels a {
   text-decoration: none;
