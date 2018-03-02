@@ -7,6 +7,7 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background: #FAFAFA;
 }
 
 
@@ -208,12 +209,160 @@ html, body {
         </div>
       <? endforeach ?>
 
+      <? if(isset($paging['after'])): ?>
+      <nav class="pagination" role="navigation" aria-label="pagination">
+        <a class="pagination-next" href="?after=<?= e($paging['after']) ?>">More</a>
+      </nav>
+      <? endif ?>
+
     </div></div>
 
     <!-- TODO: fixed bottom bar showing current account context -->
     <div id="main-bottom">
-      Input area
     </div>
   </div>
 </div>
 
+<input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?? '' ?>">
+<input type="hidden" id="channel-uid" value="<?= $channel['uid'] ?>">
+
+<script>
+function addResponseUrl(i, url) {
+  $(".entry[data-entry='"+i+"'] .action-responses").append('<div><a href="'+url+'">'+url+'</a></div>');
+}
+
+$(function(){
+
+  $(".actions .action-buttons a").click(function(e){
+    e.preventDefault();
+    var btn = $(this);
+
+    switch($(this).data("action")) {
+      case "favorite":
+        if($(this).parents(".entry").data("is-read") == "0") {
+          mark_read($(this).parents(".entry").data("entry-id"));
+        }
+        btn.addClass("is-loading");
+        $.post("/micropub", {
+          "like-of": [$(this).parents(".actions").data("url")]
+        }, function(response){
+          btn.removeClass("is-loading");
+          if(response.location) {
+            addResponseUrl(btn.parents(".entry").data("entry"), response.location);
+          }
+        });
+        break;
+      case "repost":
+        if($(this).parents(".entry").data("is-read") == "0") {
+          mark_read($(this).parents(".entry").data("entry-id"));
+        }
+        btn.addClass("is-loading");
+        $.post("/micropub", {
+          "repost-of": [$(this).parents(".actions").data("url")]
+        }, function(response){
+          btn.removeClass("is-loading");
+          if(response.location) {
+            addResponseUrl(btn.parents(".entry").data("entry"), response.location);
+          }
+        });
+        break;
+      case "reply":
+        if($(this).parents(".entry").data("is-read") == "0") {
+          mark_read($(this).parents(".entry").data("entry-id"));
+        }
+        $(this).parents(".actions").find(".new-reply").removeClass("hidden");
+        $(this).parents(".actions").find(".new-reply textarea").focus();
+        break;
+    }
+  });
+
+  $(".actions .post-reply").click(function(){
+    if($(this).parents(".actions").find(".new-reply textarea").val() == "") {
+      return false;
+    }
+
+    var btn = $(this);
+    btn.addClass("is-loading");
+    $.post("/micropub", {
+      "in-reply-to": [$(this).parents(".actions").data("url")],
+      "content": [$(this).parents(".actions").find(".new-reply textarea").val()]
+    }, function(response){
+      btn.removeClass("is-loading");
+      if(response.location) {
+        btn.parents(".actions").find(".new-reply textarea").val("");
+        btn.parents(".actions").find(".new-reply").addClass("hidden");
+        btn.removeClass("is-danger");
+        addResponseUrl(btn.parents(".entry").data("entry"), response.location);
+      } else {
+        btn.addClass("is-danger");
+      }
+    });
+  });
+
+});
+
+function mark_read(entry_ids) {
+  if(typeof entry_ids != "object") {
+    entry_ids = [entry_ids];
+  }
+
+  entry_ids.forEach(function(eid){
+    $(".entry[data-entry-id="+eid+"]").data("is-read", 1);
+  });
+
+  $.post("/microsub/mark_read", {
+    channel: $("#channel-uid").val(),
+    entry: entry_ids
+  }, function(response){
+    response.channels.forEach(function(ch){
+      if(ch.unread > 0) {
+        $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').removeClass('is-hidden').text(ch.unread);
+      } else {
+        $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').addClass('is-hidden').text(ch.unread);
+      }
+    });
+  });
+}
+
+var marked = {};
+
+$(window).scroll(function() {
+  clearTimeout($.data(this, 'scrollTimer'));
+  $.data(this, 'scrollTimer', setTimeout(function() {
+    var bodyRect = document.body.getBoundingClientRect();
+    var contentRect = document.getElementById("main-container").getBoundingClientRect();
+
+    // If you're scrolled to the bottom, mark all as read
+    if(-1 * bodyRect.top + bodyRect.height >= contentRect.height - 50) {
+      var entryIds = [];
+      document.querySelectorAll(".entry").forEach(function(entry){
+        var entryNum = $(entry).data("entry");
+        if(marked[entryNum] == null && $(entry).data("is-read") == 0) {
+          marked[entryNum] = true;
+          entryIds.push($(entry).data("entry-id"));
+        }
+      });
+      if(entryIds.length > 0) {
+        mark_read(entryIds);
+      }
+    } else {
+      // Find all entries that are scrolled off the page
+      var entryIds = [];
+      document.querySelectorAll(".entry").forEach(function(entry){
+        var bounds = entry.getBoundingClientRect();
+        if(bounds.top + bounds.height < 0) {
+          var entryNum = $(entry).data("entry");
+          if(marked[entryNum] == null && $(entry).data("is-read") == 0) {
+            marked[entryNum] = true;
+            entryIds.push($(entry).data("entry-id"));
+          }
+        }
+      });
+      if(entryIds.length > 0) {
+        mark_read(entryIds);
+      }
+    }
+  }, 200));
+});
+
+</script>

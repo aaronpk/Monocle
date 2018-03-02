@@ -83,7 +83,12 @@ class Controller {
       'entry' => $body['entry'],
     ]);
 
-    return $this->_reloadChannels();
+    $r = $this->_reloadChannels();
+
+    $response->getBody()->write(json_encode([
+      'channels' => $_SESSION['channels']
+    ]));
+    return $response->withHeader('Content-type', 'application/json');
   }
 
   public function reload_channels(ServerRequestInterface $request, ResponseInterface $response) {
