@@ -374,7 +374,7 @@ $(window).scroll(function() {
       var entryIds = [];
       document.querySelectorAll(".entry").forEach(function(entry){
         var bounds = entry.getBoundingClientRect();
-        if(bounds.top + bounds.height < 0) {
+        if(bounds.top < 0) {
           var entryNum = $(entry).data("entry");
           if(marked[entryNum] == null && $(entry).data("is-read") == 0) {
             marked[entryNum] = true;
