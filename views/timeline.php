@@ -301,6 +301,34 @@ $(function(){
 
 });
 
+var last_reload_timestamp = <?= $_SESSION['channels_timestamp'] ?? time() ?>;
+
+setInterval(function(){
+  // Every 5 seconds, check how long it's been since the last channel reload,
+  // and reload the channels if it's been > 1 minute
+  var diff = parseInt(Date.now()/1000) - last_reload_timestamp;
+  if(diff > 60) {
+    reload_channels();
+  }
+}, 5000);
+
+function reload_channels() {
+  $.post("/channels/reload?format=json", function(response){
+    update_channel_list(response.channels);
+  });
+}
+
+function update_channel_list(channels) {
+  channels.forEach(function(ch){
+    last_reload_timestamp = parseInt(Date.now() / 1000);
+    if(ch.unread > 0) {
+      $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').removeClass('is-hidden').text(ch.unread);
+    } else {
+      $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').addClass('is-hidden').text(ch.unread);
+    }
+  });
+}
+
 function mark_read(entry_ids) {
   if(typeof entry_ids != "object") {
     entry_ids = [entry_ids];
@@ -314,15 +342,11 @@ function mark_read(entry_ids) {
     channel: $("#channel-uid").val(),
     entry: entry_ids
   }, function(response){
-    response.channels.forEach(function(ch){
-      if(ch.unread > 0) {
-        $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').removeClass('is-hidden').text(ch.unread);
-      } else {
-        $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').addClass('is-hidden').text(ch.unread);
-      }
-    });
+    update_channel_list(response.channels);
   });
 }
+
+/* Mark entries as read when scrolled off the screen */
 
 var marked = {};
 

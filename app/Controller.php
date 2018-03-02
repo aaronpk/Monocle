@@ -21,6 +21,7 @@ class Controller {
     if($r && $r['code'] == 200) {
       $channels = json_decode($r['body'], true);
       $_SESSION['channels'] = $channels['channels'];
+      $_SESSION['channels_timestamp'] = time();
     }
     return $r;
   }
@@ -93,11 +94,19 @@ class Controller {
 
   public function reload_channels(ServerRequestInterface $request, ResponseInterface $response) {
     $this->requireLogin();
+    $params = $request->getQueryParams();
 
     $r = $this->_reloadChannels();
 
-    $response->getBody()->write(view('components/channel-list'));
-    return $response;
+    if(isset($params['format']) && $params['format'] == 'json') {
+      $response->getBody()->write(json_encode([
+        'channels' => $_SESSION['channels']
+      ]));
+      return $response->withHeader('Content-type', 'application/json');
+    } else {
+      $response->getBody()->write(view('components/channel-list'));
+      return $response;
+    }
   }
 
   public function timeline(ServerRequestInterface $request, ResponseInterface $response) {
