@@ -206,11 +206,11 @@ h2.title .back {
 </div></div>
 
 <script>
-$(function(){
+function addResponseUrl(i, url) {
+  $(".entry[data-entry='"+i+"'] .action-responses").append('<div><a href="'+url+'">'+url+'</a></div>');
+}
 
-  function addResponseUrl(i, url) {
-    $(".entry[data-entry='"+i+"'] .action-responses").append('<div><a href="'+url+'">'+url+'</a></div>');
-  }
+$(function(){
 
   $(".actions .action-buttons a").click(function(e){
     e.preventDefault();
@@ -218,7 +218,9 @@ $(function(){
 
     switch($(this).data("action")) {
       case "favorite":
-        mark_read($(this).parents(".entry").data("entry-id"));
+        if($(this).parents(".entry").data("is-read") == "0") {
+          mark_read($(this).parents(".entry").data("entry-id"));
+        }
         btn.addClass("is-loading");
         $.post("/micropub", {
           "like-of": [$(this).parents(".actions").data("url")]
@@ -230,7 +232,9 @@ $(function(){
         });
         break;
       case "repost":
-        mark_read($(this).parents(".entry").data("entry-id"));
+        if($(this).parents(".entry").data("is-read") == "0") {
+          mark_read($(this).parents(".entry").data("entry-id"));
+        }
         btn.addClass("is-loading");
         $.post("/micropub", {
           "repost-of": [$(this).parents(".actions").data("url")]
@@ -242,7 +246,9 @@ $(function(){
         });
         break;
       case "reply":
-        mark_read($(this).parents(".entry").data("entry-id"));
+        if($(this).parents(".entry").data("is-read") == "0") {
+          mark_read($(this).parents(".entry").data("entry-id"));
+        }
         $(this).parents(".actions").find(".new-reply").removeClass("hidden");
         $(this).parents(".actions").find(".new-reply textarea").focus();
         break;

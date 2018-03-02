@@ -83,9 +83,7 @@ class Controller {
       'entry' => $body['entry'],
     ]);
 
-    $r = $this->_reloadChannels();
-
-    return $response;
+    return $this->_reloadChannels();
   }
 
   public function reload_channels(ServerRequestInterface $request, ResponseInterface $response) {
@@ -128,7 +126,7 @@ class Controller {
       $entries = $data['items'] ?? [];
       $paging = $data['paging'] ?? [];
 
-      $response->getBody()->write(view('timeline', [
+      $response->getBody()->write(view('chat-log', [
         'title' => 'Monocle',
         'channel' => $channel,
         'entries' => $entries,

@@ -27,3 +27,123 @@ body {
 .hidden {
   display: none;
 }
+
+
+
+/**
+ * Side Menu
+ */
+
+#side-menu {
+  background: #333;
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -240px;
+  bottom: 0;
+  z-index: 1;
+  overflow-y: scroll;
+}
+#side-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 70px;
+}
+#side-menu li {
+  transition: all 0.2s ease-in-out;
+  display: block;
+  padding: 1em 1em;
+  border-bottom: 1px #444 solid;
+}
+#side-menu li a {
+  color: white;
+  text-decoration: none;
+}
+#side-menu li:hover {
+  background: #555;
+  border-color: #666;
+}
+#side-menu .tag {
+  float: right;
+}
+
+#main-top {
+  z-index: 2;
+  background: white;
+  position: fixed;
+  width: 100vw;
+  padding: .75rem;
+}
+
+#main-top h2.title {
+  position: relative;
+  padding-left: 45px;
+}
+#main-top h2.title .back {
+  font-size: 12pt;
+  position: absolute;
+  right: 0;
+  top: 12px;
+}
+
+#main-container {
+  padding-top: 60px;
+}
+@media(min-width: 800px) {
+  #main-container {
+    margin-left: 240px;
+  }
+  #main-top h2.title {
+    margin-left: 200px;
+  }
+  main {
+    padding-left: 240px;
+  }
+  #side-menu {
+    left: 0;
+    z-index: 2;
+  }
+  #nav-trigger, #nav-trigger-label {
+    display: none;
+  }
+}
+
+.nav-trigger {
+  position: absolute;
+  clip: rect(0,0,0,0);
+}
+label[for="nav-trigger"] {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' width='30px' height='30px' viewBox='0 0 30 30' enable-background='new 0 0 30 30' xml:space='preserve'><rect width='30' height='6'/><rect y='24' width='30' height='6'/><rect y='12' width='30' height='6'/></svg>");
+  background-size: contain;
+}
+label[for="nav-trigger"]:hover {
+  opacity: 0.6;
+}
+
+.nav-trigger:checked + label {
+  /* left: 255px; */
+}
+
+.nav-trigger:checked ~ main {
+  left: 240px;
+  right: -240px;
+}
+
+.nav-trigger:checked ~ #side-menu {
+  left: 0;
+}
+
+main, label[for="nav-trigger"], #side-menu {
+  transition: all 0.2s;
+}
+
+
