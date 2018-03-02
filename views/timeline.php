@@ -1,16 +1,16 @@
 <?php $this->layout('layout', ['title' => $channel['name']]) ?>
 
 <style>
-h2.title {
-  position: relative;
+html, body {
   width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #FAFAFA;
 }
-h2.title .back {
-  font-size: 12pt;
-  position: absolute;
-  right: 0;
-  top: 12px;
-}
+
+
 
 .entry {
   margin-bottom: 12px;
@@ -108,102 +108,123 @@ h2.title .back {
 .entry .action-buttons {
   text-align: right;
 }
+
 </style>
 
+<div id="window">
 
-<div class="column"><div class="inner">
+  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
 
-  <h2 class="title">
-    <?= $channel['name'] ?>
-    <a href="/" class="back"><span class="icon is-small"><i class="fas fa-home"></i></span></a>
-  </h2>
+  <div id="main-top">
+    <label for="nav-trigger" id="nav-trigger-label"></label>
+    <h2 class="title">
+      <?= $channel['name'] ?>
+      <a href="/" class="back"><span class="icon is-small"><i class="fas fa-home"></i></span></a>
+    </h2>
+  </div>
 
-<? foreach($entries as $i=>$entry): ?>
-  <div class="entry" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
-    data-is-read="<?= $entry['_is_read'] ? 1 : 0 ?>">
+  <nav id="side-menu">
+    <ul class="channels channel-list">
+      <?= $this->insert('components/channel-list') ?>
+    </ul>
+  </nav>
 
-    <div class="author">
-      <? if(!empty($entry['author']['name']) && !empty($entry['author']['photo']) && !empty($entry['author']['url'])): ?>
-        <img src="<?= e($entry['author']['photo']) ?>">
-        <div class="author-name">
-          <a href="<?= e($entry['author']['url']) ?>" class="name"><?= e($entry['author']['name']) ?></a>
-          <a href="<?= e($entry['author']['url']) ?>" class="url"><?= e(\p3k\url\display_url($entry['author']['url'])) ?></a>
-        </div>
-      <? elseif(!empty($entry['author']['url'])): ?>
-        <div class="author-name">
-          <a href="<?= e($entry['author']['url']) ?>" class="name"><?= e($entry['author']['name']) ?></a>
-          <a href="<?= e($entry['author']['url']) ?>" class="url"><?= e(\p3k\url\display_url($entry['author']['url'])) ?></a>
-        </div>
-      <? else: ?>
+  <div id="main-container">
 
-      <? endif ?>
-    </div>
+    <div class="column"><div class="inner">
 
-    <? if(!empty($entry['name'])): ?>
-      <h2 class="name"><?= e($entry['name']) ?></h2>
-    <? endif ?>
+      <? foreach($entries as $i=>$entry): ?>
+        <div class="entry" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
+          data-is-read="<?= $entry['_is_read'] ? 1 : 0 ?>">
 
-    <? if(!empty($entry['content']['html'])): ?>
-      <div class="content html"><?= $entry['content']['html'] ?></div>
-    <? elseif(!empty($entry['content']['text'])): ?>
-      <div class="content text"><?= e($entry['content']['text']) ?></div>
-    <? endif ?>
+          <div class="author">
+            <? if(!empty($entry['author']['name']) && !empty($entry['author']['photo']) && !empty($entry['author']['url'])): ?>
+              <img src="<?= e($entry['author']['photo']) ?>">
+              <div class="author-name">
+                <a href="<?= e($entry['author']['url']) ?>" class="name"><?= e($entry['author']['name']) ?></a>
+                <a href="<?= e($entry['author']['url']) ?>" class="url"><?= e(\p3k\url\display_url($entry['author']['url'])) ?></a>
+              </div>
+            <? elseif(!empty($entry['author']['url'])): ?>
+              <div class="author-name">
+                <a href="<?= e($entry['author']['url']) ?>" class="name"><?= e($entry['author']['name']) ?></a>
+                <a href="<?= e($entry['author']['url']) ?>" class="url"><?= e(\p3k\url\display_url($entry['author']['url'])) ?></a>
+              </div>
+            <? else: ?>
 
-    <? if(!empty($entry['audio'])): ?>
-      <? foreach($entry['audio'] as $audio): ?>
-        <audio src="<?= e($audio) ?>" controls></audio>
-      <? endforeach ?>
-    <? endif ?>
-
-    <? if(isset($entry['photo'])): ?>
-      <div class="photos">
-        <? foreach($entry['photo'] as $photo): ?>
-          <img src="<?= $photo ?>" class="photo">
-        <? endforeach ?>
-        <div class="photoclear"></div>
-      </div>
-    <? endif ?>
-
-    <div class="meta">
-      <? if(!empty($entry['published'])): ?>
-        <a href="<?= e($entry['url']) ?>">
-          <?= display_date('F j, Y g:ia P', $entry['published']) ?>
-        </a>
-      <? else: ?>
-
-      <? endif ?>
-    </div>
-
-    <div class="actions" data-url="<?= e($entry['url']) ?>">
-      <div class="action-buttons">
-        <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
-        <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
-        <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
-      </div>
-      <div class="action-responses">
-        <div class="new-reply hidden">
-          <textarea class="textarea" rows="2"></textarea>
-          <a style="font-size: 0.8em;" href="https://quill.p3k.io/new?reply=<?= urlencode($entry['url']) ?>" target="_blank">reply with quill</a>
-          <div class="control" style="margin-top: 6px; float: right;">
-            <button class="button is-primary is-small post-reply">Reply</button>
+            <? endif ?>
           </div>
-          <div style="clear:both;"></div>
+
+          <? if(!empty($entry['name'])): ?>
+            <h2 class="name"><?= e($entry['name']) ?></h2>
+          <? endif ?>
+
+          <? if(!empty($entry['content']['html'])): ?>
+            <div class="content html"><?= $entry['content']['html'] ?></div>
+          <? elseif(!empty($entry['content']['text'])): ?>
+            <div class="content text"><?= e($entry['content']['text']) ?></div>
+          <? endif ?>
+
+          <? if(!empty($entry['audio'])): ?>
+            <? foreach($entry['audio'] as $audio): ?>
+              <audio src="<?= e($audio) ?>" controls></audio>
+            <? endforeach ?>
+          <? endif ?>
+
+          <? if(isset($entry['photo'])): ?>
+            <div class="photos">
+              <? foreach($entry['photo'] as $photo): ?>
+                <img src="<?= $photo ?>" class="photo">
+              <? endforeach ?>
+              <div class="photoclear"></div>
+            </div>
+          <? endif ?>
+
+          <div class="meta">
+            <? if(!empty($entry['published'])): ?>
+              <a href="<?= e($entry['url']) ?>">
+                <?= display_date('F j, Y g:ia P', $entry['published']) ?>
+              </a>
+            <? else: ?>
+
+            <? endif ?>
+          </div>
+
+          <div class="actions" data-url="<?= e($entry['url']) ?>">
+            <div class="action-buttons">
+              <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
+              <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
+              <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
+            </div>
+            <div class="action-responses">
+              <div class="new-reply hidden">
+                <textarea class="textarea" rows="2"></textarea>
+                <a style="font-size: 0.8em;" href="https://quill.p3k.io/new?reply=<?= urlencode($entry['url']) ?>" target="_blank">reply with quill</a>
+                <div class="control" style="margin-top: 6px; float: right;">
+                  <button class="button is-primary is-small post-reply">Reply</button>
+                </div>
+                <div style="clear:both;"></div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      <? endforeach ?>
+
+      <? if(isset($paging['after'])): ?>
+      <nav class="pagination" role="navigation" aria-label="pagination">
+        <a class="pagination-next" href="?after=<?= e($paging['after']) ?>">More</a>
+      </nav>
+      <? endif ?>
+
+    </div></div>
+
+    <!-- TODO: fixed bottom bar showing current account context -->
+    <div id="main-bottom">
     </div>
   </div>
-<? endforeach ?>
-
-<? if(isset($paging['after'])): ?>
-<nav class="pagination" role="navigation" aria-label="pagination">
-  <a class="pagination-next" href="?after=<?= e($paging['after']) ?>">More</a>
-</nav>
-<? endif ?>
+</div>
 
 <input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?? '' ?>">
 <input type="hidden" id="channel-uid" value="<?= $channel['uid'] ?>">
-
-</div></div>
 
 <script>
 function addResponseUrl(i, url) {
@@ -281,9 +302,25 @@ $(function(){
 });
 
 function mark_read(entry_ids) {
+  if(typeof entry_ids != "object") {
+    entry_ids = [entry_ids];
+  }
+
+  entry_ids.forEach(function(eid){
+    $(".entry[data-entry-id="+eid+"]").data("is-read", 1);
+  });
+
   $.post("/microsub/mark_read", {
     channel: $("#channel-uid").val(),
     entry: entry_ids
+  }, function(response){
+    response.channels.forEach(function(ch){
+      if(ch.unread > 0) {
+        $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').removeClass('is-hidden').text(ch.unread);
+      } else {
+        $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').addClass('is-hidden').text(ch.unread);
+      }
+    });
   });
 }
 
@@ -292,8 +329,11 @@ var marked = {};
 $(window).scroll(function() {
   clearTimeout($.data(this, 'scrollTimer'));
   $.data(this, 'scrollTimer', setTimeout(function() {
+    var bodyRect = document.body.getBoundingClientRect();
+    var contentRect = document.getElementById("main-container").getBoundingClientRect();
+
     // If you're scrolled to the bottom, mark all as read
-    if((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 10) {
+    if(-1 * bodyRect.top + bodyRect.height >= contentRect.height - 50) {
       var entryIds = [];
       document.querySelectorAll(".entry").forEach(function(entry){
         var entryNum = $(entry).data("entry");

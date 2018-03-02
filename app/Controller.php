@@ -131,7 +131,7 @@ class Controller {
       $entries = $data['items'] ?? [];
       $paging = $data['paging'] ?? [];
 
-      $response->getBody()->write(view('chat-log', [
+      $response->getBody()->write(view('timeline', [
         'title' => 'Monocle',
         'channel' => $channel,
         'entries' => $entries,
