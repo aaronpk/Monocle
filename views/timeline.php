@@ -97,10 +97,21 @@ html, body {
   color: #aaa;
   text-decoration: none;
 }
+.entry .syndication {
+  padding-left: 0.5em;
+}
+.entry .syndication a {
+  padding-left: 0.5em;
+}
+
+.entry .context {
+  padding: 8px;
+  background-color: #f3f3f3;
+}
 
 .entry .actions {
   padding: 8px;
-  background: #f3f3f3;
+  background-color: #f3f3f3;
 }
 .entry .actions .action-responses > div {
   margin-top: 12px;
@@ -136,6 +147,14 @@ html, body {
       <? foreach($entries as $i=>$entry): ?>
         <div class="entry" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
           data-is-read="<?= $entry['_is_read'] ? 1 : 0 ?>">
+
+          <? if(!empty($entry['in-reply-to'])): ?>
+            <div class="context">
+              <? foreach($entry['in-reply-to'] as $r): ?>
+                <div class="in-reply-to"><i class="fas fa-reply"></i> <a href="<?= $r ?>"><?= \p3k\url\display_url($r) ?></a></div>
+              <? endforeach ?>
+            </div>
+          <? endif ?>
 
           <div class="author">
             <? if(!empty($entry['author']['name']) && !empty($entry['author']['photo']) && !empty($entry['author']['url'])): ?>
@@ -186,6 +205,24 @@ html, body {
               </a>
             <? else: ?>
 
+            <? endif ?>
+            <? if(!empty($entry['syndication'])): ?>
+              <span class="syndication">
+              <?
+              foreach($entry['syndication'] as $syn):
+                $host = parse_url($syn, PHP_URL_HOST);
+                if($host == 'twitter.com')
+                  $icon = 'fab fa-twitter';
+                elseif($host == 'facebook.com')
+                  $icon = 'fab fa-facebook';
+                elseif($host == 'github.com')
+                  $icon = 'fab fa-github';
+                else
+                  $icon = 'fas fa-link';
+                echo '<a href="'.$syn.'"><i class="'.$icon.'"></i></a> ';
+              endforeach
+              ?>
+              </span>
             <? endif ?>
           </div>
 
