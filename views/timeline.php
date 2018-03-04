@@ -21,6 +21,12 @@ html, body {
   word-wrap: break-word;
 }
 
+.entry.unread {
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(255,204,0,1);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(255,204,0,1);
+  box-shadow: 0px 0px 10px 0px rgba(255,204,0,1);
+}
+
 .entry .author {
   padding: 6px 8px 0 8px;
 }
@@ -145,7 +151,7 @@ html, body {
     <div class="column"><div class="inner">
 
       <? foreach($entries as $i=>$entry): ?>
-        <div class="entry" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
+        <div class="entry <?= isset($entry['_is_read']) && $entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
           data-is-read="<?= isset($entry['_is_read']) ? ($entry['_is_read'] ? 1 : 0) : 1 ?>">
 
           <? if(!empty($entry['in-reply-to'])): ?>
@@ -373,6 +379,7 @@ function mark_read(entry_ids) {
 
   entry_ids.forEach(function(eid){
     $(".entry[data-entry-id="+eid+"]").data("is-read", 1);
+    $(".entry[data-entry-id="+eid+"]").removeClass("unread").addClass("read");
   });
 
   $.post("/microsub/mark_read", {
