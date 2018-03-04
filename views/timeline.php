@@ -157,7 +157,7 @@ html, body {
           <? if(!empty($entry['in-reply-to'])): ?>
             <div class="context">
               <? foreach($entry['in-reply-to'] as $r): ?>
-                <div class="in-reply-to"><i class="fas fa-reply"></i> <a href="<?= $r ?>"><?= \p3k\url\display_url($r) ?></a></div>
+                <div class="in-reply-to"><i class="fas fa-reply"></i> <a href="<?= $r ?>"><?= e(\p3k\url\display_url($r)) ?></a></div>
               <? endforeach ?>
             </div>
           <? endif ?>
@@ -214,7 +214,9 @@ html, body {
                 <?= display_date('F j, Y g:ia P', $entry['published']) ?>
               </a>
             <? else: ?>
-
+              <a href="<?= e($entry['url']) ?>">
+                <?= e(\p3k\url\display_url($entry['url'])) ?>
+              </a>
             <? endif ?>
             <? if(!empty($entry['syndication'])): ?>
               <span class="syndication">
