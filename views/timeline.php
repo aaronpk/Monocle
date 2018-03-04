@@ -146,7 +146,7 @@ html, body {
 
       <? foreach($entries as $i=>$entry): ?>
         <div class="entry" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
-          data-is-read="<?= $entry['_is_read'] ? 1 : 0 ?>">
+          data-is-read="<?= isset($entry['_is_read']) ? ($entry['_is_read'] ? 1 : 0) : 1 ?>">
 
           <? if(!empty($entry['in-reply-to'])): ?>
             <div class="context">
@@ -358,10 +358,10 @@ function reload_channels() {
 function update_channel_list(channels) {
   channels.forEach(function(ch){
     last_reload_timestamp = parseInt(Date.now() / 1000);
-    if(ch.unread > 0) {
-      $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').removeClass('is-hidden').text(ch.unread);
+    if(ch.unread && ch.unread > 0) {
+      $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').removeClass('is-hidden').text(typeof ch.unread == "number" ? ch.unread : "");
     } else {
-      $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').addClass('is-hidden').text(ch.unread);
+      $('.channels li[data-channel-uid="'+ch.uid+'"] .tag').addClass('is-hidden').text("");
     }
   });
 }

@@ -10,6 +10,9 @@
   float: right;
   margin-top: 7px;
 }
+.channels .tag.is-dot {
+  margin-top: 10px;
+}
 .channels a {
   text-decoration: none;
 }

@@ -29,6 +29,13 @@ body {
 }
 
 
+.tag.is-dot {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+}
+
 
 /**
  * Side Menu
