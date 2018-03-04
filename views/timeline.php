@@ -189,6 +189,10 @@ html, body {
             <div class="content text"><?= e($entry['content']['text']) ?></div>
           <? endif ?>
 
+          <? if(empty($entry['name']) && empty($entry['content']['html']) && empty($entry['content']['text'])): ?>
+            <div class="content text"></div>
+          <? endif ?>
+
           <? if(!empty($entry['audio'])): ?>
             <? foreach($entry['audio'] as $audio): ?>
               <audio src="<?= e($audio) ?>" controls></audio>
