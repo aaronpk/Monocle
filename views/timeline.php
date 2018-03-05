@@ -213,7 +213,7 @@ html, body {
               <a href="<?= e($entry['url']) ?>">
                 <?= display_date('F j, Y g:ia P', $entry['published']) ?>
               </a>
-            <? else: ?>
+            <? elseif(!empty($entry['url'])): ?>
               <a href="<?= e($entry['url']) ?>">
                 <?= e(\p3k\url\display_url($entry['url'])) ?>
               </a>
@@ -238,6 +238,7 @@ html, body {
             <? endif ?>
           </div>
 
+          <?php if(isset($entry['url'])): ?>
           <div class="actions" data-url="<?= e($entry['url']) ?>">
             <div class="action-buttons">
               <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
@@ -255,6 +256,7 @@ html, body {
               </div>
             </div>
           </div>
+          <?php endif ?>
         </div>
       <? endforeach ?>
 
@@ -288,9 +290,6 @@ $(function(){
 
     switch($(this).data("action")) {
       case "favorite":
-        if($(this).parents(".entry").data("is-read") == "0") {
-          mark_read($(this).parents(".entry").data("entry-id"));
-        }
         btn.addClass("is-loading");
         $.post("/micropub", {
           "like-of": [$(this).parents(".actions").data("url")]
@@ -302,9 +301,6 @@ $(function(){
         });
         break;
       case "repost":
-        if($(this).parents(".entry").data("is-read") == "0") {
-          mark_read($(this).parents(".entry").data("entry-id"));
-        }
         btn.addClass("is-loading");
         $.post("/micropub", {
           "repost-of": [$(this).parents(".actions").data("url")]
@@ -316,9 +312,6 @@ $(function(){
         });
         break;
       case "reply":
-        if($(this).parents(".entry").data("is-read") == "0") {
-          mark_read($(this).parents(".entry").data("entry-id"));
-        }
         $(this).parents(".actions").find(".new-reply").removeClass("hidden");
         $(this).parents(".actions").find(".new-reply textarea").focus();
         break;
@@ -346,6 +339,12 @@ $(function(){
         btn.addClass("is-danger");
       }
     });
+  });
+
+  $(".entry").click(function(){
+    if($(this).data('is-read') == 0) {
+      mark_read($(this).data('entry-id'));
+    }
   });
 
 });
