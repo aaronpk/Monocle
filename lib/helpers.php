@@ -16,6 +16,10 @@ function e($text) {
   return htmlspecialchars($text);
 }
 
+function j($json) {
+  return htmlspecialchars(json_encode($json, JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES));
+}
+
 function is_logged_in() {
   return isset($_SESSION) && array_key_exists('me', $_SESSION);
 }
@@ -34,6 +38,23 @@ function http_client() {
   if(!isset($http))
     $http = new \p3k\HTTP(Config::$useragent);
   return $http;
+}
+
+function get_micropub_config($endpoint, $token) {
+  $r = micropub_get($endpoint, $token['access_token'], ['q'=>'config']);
+  $config = [];
+  if($r['code'] == 200) {
+    $c = json_decode($r['body'], true);
+    if($c) {
+      $config = $c;
+    }
+  }
+
+  $_SESSION['micropub'] = [
+    'endpoint' => $endpoint,
+    'config' => $config
+  ];
+  return $_SESSION['micropub'];
 }
 
 function micropub_get($endpoint, $token, $params=[]) {

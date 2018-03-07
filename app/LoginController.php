@@ -79,13 +79,9 @@ class LoginController {
     $_SESSION['token'] = $token;
     $_SESSION['microsub'] = $microsub;
 
-    // Fetch Micropub config and Microsub channels
-    $config = micropub_get($micropub, $token['access_token'], ['q'=>'config']);
-
-    $_SESSION['micropub'] = [
-      'endpoint' => $micropub,
-      'config' => $config
-    ];
+    // Fetch Micropub config
+    $config = get_micropub_config($micropub, $token);
+    $_SESSION['micropub'] = $config;
 
     return $response->withHeader('Location', '/')->withStatus(302);
   }

@@ -17,6 +17,7 @@ $container->share('emitter', Zend\Diactoros\Response\SapiEmitter::class);
 $route = new League\Route\RouteCollection($container);
 
 $route->map('GET', '/', 'App\\Controller::index');
+$route->map('GET', '/debug', 'App\\Controller::debug');
 
 $route->map('GET', '/login', 'App\\LoginController::login');
 $route->map('POST', '/login', 'App\\LoginController::login_start');
@@ -28,6 +29,7 @@ $route->map('POST', '/channels/reload', 'App\\Controller::reload_channels');
 $route->map('POST', '/microsub/mark_read', 'App\\Controller::mark_as_read');
 
 $route->map('POST', '/micropub', 'App\\Controller::micropub');
+$route->map('POST', '/micropub/refresh', 'App\\Controller::micropub_refresh');
 
 
 $templates = new League\Plates\Engine(dirname(__FILE__).'/../views');

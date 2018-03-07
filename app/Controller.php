@@ -52,6 +52,16 @@ class Controller {
     return $response;
   }
 
+  public function debug(ServerRequestInterface $request, ResponseInterface $response) {
+    \p3k\session_setup();
+
+    $response->getBody()->write(view('debug', [
+      'session' => $_SESSION,
+      'title' => 'Monocle Debug'
+    ]));
+    return $response;
+  }
+
   public function micropub(ServerRequestInterface $request, ResponseInterface $response) {
     $this->requireLogin();
     $body = $request->getParsedBody();
@@ -107,6 +117,18 @@ class Controller {
       $response->getBody()->write(view('components/channel-list'));
       return $response;
     }
+  }
+
+  public function micropub_refresh(ServerRequestInterface $request, ResponseInterface $response) {
+    $this->requireLogin();
+
+    $config = get_micropub_config($_SESSION['micropub']['endpoint'], $_SESSION['token']);
+    $_SESSION['micropub'] = $config;
+
+    $response->getBody()->write(json_encode([
+      'micropub' => $_SESSION['micropub']
+    ]));
+    return $response->withHeader('Content-type', 'application/json');
   }
 
   public function timeline(ServerRequestInterface $request, ResponseInterface $response) {
