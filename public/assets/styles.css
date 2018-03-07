@@ -19,6 +19,7 @@ body {
     margin-left: 0;
     margin-right: 0;
     padding: 0;
+    padding-top: 12px;
   }
   .column .entry {
     border: 0;
