@@ -223,9 +223,9 @@ html, body {
               <?
               foreach($entry['syndication'] as $syn):
                 $host = parse_url($syn, PHP_URL_HOST);
-                if($host == 'twitter.com')
+                if($host == 'twitter.com' || $host == 'www.twitter.com')
                   $icon = 'fab fa-twitter';
-                elseif($host == 'facebook.com')
+                elseif($host == 'facebook.com' || $host == 'www.facebook.com')
                   $icon = 'fab fa-facebook';
                 elseif($host == 'github.com')
                   $icon = 'fab fa-github';
