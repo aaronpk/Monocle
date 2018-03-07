@@ -17,13 +17,13 @@
 
     <div class="hero-body">
         <div class="container has-text-centered">
-            <div class="column is-4 is-offset-4">
+            <div class="column is-6 is-offset-3">
                 <h3 class="title has-text-grey">Sign in to Monocle</h3>
                 <div class="box">
 
                     <?php if($error=p3k\flash('auth_error')): ?>
                       <div class="notification is-danger">
-                        <strong><?= e($error) ?></strong> 
+                        <strong><?= e($error) ?></strong>
                         <p><?= e(p3k\flash('auth_error_description')) ?></p>
                       </div>
                     <?php endif; ?>
