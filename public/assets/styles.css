@@ -59,6 +59,7 @@ body {
   margin: 0;
   padding: 0;
   padding-top: 70px;
+  margin-bottom: 70px;
 }
 #side-menu li {
   transition: all 0.2s ease-in-out;
