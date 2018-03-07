@@ -89,10 +89,50 @@ html, body {
   width: 100%;
 }
 
-.entry .photo {
+.entry .photo, .entry .video {
   width: 100%;
+}
+
+.entry .photos {
   margin-bottom: 6px;
 }
+
+.multi-photo .photo {
+  position: relative;
+  overflow: hidden;
+  float: left;
+
+  /* This positions and sizes the image (background-image) within the grid container */
+  background-size: cover;
+  background-position: 50% 50%;
+
+  /* for multi-photo posts with 4 or more photos, use this */
+  width: 50%;
+  height: 240px;
+}
+.multi-photo .photo img.post-img {
+  /* hide the img tag because the image is shown by the background image */
+  display: none;
+}
+.multi-photo-clear {
+  clear: both;
+}
+/* 2-up multi-photos use this layout */
+.multi-photo.photos-2 .photo {
+  width: 50%;
+  height: 300px;
+}
+/* 3-up multi-photos use this layout */
+.multi-photo.photos-3 .photo:nth-child(1) {
+  width: 65%;
+  height: 400px;
+}
+.multi-photo.photos-3 .photo:nth-child(2),
+.multi-photo.photos-3 .photo:nth-child(3) {
+  width: 35%;
+  height: 200px;
+}
+
 
 .entry .meta {
   padding: 0 8px 8px 8px;
@@ -199,11 +239,27 @@ html, body {
             <? endforeach ?>
           <? endif ?>
 
-          <? if(isset($entry['photo'])): ?>
-            <div class="photos">
-              <? foreach($entry['photo'] as $photo): ?>
-                <img src="<?= $photo ?>" class="photo">
+          <? if(isset($entry['video'])): ?>
+            <div class="videos">
+              <? foreach($entry['video'] as $i=>$video): ?>
+                <video src="<?= $video ?>" class="video" controls <?= isset($entry['photo'][$i]) ? 'poster="'.$entry['photo'][$i].'"' : '' ?>>
               <? endforeach ?>
+              <div class="videoclear"></div>
+            </div>
+          <? elseif(isset($entry['photo'])): ?>
+            <div class="photos">
+              <? if(count($entry['photo']) > 1): ?>
+                <div class="multi-photo photos-<?= count($entry['photo']) ?>">
+                  <? foreach($entry['photo'] as $photo): ?>
+                    <a href="<?= $photo ?>" data-featherlight="<?= $photo ?>" class="photo" style="background-image:url(<?= $photo ?>);">
+                      <img src="<?= $photo ?>" class="post-img">
+                    </a>
+                  <? endforeach ?>
+                  <div class="multi-photo-clear"></div>
+                </div>
+              <? else: ?>
+                <img src="<?= $entry['photo'][0] ?>" class="photo">
+              <? endif ?>
               <div class="photoclear"></div>
             </div>
           <? endif ?>
