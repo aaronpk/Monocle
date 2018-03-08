@@ -266,9 +266,13 @@ html, body {
 
           <div class="meta">
             <? if(!empty($entry['published'])): ?>
-              <a href="<?= e($entry['url']) ?>">
+              <? if(!empty($entry['url'])): ?>
+                <a href="<?= e($entry['url']) ?>">
+                  <?= display_date('F j, Y g:ia P', $entry['published']) ?>
+                </a>
+              <? else: ?>
                 <?= display_date('F j, Y g:ia P', $entry['published']) ?>
-              </a>
+              <? endif ?>
             <? elseif(!empty($entry['url'])): ?>
               <a href="<?= e($entry['url']) ?>">
                 <?= e(\p3k\url\display_url($entry['url'])) ?>
