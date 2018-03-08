@@ -325,6 +325,14 @@ html, body {
           <? /* ************************************************ */ ?>
 
           <div class="meta">
+            <? if(!empty($entry['category'])): ?>
+              <div class="categories">
+                <? foreach($entry['category'] as $tag): ?>
+                  <span class="category"><?= '#'.trim($tag,'#') ?></span>
+                <? endforeach ?>
+              </div>
+            <? endif ?>
+
             <? if(!empty($entry['published'])): ?>
               <? if(!empty($entry['url'])): ?>
                 <a href="<?= e($entry['url']) ?>">
