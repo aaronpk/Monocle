@@ -102,6 +102,23 @@ class Controller {
     return $response->withHeader('Content-type', 'application/json');
   }
 
+  public function remove_entry(ServerRequestInterface $request, ResponseInterface $response) {
+    $this->requireLogin();
+    $body = $request->getParsedBody();
+
+    $result = microsub_post($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', [
+      'channel' => $body['channel'],
+      'method' => 'remove',
+      'entry' => $body['entry'],
+    ]);
+
+    $response->getBody()->write(json_encode([
+      'entry' => $body['entry'],
+      'result' => $result
+    ]));
+    return $response->withHeader('Content-type', 'application/json');
+  }
+
   public function reload_channels(ServerRequestInterface $request, ResponseInterface $response) {
     $this->requireLogin();
     $params = $request->getQueryParams();

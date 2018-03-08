@@ -327,12 +327,27 @@ html, body {
             <? endif ?>
           </div>
 
-          <?php if(isset($entry['url'])): ?>
           <div class="actions" data-url="<?= e($entry['url']) ?>">
             <div class="action-buttons">
-              <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
-              <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
-              <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
+
+              <div class="dropdown">
+                <div class="dropdown-trigger">
+                  <button class="button is-rounded" aria-haspopup="true" aria-controls="dropdown-<?= md5($entry['_id']) ?>">
+                    <span class="icon"><i class="fas fa-ellipsis-h" aria-hidden="true"></i></span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-<?= md5($entry['_id']) ?>" role="menu">
+                  <div class="dropdown-content">
+                    <a class="dropdown-item" href="#" data-action="remove">Remove from Channel</a>
+                  </div>
+                </div>
+              </div>
+
+              <?php if(isset($entry['url'])): ?>
+                <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
+                <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
+                <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
+              <?php endif ?>
             </div>
             <div class="action-responses">
               <div class="new-reply hidden">
@@ -345,7 +360,6 @@ html, body {
               </div>
             </div>
           </div>
-          <?php endif ?>
         </div>
       <? endforeach ?>
 
@@ -372,6 +386,10 @@ function addResponseUrl(i, url) {
 }
 
 $(function(){
+
+  $(".dropdown-trigger").click(function(){
+    $(this).parents().toggleClass("is-active");
+  });
 
   $(".actions .action-buttons a").click(function(e){
     e.preventDefault();
@@ -404,6 +422,21 @@ $(function(){
         $(this).parents(".actions").find(".new-reply").removeClass("hidden");
         $(this).parents(".actions").find(".new-reply textarea").focus();
         break;
+      case "remove":
+        var btn = $(this).parents(".dropdown").find(".dropdown-trigger button")
+        btn.addClass("is-loading");
+
+        $.post("/microsub/remove", {
+          channel: $("#channel-uid").val(),
+          entry: $(this).parents(".entry").data("entry-id")
+        }, function(response){
+          btn.removeClass("is-loading");
+          $('.entry[data-entry-id="'+response.entry+'"]').remove();
+          console.log(response);
+        });
+        break;
+      default:
+        console.log("Unknown action");
     }
   });
 

@@ -27,6 +27,7 @@ $route->map('GET', '/logout', 'App\\LoginController::logout');
 $route->map('GET', '/channel/{uid}', 'App\\Controller::timeline');
 $route->map('POST', '/channels/reload', 'App\\Controller::reload_channels');
 $route->map('POST', '/microsub/mark_read', 'App\\Controller::mark_as_read');
+$route->map('POST', '/microsub/remove', 'App\\Controller::remove_entry');
 
 $route->map('POST', '/micropub', 'App\\Controller::micropub');
 $route->map('POST', '/micropub/refresh', 'App\\Controller::micropub_refresh');
