@@ -133,10 +133,20 @@ body {
   border-top: 1px #e6e6e6 solid;
 }
 
-
-.destination-card {
+#main-bottom .dropdown {
   float: right;
 }
+#main-bottom .dropdown-trigger {
+  width: 240px;
+}
+#main-bottom .dropdown-trigger button {
+  float: right;
+  margin-right: 6px;
+}
+#main-bottom .dropdown-trigger .dropdown-item {
+  padding: 0;
+}
+
 .destination-card img {
   width: 40px;
   border-radius: 20px;

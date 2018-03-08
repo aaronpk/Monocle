@@ -402,23 +402,27 @@ html, body {
 
     </div></div>
 
-    <? if($destination): ?>
+    <? if(isset($_SESSION['micropub']['config']['destination'])): ?>
       <div id="main-bottom">
-        <div class="destination-card">
-          <? if(isset($destination['user'])): ?>
-            <? if(isset($destination['user']['photo'])): ?>
-              <img src="<?= e($destination['user']['photo']) ?>" width="40">
-            <? endif ?>
-            <? if(isset($destination['user']['url'])): ?>
-              <a href="<?= e($destination['user']['url']) ?>" class="name"><?= e($destination['user']['name']) ?></a>
-            <? else: ?>
-              <span class="name"><?= e($destination['user']['name']) ?></span>
-            <? endif ?>
-          <? else: ?>
-            <span class="name"><?= e($destination['name']) ?></span>
-          <? endif ?>
-          <div style="clear:both;"></div>
-        </div>
+
+          <div class="dropdown is-up" id="destination-chooser">
+            <div class="dropdown-trigger is-right is-mobile">
+              <button class="button" aria-haspopup="true">
+                <span class="icon"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+              </button>
+              <div class="selected-destination">
+                <?= $this->insert('components/destination-card', ['destination'=>$destination, 'tag'=>'div']) ?>
+              </div>
+            </div>
+            <div class="dropdown-menu" id="dropdown-<?= md5('') ?>">
+              <div class="dropdown-content">
+                <? foreach($_SESSION['micropub']['config']['destination'] as $dest): ?>
+                  <?= $this->insert('components/destination-card', ['destination'=>$dest, 'tag'=>'a', 'href'=>'#']) ?>
+                <? endforeach; ?>
+              </div>
+            </div>
+          </div>
+
       </div>
     <? endif ?>
 
@@ -456,6 +460,13 @@ $(function(){
 
   $(".dropdown-trigger").click(function(){
     $(this).parents().toggleClass("is-active");
+  });
+
+  $("#destination-chooser .dropdown-content a").click(function(e){
+    e.preventDefault();
+    $("#destination-uid").val($(this).data('destination'));
+    $("#destination-chooser .selected-destination").html($(this).html());
+    $(this).parents(".dropdown").removeClass("is-active");
   });
 
   $(".actions .action-buttons a").click(function(e){

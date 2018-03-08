@@ -181,9 +181,12 @@ class Controller {
 
       $destination = false;
 
-      if(isset($channel['destination']) && isset($_SESSION['micropub']['config']['destination'])) {
+      if(isset($_SESSION['micropub']['config']['destination'])) {
         foreach($_SESSION['micropub']['config']['destination'] as $dest) {
-          if($dest['uid'] == $channel['destination']) {
+          if(
+            (!isset($channel['destination']) && $dest['uid'] == '')
+            || (isset($channel['destination']) && $dest['uid'] == $channel['destination'])
+          ) {
             $destination = $dest;
           }
         }
