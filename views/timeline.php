@@ -280,9 +280,7 @@ html, body {
               <div class="read-more hidden"><a href="#" class="">Read More</a></div>
             </div>
           <? elseif(!empty($entry['content']['text'])): ?>
-            <div class="content text">
-              <?= e($entry['content']['text']) ?>
-              <div class="read-more hidden"><a href="#" class="">Read More</a></div>
+            <div class="content text"><?= e($entry['content']['text']) ?> <div class="read-more hidden"><a href="#" class="">Read More</a></div>
             </div>
           <? endif ?>
 
