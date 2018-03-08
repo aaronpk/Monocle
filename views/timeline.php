@@ -405,19 +405,20 @@ html, body {
     <? if(isset($_SESSION['micropub']['config']['destination'])): ?>
       <div id="main-bottom">
 
-          <div class="dropdown is-up" id="destination-chooser">
+          <div class="dropdown is-up is-right" id="destination-chooser">
             <div class="dropdown-trigger is-right is-mobile">
-              <button class="button" aria-haspopup="true">
-                <span class="icon"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
-              </button>
               <div class="selected-destination">
-                <?= $this->insert('components/destination-card', ['destination'=>$destination, 'tag'=>'div']) ?>
+                <? if(isset($destination['user']['photo'])): ?>
+                  <img src="<?= e($destination['user']['photo']) ?>" width="40">
+                <? else: ?>
+                  <img src="/assets/no-profile-photo.png" width="40">
+                <? endif ?>
               </div>
             </div>
-            <div class="dropdown-menu" id="dropdown-<?= md5('') ?>">
+            <div class="dropdown-menu">
               <div class="dropdown-content">
                 <? foreach($_SESSION['micropub']['config']['destination'] as $dest): ?>
-                  <?= $this->insert('components/destination-card', ['destination'=>$dest, 'tag'=>'a', 'href'=>'#']) ?>
+                  <?= $this->insert('components/destination-card', ['destination'=>$dest, 'selected' => $dest['uid']==$destination['uid'], 'tag'=>'a', 'href'=>'#']) ?>
                 <? endforeach; ?>
               </div>
             </div>
@@ -465,7 +466,9 @@ $(function(){
   $("#destination-chooser .dropdown-content a").click(function(e){
     e.preventDefault();
     $("#destination-uid").val($(this).data('destination'));
-    $("#destination-chooser .selected-destination").html($(this).html());
+    $("#destination-chooser .selected-destination img").attr("src", $(this).find("img").attr("src"));
+    $("#destination-chooser .dropdown-item").removeClass("selected");
+    $('#destination-chooser .dropdown-item[data-destination="'+$(this).data('destination')+'"]').addClass("selected");
     $(this).parents(".dropdown").removeClass("is-active");
   });
 

@@ -136,9 +136,6 @@ body {
 #main-bottom .dropdown {
   float: right;
 }
-#main-bottom .dropdown-trigger {
-  width: 240px;
-}
 #main-bottom .dropdown-trigger button {
   float: right;
   margin-right: 6px;
@@ -146,8 +143,11 @@ body {
 #main-bottom .dropdown-trigger .dropdown-item {
   padding: 0;
 }
+#main-bottom .dropdown-item.selected {
+  background: #ffffdd;
+}
 
-.destination-card img {
+.destination-card img, #main-bottom .dropdown-trigger .selected-destination img {
   width: 40px;
   border-radius: 20px;
   border: 1px #e6e6e6 solid;

@@ -1,4 +1,4 @@
-                <<?= $tag . ' ' . (isset($href) ? ' href="'.$href.'"' : '') ?> class="dropdown-item" data-destination="<?= e($destination['uid']) ?>">
+                <<?= $tag . ' ' . (isset($href) ? ' href="'.$href.'"' : '') ?> class="dropdown-item <?= $selected ? 'selected' : '' ?>" data-destination="<?= e($destination['uid']) ?>">
                   <span class="destination-card">
                     <? if(isset($destination['user'])): ?>
                       <? if(isset($destination['user']['photo'])): ?>
