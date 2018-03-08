@@ -56,6 +56,11 @@ html, body {
   display: block;
 }
 
+.entry .checkin .name {
+  padding: 4px;
+  font-weight: bold;
+}
+
 .entry > .name {
   padding: 0 8px;
   margin: 0;
@@ -219,6 +224,24 @@ html, body {
             <? endif ?>
           </div>
 
+          <? /* ************************************************ */ ?>
+          <? /* POST CONTENTS                                    */ ?>
+
+          <? /* checkins */ ?>
+          <? if(!empty($entry['checkin'])): ?>
+            <div class="content checkin">
+              <div class="name">
+                <i class="fas fa-map-marker-alt"></i>
+                <?= e($entry['checkin']['name'] ?? '(unknown)') ?>
+              </div>
+              <? if(!empty($entry['checkin']['latitude'])): ?>
+                <div class="map">
+                  <img src="https://atlas.p3k.io/map/img?marker[]=lat:<?= (float)$entry['checkin']['latitude'] ?>;lng:<?= (float)$entry['checkin']['longitude'] ?>;icon:small-blue-cutout&basemap=gray&width=558&height=220&zoom=16">
+                </div>
+              <? endif ?>
+            </div>
+          <? endif ?>
+
           <? if(!empty($entry['name'])): ?>
             <h2 class="name"><?= e($entry['name']) ?></h2>
           <? endif ?>
@@ -229,16 +252,19 @@ html, body {
             <div class="content text"><?= e($entry['content']['text']) ?></div>
           <? endif ?>
 
-          <? if(empty($entry['name']) && empty($entry['content']['html']) && empty($entry['content']['text'])): ?>
+          <? /* add padding if there is no name or content */ ?>
+          <? if(empty($entry['name']) && empty($entry['checkin']) && empty($entry['content']['html']) && empty($entry['content']['text'])): ?>
             <div class="content text"></div>
           <? endif ?>
 
+          <? /* audio player */ ?>
           <? if(!empty($entry['audio'])): ?>
             <? foreach($entry['audio'] as $audio): ?>
               <audio src="<?= e($audio) ?>" controls></audio>
             <? endforeach ?>
           <? endif ?>
 
+          <? /* video player */ ?>
           <? if(isset($entry['video'])): ?>
             <div class="videos">
               <? foreach($entry['video'] as $i=>$video): ?>
@@ -247,6 +273,7 @@ html, body {
               <div class="videoclear"></div>
             </div>
           <? elseif(isset($entry['photo'])): ?>
+            <? /* photos */ ?>
             <div class="photos">
               <? if(count($entry['photo']) > 1): ?>
                 <div class="multi-photo photos-<?= count($entry['photo']) ?>">
@@ -263,6 +290,8 @@ html, body {
               <div class="photoclear"></div>
             </div>
           <? endif ?>
+
+          <? /* ************************************************ */ ?>
 
           <div class="meta">
             <? if(!empty($entry['published'])): ?>
