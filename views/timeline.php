@@ -71,7 +71,35 @@ html, body {
 .entry .content {
   padding: 8px;
   margin-bottom: 0;
+
+  max-height: 400px;
+  overflow: hidden;
+  position: relative;
 }
+
+.entry .content .read-more {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding-top: 60px;
+  padding-bottom: 4px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.86) 85%, rgba(255,255,255,1) 100%);
+}
+.entry .content .read-more a {
+  display: inline-block;
+  background-color: rgba(255,255,255,0.9);
+  padding: 4px;
+  width: 100%;
+  border-top: 1px #eee solid;
+  border-bottom: 1px #eee solid;
+}
+.entry .content .read-more a:hover {
+
+}
+
 .entry .content.text {
   white-space: pre-wrap;
 }
@@ -247,9 +275,15 @@ html, body {
           <? endif ?>
 
           <? if(!empty($entry['content']['html'])): ?>
-            <div class="content html"><?= $entry['content']['html'] ?></div>
+            <div class="content html">
+              <?= $entry['content']['html'] ?>
+              <div class="read-more hidden"><a href="#" class="">Read More</a></div>
+            </div>
           <? elseif(!empty($entry['content']['text'])): ?>
-            <div class="content text"><?= e($entry['content']['text']) ?></div>
+            <div class="content text">
+              <?= e($entry['content']['text']) ?>
+              <div class="read-more hidden"><a href="#" class="">Read More</a></div>
+            </div>
           <? endif ?>
 
           <? /* add padding if there is no name or content */ ?>
@@ -386,6 +420,17 @@ function addResponseUrl(i, url) {
 }
 
 $(function(){
+
+  $(".content.html").each(function(i,content){
+    if($(content).height() >= 384) {
+      $(content).find(".read-more").removeClass("hidden");
+    }
+  });
+  $(".read-more a").click(function(e){
+    e.preventDefault();
+    $(this).parents(".content.html").css('max-height', 'none');
+    $(this).parent().remove();
+  });
 
   $(".dropdown-trigger").click(function(){
     $(this).parents().toggleClass("is-active");
