@@ -66,10 +66,9 @@ class Controller {
     $this->requireLogin();
     $body = $request->getParsedBody();
 
-    $r = micropub_post($_SESSION['micropub']['endpoint'], $_SESSION['token']['access_token'], [
-      'type' => ['h-entry'],
-      'properties' => $body
-    ]);
+    $params = array_merge(['h' => 'entry'], $body);
+
+    $r = micropub_post_form($_SESSION['micropub']['endpoint'], $_SESSION['token']['access_token'], $params);
 
     $location = false;
     if(isset($r['headers']['Location'])) {
@@ -79,7 +78,8 @@ class Controller {
     // $location = 'http://example.com/foo';
 
     $response->getBody()->write(json_encode([
-      'location' => $location
+      'location' => $location,
+      'response' => $r
     ]));
     return $response->withHeader('Content-type', 'application/json');
   }
@@ -179,11 +179,22 @@ class Controller {
       $entries = $data['items'] ?? [];
       $paging = $data['paging'] ?? [];
 
+      $destination = false;
+
+      if(isset($channel['destination']) && isset($_SESSION['micropub']['config']['destination'])) {
+        foreach($_SESSION['micropub']['config']['destination'] as $dest) {
+          if($dest['uid'] == $channel['destination']) {
+            $destination = $dest;
+          }
+        }
+      }
+
       $response->getBody()->write(view('timeline', [
         'title' => 'Monocle',
         'channel' => $channel,
         'entries' => $entries,
         'paging' => $paging,
+        'destination' => $destination,
       ]));
     }
 

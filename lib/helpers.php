@@ -76,6 +76,18 @@ function micropub_post($endpoint, $token, $params=[]) {
   return http_client()->post($endpoint, json_encode($params), $headers);
 }
 
+function micropub_post_form($endpoint, $token, $params=[]) {
+  $headers = [
+    'Accept: application/json',
+    'Authorization: Bearer '.$token,
+  ];
+
+  $params = http_build_query($params);
+  $params = preg_replace('/%5B[0-9]+%5D/', '%5B%5D', $params);
+
+  return http_client()->post($endpoint, $params, $headers);
+}
+
 function microsub_get($endpoint, $token, $action, $params=[]) {
   $headers = [
     'Accept: application/json',

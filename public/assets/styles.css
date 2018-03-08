@@ -82,6 +82,7 @@ body {
 #main-top {
   z-index: 2;
   background: white;
+  border-bottom: 1px #e6e6e6 solid;
   position: fixed;
   width: 100vw;
   padding: .75rem;
@@ -100,7 +101,9 @@ body {
 
 #main-container {
   padding-top: 60px;
+  padding-bottom: 50px;
 }
+
 @media(min-width: 800px) {
   #main-container {
     margin-left: 240px;
@@ -119,6 +122,35 @@ body {
     display: none;
   }
 }
+
+#main-bottom {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  background: white;
+  padding: 6px 16px;
+  border-top: 1px #e6e6e6 solid;
+}
+
+
+.destination-card {
+  float: right;
+}
+.destination-card img {
+  width: 40px;
+  border-radius: 20px;
+  border: 1px #e6e6e6 solid;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.destination-card .name {
+  font-size: 12pt;
+  line-height: 1.2;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 
 .nav-trigger {
   position: absolute;

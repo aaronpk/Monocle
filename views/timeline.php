@@ -402,18 +402,43 @@ html, body {
 
     </div></div>
 
-    <!-- TODO: fixed bottom bar showing current account context -->
-    <div id="main-bottom">
-    </div>
+    <? if($destination): ?>
+      <div id="main-bottom">
+        <div class="destination-card">
+          <? if(isset($destination['user'])): ?>
+            <? if(isset($destination['user']['photo'])): ?>
+              <img src="<?= e($destination['user']['photo']) ?>" width="40">
+            <? endif ?>
+            <? if(isset($destination['user']['url'])): ?>
+              <a href="<?= e($destination['user']['url']) ?>" class="name"><?= e($destination['user']['name']) ?></a>
+            <? else: ?>
+              <span class="name"><?= e($destination['user']['name']) ?></span>
+            <? endif ?>
+          <? else: ?>
+            <span class="name"><?= e($destination['name']) ?></span>
+          <? endif ?>
+          <div style="clear:both;"></div>
+        </div>
+      </div>
+    <? endif ?>
+
   </div>
 </div>
 
 <input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?? '' ?>">
 <input type="hidden" id="channel-uid" value="<?= $channel['uid'] ?>">
+<input type="hidden" id="destination-uid" value="<?= e($destination['uid'] ?? '') ?>">
 
 <script>
 function addResponseUrl(i, url) {
   $(".entry[data-entry='"+i+"'] .action-responses").append('<div><a href="'+url+'">'+url+'</a></div>');
+}
+
+function add_destination(params) {
+  if($("#destination-uid").val()) {
+    params['mp-destination'] = $("#destination-uid").val();
+  }
+  return params;
 }
 
 $(function(){
@@ -440,9 +465,9 @@ $(function(){
     switch($(this).data("action")) {
       case "favorite":
         btn.addClass("is-loading");
-        $.post("/micropub", {
+        $.post("/micropub", add_destination({
           "like-of": [$(this).parents(".actions").data("url")]
-        }, function(response){
+        }), function(response){
           btn.removeClass("is-loading");
           if(response.location) {
             addResponseUrl(btn.parents(".entry").data("entry"), response.location);
@@ -451,9 +476,9 @@ $(function(){
         break;
       case "repost":
         btn.addClass("is-loading");
-        $.post("/micropub", {
+        $.post("/micropub", add_destination({
           "repost-of": [$(this).parents(".actions").data("url")]
-        }, function(response){
+        }), function(response){
           btn.removeClass("is-loading");
           if(response.location) {
             addResponseUrl(btn.parents(".entry").data("entry"), response.location);
@@ -489,10 +514,10 @@ $(function(){
 
     var btn = $(this);
     btn.addClass("is-loading");
-    $.post("/micropub", {
+    $.post("/micropub", add_destination({
       "in-reply-to": [$(this).parents(".actions").data("url")],
       "content": [$(this).parents(".actions").find(".new-reply textarea").val()]
-    }, function(response){
+    }), function(response){
       btn.removeClass("is-loading");
       if(response.location) {
         btn.parents(".actions").find(".new-reply textarea").val("");
