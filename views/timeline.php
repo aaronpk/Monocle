@@ -103,10 +103,10 @@ html, body {
 .entry .content.text {
   white-space: pre-wrap;
 }
-.entry p:first-child {
+.entry p:first-of-type {
   margin-top: 0;
 }
-.entry p:last-child {
+.entry p:last-of-type {
   margin-bottom: 0;
 }
 .entry .content img {
