@@ -199,6 +199,13 @@ html, body {
   text-align: right;
 }
 
+#main-bottom .new-post-button a, .action-buttons a, .action-buttons .dropdown-trigger button {
+  color: #888;
+}
+#main-bottom .new-post-button a:hover, .action-buttons a:hover, .action-buttons .dropdown-trigger button:hover {
+  color: #444;
+}
+
 </style>
 
 <div id="window">
@@ -383,7 +390,7 @@ html, body {
               </div>
 
               <?php if(isset($entry['url'])): ?>
-                <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-thumbs-up"></i></span></a>
+                <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-star"></i></span></a>
                 <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
                 <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
               <?php endif ?>
