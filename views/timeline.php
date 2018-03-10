@@ -389,7 +389,7 @@ html, body {
                 </div>
               </div>
 
-              <?php if(isset($entry['url'])): ?>
+              <?php if(isset($entry['url']) && $responses_enabled): ?>
                 <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-star"></i></span></a>
                 <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
                 <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
@@ -417,9 +417,10 @@ html, body {
 
     </div></div>
 
-    <? if(isset($_SESSION['micropub']['config']['destination'])): ?>
+    <? if($responses_enabled): ?>
       <div id="main-bottom">
 
+          <? if(isset($_SESSION['micropub']['config']['destination'])): ?>
           <div class="dropdown is-up is-right" id="destination-chooser">
             <div class="dropdown-trigger is-right is-mobile">
               <div class="selected-destination">
@@ -438,12 +439,33 @@ html, body {
               </div>
             </div>
           </div>
+          <? endif ?>
 
       </div>
     <? endif ?>
 
   </div>
 </div>
+
+
+<div class="modal" id="new-post-modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">New Post</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+
+
+    </section>
+    <footer class="modal-card-foot">
+      <a href="#" class="button post is-primary">Post</a>
+    </footer>
+  </div>
+</div>
+
+
 
 <input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?? '' ?>">
 <input type="hidden" id="channel-uid" value="<?= $channel['uid'] ?>">

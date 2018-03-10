@@ -180,6 +180,7 @@ class Controller {
       $paging = $data['paging'] ?? [];
 
       $destination = false;
+      $responses_enabled = false;
 
       if(isset($_SESSION['micropub']['config']['destination'])) {
         foreach($_SESSION['micropub']['config']['destination'] as $dest) {
@@ -188,8 +189,12 @@ class Controller {
             || (isset($channel['destination']) && $dest['uid'] == $channel['destination'])
           ) {
             $destination = $dest;
+            $responses_enabled = true;
           }
         }
+      } else {
+        // Enable responses if no destinations are configured or channel destination is not "none"
+        $responses_enabled = !isset($channel['destination']) || $channel['destination'] != 'none';
       }
 
       $response->getBody()->write(view('timeline', [
@@ -198,6 +203,7 @@ class Controller {
         'entries' => $entries,
         'paging' => $paging,
         'destination' => $destination,
+        'responses_enabled' => $responses_enabled
       ]));
     }
 
