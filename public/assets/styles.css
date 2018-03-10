@@ -104,33 +104,22 @@ body {
   padding-bottom: 50px;
 }
 
-@media(min-width: 800px) {
-  #main-container {
-    margin-left: 240px;
-  }
-  #main-top h2.title {
-    margin-left: 200px;
-  }
-  main {
-    padding-left: 240px;
-  }
-  #side-menu {
-    left: 0;
-    z-index: 2;
-  }
-  #nav-trigger, #nav-trigger-label {
-    display: none;
-  }
-}
-
 #main-bottom {
   position: fixed;
   bottom: 0;
   right: 0;
-  width: 100%;
+  left: 0;
   background: white;
   padding: 6px 16px;
   border-top: 1px #e6e6e6 solid;
+}
+
+#main-bottom .new-post-button {
+  float: left;
+  font-size: 36px;
+  line-height: 0;
+  padding-top: 8px;
+  margin-left: 6px;
 }
 
 #main-bottom .dropdown {
@@ -147,7 +136,33 @@ body {
   background: #ffffdd;
 }
 
-.destination-card img, #main-bottom .dropdown-trigger .selected-destination img {
+
+@media(min-width: 800px) {
+  #main-container {
+    margin-left: 240px;
+  }
+  #main-bottom {
+    left: 240px;
+  }
+  #main-top h2.title {
+    margin-left: 200px;
+  }
+  main {
+    padding-left: 240px;
+  }
+  #side-menu {
+    left: 0;
+    z-index: 2;
+  }
+  #nav-trigger, #nav-trigger-label {
+    display: none;
+  }
+}
+
+
+.destination-card img,
+#main-bottom .dropdown-trigger .selected-destination img,
+#new-post-modal .modal-card-title img {
   width: 40px;
   border-radius: 20px;
   border: 1px #e6e6e6 solid;

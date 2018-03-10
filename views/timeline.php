@@ -199,11 +199,25 @@ html, body {
   text-align: right;
 }
 
-#main-bottom .new-post-button a, .action-buttons a, .action-buttons .dropdown-trigger button {
+#main-bottom .new-post-button a, .action-buttons a.button, .action-buttons .dropdown-trigger button {
   color: #888;
 }
-#main-bottom .new-post-button a:hover, .action-buttons a:hover, .action-buttons .dropdown-trigger button:hover {
+#main-bottom .new-post-button a:hover, .action-buttons a.button:hover, .action-buttons .dropdown-trigger button:hover {
   color: #444;
+}
+
+.action-buttons .dropdown-item {
+  text-align: left;
+}
+.action-buttons .dropdown-item.disabled {
+  color: #eee;
+}
+.action-buttons .dropdown-item.disabled:hover {
+  background: white;
+}
+
+#new-post-modal .modal-card-title span {
+  vertical-align: middle;
 }
 
 </style>
@@ -385,6 +399,9 @@ html, body {
                 <div class="dropdown-menu" id="dropdown-<?= md5($entry['_id']) ?>" role="menu">
                   <div class="dropdown-content">
                     <a class="dropdown-item" href="#" data-action="remove">Remove from Channel</a>
+                    <a class="dropdown-item disabled" href="#" data-action="">Mute this Person</a>
+                    <a class="dropdown-item disabled" href="#" data-action="">Block this Person</a>
+                    <a class="dropdown-item disabled" href="#" data-action="">Unfollow this Source</a>
                   </div>
                 </div>
               </div>
@@ -420,6 +437,10 @@ html, body {
     <? if($responses_enabled): ?>
       <div id="main-bottom">
 
+          <div class="new-post-button">
+            <a href="#"><span class="icon"><i class="fas fa-pen-square"></i></span></a>
+          </div>
+
           <? if(isset($_SESSION['micropub']['config']['destination'])): ?>
           <div class="dropdown is-up is-right" id="destination-chooser">
             <div class="dropdown-trigger is-right is-mobile">
@@ -452,11 +473,12 @@ html, body {
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">New Post</p>
+      <p class="modal-card-title"><img src="" width="40"> <span>New Post</span></p>
       <button class="delete" aria-label="close"></button>
     </header>
     <section class="modal-card-body">
 
+      <textarea class="textarea" rows="3" id="new-post-content"></textarea>
 
     </section>
     <footer class="modal-card-foot">
@@ -484,6 +506,29 @@ function add_destination(params) {
 }
 
 $(function(){
+
+  $(".new-post-button a").click(function(){
+    $("#new-post-modal .modal-card-title img").attr("src", $(".selected-destination img").attr("src"));
+    $("#new-post-content").val('');
+    $("#new-post-content").removeClass('is-danger');
+    $('#new-post-modal').addClass('is-active');
+  });
+
+  $("#new-post-modal a.post").click(function(){
+    var btn = $(this);
+    btn.addClass('is-loading');
+    $.post("/micropub", add_destination({
+      "content": $("#new-post-content").val()
+    }), function(response){
+      btn.removeClass('is-loading');
+      if(response.location) {
+        $("#new-post-content").removeClass('is-danger');
+        $("#new-post-modal").removeClass('is-active');
+      } else {
+        $("#new-post-content").addClass('is-danger');
+      }
+    });
+  });
 
   $(".content.html").each(function(i,content){
     if($(content).height() >= 384) {
@@ -517,7 +562,7 @@ $(function(){
       case "favorite":
         btn.addClass("is-loading");
         $.post("/micropub", add_destination({
-          "like-of": [$(this).parents(".actions").data("url")]
+          "like-of": $(this).parents(".actions").data("url")
         }), function(response){
           btn.removeClass("is-loading");
           if(response.location) {
@@ -528,7 +573,7 @@ $(function(){
       case "repost":
         btn.addClass("is-loading");
         $.post("/micropub", add_destination({
-          "repost-of": [$(this).parents(".actions").data("url")]
+          "repost-of": $(this).parents(".actions").data("url")
         }), function(response){
           btn.removeClass("is-loading");
           if(response.location) {
@@ -566,8 +611,8 @@ $(function(){
     var btn = $(this);
     btn.addClass("is-loading");
     $.post("/micropub", add_destination({
-      "in-reply-to": [$(this).parents(".actions").data("url")],
-      "content": [$(this).parents(".actions").find(".new-reply textarea").val()]
+      "in-reply-to": $(this).parents(".actions").data("url"),
+      "content": $(this).parents(".actions").find(".new-reply textarea").val()
     }), function(response){
       btn.removeClass("is-loading");
       if(response.location) {
