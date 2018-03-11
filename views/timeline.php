@@ -288,7 +288,8 @@ html, body {
               </span>
               liked
               <? if(count($entry['like-of']) == 1): ?>
-                <a href="<?= e($entry['like-of'][0]) ?>">a post</a>
+                <a href="<?= e($entry['like-of'][0]) ?>">a post
+                on <?= parse_url($entry['like-of'][0], PHP_URL_HOST) ?></a>
               <? else: ?>
                 <? foreach($entry['like-of'] as $i=>$l): ?>
                   <?= $i == count($entry['like-of']) - 1 ? 'and' : '' ?>
