@@ -561,7 +561,7 @@ $(function(){
   });
 
   $(".dropdown-trigger").click(function(){
-    $(this).parents().toggleClass("is-active");
+    $(this).parents(".dropdown").toggleClass("is-active");
   });
 
   $("#destination-chooser .dropdown-content a").click(function(e){
@@ -619,6 +619,7 @@ $(function(){
       case "debug":
         $("#source-modal pre").html($(this).parents(".entry").find(".source").html());
         $("#source-modal").addClass("is-active");
+        $(this).parents(".dropdown").removeClass("is-active");
         break;
       default:
         console.log("Unknown action");
