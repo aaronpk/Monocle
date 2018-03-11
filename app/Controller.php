@@ -30,6 +30,7 @@ class Controller {
     \p3k\session_setup();
 
     if(isset($_SESSION['token'])) {
+      // Logged-in home page
 
       if(!isset($_SESSION['channels'])) {
         $r = $this->_reloadChannels();
@@ -45,9 +46,43 @@ class Controller {
         'title' => 'Monocle',
       ]));
     } else {
-      $response->getBody()->write(view('index', [
-        'title' => 'Monocle',
-      ]));
+      // Logged out. Check if the hostname corresponds to any of the public hosted channels
+
+      if(isset(Config::$public[$_SERVER['SERVER_NAME']])) {
+        $public = Config::$public[$_SERVER['SERVER_NAME']];
+
+        $params = $request->getQueryParams();
+
+        $q = ['channel'=>$public['microsub']['channel']];
+        if(isset($params['after']))
+          $q['after'] = $params['after'];
+
+        $cacheKey = md5($public['microsub']['endpoint'].'::'.http_build_query($q));
+        $cacheFile = 'cache/'.$cacheKey.'.json';
+        if(file_exists($cacheFile) && filemtime($cacheFile) >= time() - 300) {
+          $data = json_decode(file_get_contents($cacheFile), true);
+        } else {
+          $data = microsub_get($public['microsub']['endpoint'], $public['microsub']['access_token'], 'timeline', $q);
+          $data = json_decode($data['body'], true);
+          file_put_contents($cacheFile, json_encode($data));
+        }
+
+        $entries = $data['items'] ?? [];
+        $paging = $data['paging'] ?? [];
+
+        $response->getBody()->write(view('public_timeline', [
+          'title' => $public['title'],
+          'channel' => [],
+          'entries' => $entries,
+          'paging' => $paging,
+          'responses_enabled' => false
+        ]));
+
+      } else {
+        $response->getBody()->write(view('index', [
+          'title' => 'Monocle',
+        ]));
+      }
     }
     return $response;
   }
