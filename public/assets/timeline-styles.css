@@ -1,0 +1,240 @@
+html, body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #FAFAFA;
+}
+
+
+.entry {
+  margin-bottom: 12px;
+  border: 1px #E6E6E6 solid;
+  border-radius: 4px;
+  background: #fff;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.entry.unread {
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(255,204,0,1);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(255,204,0,1);
+  box-shadow: 0px 0px 10px 0px rgba(255,204,0,1);
+}
+
+.entry .author {
+  padding: 6px 8px 0 8px;
+}
+.entry .author img {
+  width: 40px;
+  border-radius: 20px;
+  border: 1px #e6e6e6 solid;
+  vertical-align: middle;
+}
+.entry .author a {
+  text-decoration: none;
+}
+.entry .author img {
+  margin-left: 6px;
+}
+.entry .author .author-name {
+  font-size: 10pt;
+  line-height: 1.2;
+  display: inline-block;
+  vertical-align: middle;
+}
+.entry .author .author-name .name {
+  display: block;
+  font-weight: bold;
+}
+.entry .author .author-name .url {
+  display: block;
+}
+
+.entry.like-of .author {
+  padding: 0;
+}
+.entry.like-of .author img {
+  width: 22px;
+  border-radius: 11px;
+  margin-left: 0;
+}
+
+.entry .checkin .name {
+  padding: 4px;
+  font-weight: bold;
+}
+
+.entry > .name {
+  padding: 0 8px;
+  margin: 0;
+  margin-top: 12px;
+  font-size: 16pt;
+}
+
+.entry .content {
+  padding: 8px;
+  margin-bottom: 0;
+
+  max-height: 400px;
+  overflow: hidden;
+  position: relative;
+}
+
+.entry .content .read-more {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding-top: 60px;
+  padding-bottom: 4px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.86) 85%, rgba(255,255,255,1) 100%);
+}
+.entry .content .read-more a {
+  display: inline-block;
+  background-color: rgba(255,255,255,0.9);
+  padding: 4px;
+  width: 100%;
+  border-top: 1px #eee solid;
+  border-bottom: 1px #eee solid;
+}
+.entry .content .read-more a:hover {
+
+}
+
+.entry .content.text {
+  white-space: pre-wrap;
+}
+.entry p:first-of-type {
+  margin-top: 0;
+}
+.entry p:last-of-type {
+  margin-bottom: 0;
+}
+.entry .content img {
+  max-width: 100%;
+}
+.entry .content blockquote {
+  border-left: 4px #e6e6e6 solid;
+  margin-left: 20px;
+  padding-left: 8px;
+}
+
+.entry audio {
+  width: 100%;
+}
+
+.entry .photo, .entry .video {
+  width: 100%;
+}
+
+.entry .photos {
+  margin-bottom: 6px;
+}
+
+.multi-photo .photo {
+  position: relative;
+  overflow: hidden;
+  float: left;
+
+  /* This positions and sizes the image (background-image) within the grid container */
+  background-size: cover;
+  background-position: 50% 50%;
+
+  /* for multi-photo posts with 4 or more photos, use this */
+  width: 50%;
+  height: 240px;
+}
+.multi-photo .photo img.post-img {
+  /* hide the img tag because the image is shown by the background image */
+  display: none;
+}
+.multi-photo-clear {
+  clear: both;
+}
+/* 2-up multi-photos use this layout */
+.multi-photo.photos-2 .photo {
+  width: 50%;
+  height: 300px;
+}
+/* 3-up multi-photos use this layout */
+.multi-photo.photos-3 .photo:nth-child(1) {
+  width: 65%;
+  height: 400px;
+}
+.multi-photo.photos-3 .photo:nth-child(2),
+.multi-photo.photos-3 .photo:nth-child(3) {
+  width: 35%;
+  height: 200px;
+}
+
+
+.entry .meta {
+  padding: 0 8px 8px 8px;
+  color: #aaa;
+  font-size: 9pt;
+}
+.entry .meta a {
+  color: #aaa;
+  text-decoration: none;
+}
+.entry .syndication {
+  padding-left: 0.5em;
+}
+.entry .syndication a {
+  padding-left: 0.5em;
+}
+
+.entry .context {
+  padding: 8px;
+  background-color: #f3f3f3;
+}
+
+.entry .actions {
+  padding: 8px;
+  background-color: #f3f3f3;
+}
+.entry .actions .action-responses > div {
+  margin-top: 12px;
+}
+.entry .action-buttons {
+  text-align: right;
+}
+
+.entry.like-of .actions {
+  padding: 0;
+  background-color: transparent;
+  float: right;
+  margin-right: 6px;
+}
+.entry.like-of .dropdown-trigger button {
+  font-size: 0.6em;
+}
+
+#main-bottom .new-post-button a, .action-buttons a.button, .action-buttons .dropdown-trigger button {
+  color: #888;
+}
+#main-bottom .new-post-button a:hover, .action-buttons a.button:hover, .action-buttons .dropdown-trigger button:hover {
+  color: #444;
+}
+
+.action-buttons .dropdown-item {
+  text-align: left;
+}
+.action-buttons .dropdown-item.disabled {
+  color: #eee;
+}
+.action-buttons .dropdown-item.disabled:hover {
+  background: white;
+}
+
+#new-post-modal .modal-card-title span {
+  vertical-align: middle;
+}
+
+#source-modal pre {
+  font-size: 11px;
+}
