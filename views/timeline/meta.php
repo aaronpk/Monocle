@@ -2,21 +2,25 @@
             <? if(!empty($entry['category'])): ?>
               <div class="categories">
                 <? foreach($entry['category'] as $tag): ?>
-                  <span class="category"><?= '#'.trim($tag,'#') ?></span>
+                  <span class="category">#<span class="p-category"><?= trim($tag,'#') ?></span></span>
                 <? endforeach ?>
               </div>
             <? endif ?>
 
             <? if(!empty($entry['published'])): ?>
               <? if(!empty($entry['url'])): ?>
-                <a href="<?= e($entry['url']) ?>">
-                  <?= display_date('F j, Y g:ia P', $entry['published']) ?>
+                <a href="<?= e($entry['url']) ?>" class="u-url">
+                  <time class="dt-published" datetime="<?= display_date('c', $entry['published']) ?>">
+                    <?= display_date('F j, Y g:ia P', $entry['published']) ?>
+                  </time>
                 </a>
               <? else: ?>
-                <?= display_date('F j, Y g:ia P', $entry['published']) ?>
+                <time class="dt-published" datetime="<?= display_date('c', $entry['published']) ?>">
+                  <?= display_date('F j, Y g:ia P', $entry['published']) ?>
+                </time>
               <? endif ?>
             <? elseif(!empty($entry['url'])): ?>
-              <a href="<?= e($entry['url']) ?>">
+              <a href="<?= e($entry['url']) ?>" class="u-url">
                 <?= e(\p3k\url\display_url($entry['url'])) ?>
               </a>
             <? endif ?>
@@ -33,7 +37,7 @@
                   $icon = 'fab fa-github';
                 else
                   $icon = 'fas fa-link';
-                echo '<a href="'.$syn.'"><i class="'.$icon.'"></i></a> ';
+                echo '<a href="'.$syn.'" class="u-syndication"><i class="'.$icon.'"></i></a> ';
               endforeach
               ?>
               </span>
