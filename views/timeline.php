@@ -220,6 +220,10 @@ html, body {
   vertical-align: middle;
 }
 
+#source-modal pre {
+  font-size: 11px;
+}
+
 </style>
 
 <div id="window">
@@ -399,6 +403,7 @@ html, body {
                 <div class="dropdown-menu" id="dropdown-<?= md5($entry['_id']) ?>" role="menu">
                   <div class="dropdown-content">
                     <a class="dropdown-item" href="#" data-action="remove">Remove from Channel</a>
+                    <a class="dropdown-item" href="#" data-action="debug">Debug</a>
                     <a class="dropdown-item disabled" href="#" data-action="">Mute this Person</a>
                     <a class="dropdown-item disabled" href="#" data-action="">Block this Person</a>
                     <a class="dropdown-item disabled" href="#" data-action="">Unfollow this Source</a>
@@ -423,6 +428,7 @@ html, body {
               </div>
             </div>
           </div>
+          <pre style="display: none;" class="source"><?= j($entry) ?></pre>
         </div>
       <? endforeach ?>
 
@@ -487,6 +493,19 @@ html, body {
   </div>
 </div>
 
+
+<div class="modal" id="source-modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title"><span>Source JSON</span></p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <pre></pre>
+    </section>
+  </div>
+</div>
 
 
 <input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?? '' ?>">
@@ -595,8 +614,11 @@ $(function(){
         }, function(response){
           btn.removeClass("is-loading");
           $('.entry[data-entry-id="'+response.entry+'"]').remove();
-          console.log(response);
         });
+        break;
+      case "debug":
+        $("#source-modal pre").html($(this).parents(".entry").find(".source").html());
+        $("#source-modal").addClass("is-active");
         break;
       default:
         console.log("Unknown action");
