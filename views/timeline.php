@@ -252,182 +252,27 @@ html, body {
         <div class="entry <?= isset($entry['_is_read']) && $entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
           data-is-read="<?= isset($entry['_is_read']) ? ($entry['_is_read'] ? 1 : 0) : 1 ?>">
 
-          <? if(!empty($entry['in-reply-to'])): ?>
-            <div class="context">
-              <? foreach($entry['in-reply-to'] as $r): ?>
-                <div class="in-reply-to"><i class="fas fa-reply"></i> <a href="<?= $r ?>"><?= e(\p3k\url\display_url($r)) ?></a></div>
-              <? endforeach ?>
-            </div>
-          <? endif ?>
+          <?= $this->insert('timeline/reply-context', ['entry' => $entry]) ?>
 
-          <div class="author">
-            <? if(!empty($entry['author']['name']) && !empty($entry['author']['photo']) && !empty($entry['author']['url'])): ?>
-              <img src="<?= e($entry['author']['photo']) ?>">
-              <div class="author-name">
-                <a href="<?= e($entry['author']['url']) ?>" class="name"><?= e($entry['author']['name']) ?></a>
-                <a href="<?= e($entry['author']['url']) ?>" class="url"><?= e(\p3k\url\display_url($entry['author']['url'])) ?></a>
-              </div>
-            <? elseif(!empty($entry['author']['url'])): ?>
-              <div class="author-name">
-                <a href="<?= e($entry['author']['url']) ?>" class="name"><?= e($entry['author']['name']) ?></a>
-                <a href="<?= e($entry['author']['url']) ?>" class="url"><?= e(\p3k\url\display_url($entry['author']['url'])) ?></a>
-              </div>
-            <? else: ?>
-
-            <? endif ?>
-          </div>
+          <?= $this->insert('timeline/author-card', ['entry' => $entry]) ?>
 
           <? /* ************************************************ */ ?>
           <? /* POST CONTENTS                                    */ ?>
 
-          <? /* checkins */ ?>
-          <? if(!empty($entry['checkin'])): ?>
-            <div class="content checkin">
-              <div class="name">
-                <i class="fas fa-map-marker-alt"></i>
-                <?= e($entry['checkin']['name'] ?? '(unknown)') ?>
-              </div>
-              <? if(!empty($entry['checkin']['latitude'])): ?>
-                <div class="map">
-                  <img src="https://atlas.p3k.io/map/img?marker[]=lat:<?= (float)$entry['checkin']['latitude'] ?>;lng:<?= (float)$entry['checkin']['longitude'] ?>;icon:small-blue-cutout&basemap=gray&width=558&height=220&zoom=16">
-                </div>
-              <? endif ?>
-            </div>
-          <? endif ?>
+          <?= $this->insert('timeline/checkin', ['entry' => $entry]) ?>
 
-          <? if(!empty($entry['name'])): ?>
-            <h2 class="name"><?= e($entry['name']) ?></h2>
-          <? endif ?>
+          <?= $this->insert('timeline/name-and-content', ['entry' => $entry]) ?>
 
-          <? if(!empty($entry['content']['html'])): ?>
-            <div class="content html">
-              <?= $entry['content']['html'] ?>
-              <div class="read-more hidden"><a href="#" class="">Read More</a></div>
-            </div>
-          <? elseif(!empty($entry['content']['text'])): ?>
-            <div class="content text"><?= e($entry['content']['text']) ?> <div class="read-more hidden"><a href="#" class="">Read More</a></div></div>
-          <? endif ?>
+          <?= $this->insert('timeline/audio', ['entry' => $entry]) ?>
 
-          <? /* add padding if there is no name or content */ ?>
-          <? if(empty($entry['name']) && empty($entry['checkin']) && empty($entry['content']['html']) && empty($entry['content']['text'])): ?>
-            <div class="content text"></div>
-          <? endif ?>
-
-          <? /* audio player */ ?>
-          <? if(!empty($entry['audio'])): ?>
-            <? foreach($entry['audio'] as $audio): ?>
-              <audio src="<?= e($audio) ?>" controls></audio>
-            <? endforeach ?>
-          <? endif ?>
-
-          <? /* video player */ ?>
-          <? if(isset($entry['video'])): ?>
-            <div class="videos">
-              <? foreach($entry['video'] as $i=>$video): ?>
-                <video src="<?= $video ?>" class="video" controls <?= isset($entry['photo'][$i]) ? 'poster="'.$entry['photo'][$i].'"' : '' ?>>
-              <? endforeach ?>
-              <div class="videoclear"></div>
-            </div>
-          <? elseif(isset($entry['photo'])): ?>
-            <? /* photos */ ?>
-            <div class="photos">
-              <? if(count($entry['photo']) > 1): ?>
-                <div class="multi-photo photos-<?= count($entry['photo']) ?>">
-                  <? foreach($entry['photo'] as $photo): ?>
-                    <a href="<?= $photo ?>" data-featherlight="<?= $photo ?>" class="photo" style="background-image:url(<?= $photo ?>);">
-                      <img src="<?= $photo ?>" class="post-img">
-                    </a>
-                  <? endforeach ?>
-                  <div class="multi-photo-clear"></div>
-                </div>
-              <? else: ?>
-                <img src="<?= $entry['photo'][0] ?>" class="photo">
-              <? endif ?>
-              <div class="photoclear"></div>
-            </div>
-          <? endif ?>
+          <?= $this->insert('timeline/photo-and-video', ['entry' => $entry]) ?>
 
           <? /* ************************************************ */ ?>
 
-          <div class="meta">
-            <? if(!empty($entry['category'])): ?>
-              <div class="categories">
-                <? foreach($entry['category'] as $tag): ?>
-                  <span class="category"><?= '#'.trim($tag,'#') ?></span>
-                <? endforeach ?>
-              </div>
-            <? endif ?>
+          <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
 
-            <? if(!empty($entry['published'])): ?>
-              <? if(!empty($entry['url'])): ?>
-                <a href="<?= e($entry['url']) ?>">
-                  <?= display_date('F j, Y g:ia P', $entry['published']) ?>
-                </a>
-              <? else: ?>
-                <?= display_date('F j, Y g:ia P', $entry['published']) ?>
-              <? endif ?>
-            <? elseif(!empty($entry['url'])): ?>
-              <a href="<?= e($entry['url']) ?>">
-                <?= e(\p3k\url\display_url($entry['url'])) ?>
-              </a>
-            <? endif ?>
-            <? if(!empty($entry['syndication'])): ?>
-              <span class="syndication">
-              <?
-              foreach($entry['syndication'] as $syn):
-                $host = parse_url($syn, PHP_URL_HOST);
-                if($host == 'twitter.com' || $host == 'www.twitter.com')
-                  $icon = 'fab fa-twitter';
-                elseif($host == 'facebook.com' || $host == 'www.facebook.com')
-                  $icon = 'fab fa-facebook';
-                elseif($host == 'github.com')
-                  $icon = 'fab fa-github';
-                else
-                  $icon = 'fas fa-link';
-                echo '<a href="'.$syn.'"><i class="'.$icon.'"></i></a> ';
-              endforeach
-              ?>
-              </span>
-            <? endif ?>
-          </div>
+          <?= $this->insert('timeline/actions', ['entry' => $entry, 'responses_enabled' => $responses_enabled]) ?>
 
-          <div class="actions" data-url="<?= e($entry['url']) ?>">
-            <div class="action-buttons">
-
-              <div class="dropdown">
-                <div class="dropdown-trigger">
-                  <button class="button is-rounded" aria-haspopup="true" aria-controls="dropdown-<?= md5($entry['_id']) ?>">
-                    <span class="icon"><i class="fas fa-ellipsis-h" aria-hidden="true"></i></span>
-                  </button>
-                </div>
-                <div class="dropdown-menu" id="dropdown-<?= md5($entry['_id']) ?>" role="menu">
-                  <div class="dropdown-content">
-                    <a class="dropdown-item" href="#" data-action="remove">Remove from Channel</a>
-                    <a class="dropdown-item" href="#" data-action="debug">Debug</a>
-                    <a class="dropdown-item disabled" href="#" data-action="">Mute this Person</a>
-                    <a class="dropdown-item disabled" href="#" data-action="">Block this Person</a>
-                    <a class="dropdown-item disabled" href="#" data-action="">Unfollow this Source</a>
-                  </div>
-                </div>
-              </div>
-
-              <?php if(isset($entry['url']) && $responses_enabled): ?>
-                <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-star"></i></span></a>
-                <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
-                <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
-              <?php endif ?>
-            </div>
-            <div class="action-responses">
-              <div class="new-reply hidden">
-                <textarea class="textarea" rows="2"></textarea>
-                <a style="font-size: 0.8em;" href="https://quill.p3k.io/new?reply=<?= urlencode($entry['url']) ?>" target="_blank">reply with quill</a>
-                <div class="control" style="margin-top: 6px; float: right;">
-                  <button class="button is-primary is-small post-reply">Reply</button>
-                </div>
-                <div style="clear:both;"></div>
-              </div>
-            </div>
-          </div>
           <pre style="display: none;" class="source"><?= j($entry) ?></pre>
         </div>
       <? endforeach ?>
