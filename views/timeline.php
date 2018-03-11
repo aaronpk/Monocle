@@ -56,6 +56,15 @@ html, body {
   display: block;
 }
 
+.entry.like-of .author {
+  padding: 0;
+}
+.entry.like-of .author img {
+  width: 22px;
+  border-radius: 11px;
+  margin-left: 0;
+}
+
 .entry .checkin .name {
   padding: 4px;
   font-weight: bold;
@@ -199,6 +208,16 @@ html, body {
   text-align: right;
 }
 
+.entry.like-of .actions {
+  padding: 0;
+  background-color: transparent;
+  float: right;
+  margin-right: 6px;
+}
+.entry.like-of .dropdown-trigger button {
+  font-size: 0.6em;
+}
+
 #main-bottom .new-post-button a, .action-buttons a.button, .action-buttons .dropdown-trigger button {
   color: #888;
 }
@@ -249,29 +268,59 @@ html, body {
     <div class="column"><div class="inner">
 
       <? foreach($entries as $i=>$entry): ?>
-        <div class="entry <?= isset($entry['_is_read']) && $entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
+        <div class="entry <?= isset($entry['like-of']) ? 'like-of' : '' ?> <?= isset($entry['_is_read']) && $entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
           data-is-read="<?= isset($entry['_is_read']) ? ($entry['_is_read'] ? 1 : 0) : 1 ?>">
 
-          <?= $this->insert('timeline/reply-context', ['entry' => $entry]) ?>
+          <? if(isset($entry['like-of'])): ?>
 
-          <?= $this->insert('timeline/author-card', ['entry' => $entry]) ?>
+            <div class="content">
+              <span class="author">
+                <? if(!empty($entry['author']['photo'])): ?>
+                  <img src="<?= e($entry['author']['photo']) ?>">
+                <? endif ?>
+                <? if(!empty($entry['author']['url'])): ?>
+                  <a href="<?= e($entry['author']['url']) ?>">
+                    <?= e($entry['author']['name'] ?? \p3k\url\display_url($entry['author']['url'])) ?>
+                  </a>
+                <? else: ?>
+                  someone
+                <? endif ?>
+              </span>
+              liked
+              <? if(count($entry['like-of']) == 1): ?>
+                <a href="<?= e($entry['like-of'][0]) ?>">a post</a>
+              <? else: ?>
+                <? foreach($entry['like-of'] as $i=>$l): ?>
+                  <?= $i == count($entry['like-of']) - 1 ? 'and' : '' ?>
+                  <a href="<?= e($l) ?>"><?= e(\p3k\url\display_url($l)) ?></a>
+                <? endforeach ?>
+              <? endif ?>
+            </div>
+            <?= $this->insert('timeline/actions', ['entry' => $entry, 'responses_enabled' => $responses_enabled]) ?>
+            <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
 
-          <? /* ************************************************ */ ?>
-          <? /* POST CONTENTS                                    */ ?>
+          <? else: ?>
+            <?= $this->insert('timeline/reply-context', ['entry' => $entry]) ?>
 
-          <?= $this->insert('timeline/checkin', ['entry' => $entry]) ?>
+            <?= $this->insert('timeline/author-card', ['entry' => $entry]) ?>
 
-          <?= $this->insert('timeline/name-and-content', ['entry' => $entry]) ?>
+            <? /* ************************************************ */ ?>
+            <? /* POST CONTENTS                                    */ ?>
 
-          <?= $this->insert('timeline/audio', ['entry' => $entry]) ?>
+            <?= $this->insert('timeline/checkin', ['entry' => $entry]) ?>
 
-          <?= $this->insert('timeline/photo-and-video', ['entry' => $entry]) ?>
+            <?= $this->insert('timeline/name-and-content', ['entry' => $entry]) ?>
 
-          <? /* ************************************************ */ ?>
+            <?= $this->insert('timeline/audio', ['entry' => $entry]) ?>
 
-          <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
+            <?= $this->insert('timeline/photo-and-video', ['entry' => $entry]) ?>
 
-          <?= $this->insert('timeline/actions', ['entry' => $entry, 'responses_enabled' => $responses_enabled]) ?>
+            <? /* ************************************************ */ ?>
+
+            <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
+
+            <?= $this->insert('timeline/actions', ['entry' => $entry, 'responses_enabled' => $responses_enabled]) ?>
+          <? endif ?>
 
           <pre style="display: none;" class="source"><?= j($entry) ?></pre>
         </div>
