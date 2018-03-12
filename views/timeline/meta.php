@@ -1,9 +1,9 @@
           <div class="meta">
             <? if(!empty($entry['category'])): ?>
               <div class="categories">
-                <? foreach($entry['category'] as $tag): ?>
+                <? foreach($entry['category'] as $tag): if(trim($tag)): ?>
                   <span class="category">#<span class="p-category"><?= trim($tag,'#') ?></span></span>
-                <? endforeach ?>
+                <? endif; endforeach ?>
               </div>
             <? endif ?>
 
