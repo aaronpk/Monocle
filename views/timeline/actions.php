@@ -1,4 +1,4 @@
-          <div class="actions" data-url="<?= e($entry['url']) ?>">
+          <div class="actions" data-url="<?= e($entry['url'] ?? '') ?>">
             <div class="action-buttons">
 
               <div class="dropdown">
