@@ -2,7 +2,11 @@
             <? if(!empty($entry['category'])): ?>
               <div class="categories">
                 <? foreach($entry['category'] as $tag): if(trim($tag)): ?>
-                  <span class="category">#<span class="p-category"><?= trim($tag,'#') ?></span></span>
+                  <? if(preg_match('~https?://~', $tag)): ?>
+                    <span class="category"><a href="<?= e($tag) ?>" class="u-category"><?= \p3k\url\display_url($tag) ?></a></span>
+                  <? else: ?>
+                    <span class="category">#<span class="p-category"><?= trim($tag,'#') ?></span></span>
+                  <? endif ?>
                 <? endif; endforeach ?>
               </div>
             <? endif ?>
