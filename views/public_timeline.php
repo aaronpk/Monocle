@@ -10,8 +10,7 @@
     <div class="column"><div class="inner">
 
       <? foreach($entries as $i=>$entry): ?>
-        <div class="entry h-entry <?= isset($entry['like-of']) ? 'like-of' : '' ?> <?= isset($entry['_is_read']) && $entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
-          data-is-read="<?= isset($entry['_is_read']) ? ($entry['_is_read'] ? 1 : 0) : 1 ?>">
+        <div class="entry h-entry <?= isset($entry['like-of']) ? 'like-of' : '' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>">
 
           <? if(isset($entry['like-of'])): ?>
 

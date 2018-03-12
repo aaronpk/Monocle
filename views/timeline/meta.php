@@ -9,7 +9,7 @@
 
             <? if(!empty($entry['published'])): ?>
               <? if(!empty($entry['url'])): ?>
-                <a href="<?= e($entry['url']) ?>" class="u-url">
+                <a href="<?= e($entry['url']) ?>" class="u-url u-uid">
                   <time class="dt-published" datetime="<?= display_date('c', $entry['published']) ?>">
                     <?= display_date('F j, Y g:ia P', $entry['published']) ?>
                   </time>
@@ -20,7 +20,7 @@
                 </time>
               <? endif ?>
             <? elseif(!empty($entry['url'])): ?>
-              <a href="<?= e($entry['url']) ?>" class="u-url">
+              <a href="<?= e($entry['url']) ?>" class="u-url u-uid">
                 <?= e(\p3k\url\display_url($entry['url'])) ?>
               </a>
             <? endif ?>
