@@ -203,6 +203,17 @@ html, body {
 .entry .action-buttons {
   text-align: right;
 }
+.entry .action-responses .counter {
+  vertical-align: middle;
+  display: inline-block;
+  font-size: 13px;
+  padding-right: 10px;
+  padding-top: 4px;
+}
+#new-post-modal .counter {
+  font-size: 15px;
+  padding-left: 6px;
+}
 
 .entry.like-of .actions {
   padding: 0;

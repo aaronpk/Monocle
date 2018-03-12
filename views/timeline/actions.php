@@ -29,6 +29,7 @@
                 <textarea class="textarea" rows="2"></textarea>
                 <a style="font-size: 0.8em;" href="https://quill.p3k.io/new?reply=<?= urlencode($entry['url']) ?>" target="_blank">reply with quill</a>
                 <div class="control" style="margin-top: 6px; float: right;">
+                  <span class="counter"></span>
                   <button class="button is-primary is-small post-reply">Reply</button>
                 </div>
                 <div style="clear:both;"></div>

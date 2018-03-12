@@ -119,6 +119,7 @@
     </section>
     <footer class="modal-card-foot">
       <a href="#" class="button post is-primary">Post</a>
+      <span class="counter"></span>
     </footer>
   </div>
 </div>
@@ -277,6 +278,16 @@ $(function(){
         btn.addClass("is-danger");
       }
     });
+  });
+
+  $('.new-reply textarea').on('keyup', function(){
+    var len = $(this).val().length;
+    $(this).parents('.new-reply').find('.counter').text(len);
+  });
+
+  $('#new-post-modal textarea').on('keyup', function(){
+    var len = $(this).val().length;
+    $('#new-post-modal').find('.counter').text(len);
   });
 
   $(".entry").click(function(){
