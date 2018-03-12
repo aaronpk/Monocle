@@ -19,6 +19,34 @@
             <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
 
           <? else: ?>
+
+            <? if(isset($entry['repost-of'])): ?>
+
+              <div class="repost context">
+                <a href="<?= e($entry['repost-of'][0]) ?>"><i class="fas fa-retweet"></i></a>
+                <? if(!empty($entry['author']['url'])): ?>
+                  <a href="<?= e($entry['author']['url']) ?>" class="u-url p-name">
+                    <?= e($entry['author']['name'] ?? \p3k\url\display_url($entry['author']['url'])) ?>
+                  </a>
+                <? elseif(!empty($entry['author']['name'])): ?>
+                  <?= e($entry['author']['name']) ?>
+                <? else: ?>
+                  someone
+                <? endif ?>
+                reposted
+              </div>
+
+              <?
+                /* overwrite $entry so that the reposted post is displayed instead */
+                if(isset($entry['refs'][$entry['repost-of'][0]])) {
+                  $_id = $entry['_id'];
+                  $entry = $entry['refs'][$entry['repost-of'][0]];
+                  $entry['_id'] = $_id;
+                }
+              ?>
+
+            <? endif ?>
+
             <?= $this->insert('timeline/reply-context', ['entry' => $entry]) ?>
 
             <?= $this->insert('timeline/author-card', ['entry' => $entry]) ?>
