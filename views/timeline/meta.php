@@ -1,4 +1,5 @@
           <div class="meta">
+            <? $empty = true; ?>
             <? if(!empty($entry['category'])): ?>
               <div class="categories">
                 <? foreach($entry['category'] as $tag): if(trim($tag)): ?>
@@ -9,6 +10,7 @@
                   <? endif ?>
                 <? endif; endforeach ?>
               </div>
+              <? $empty = false; ?>
             <? endif ?>
 
             <? if(!empty($entry['published'])): ?>
@@ -23,10 +25,12 @@
                   <?= display_date('F j, Y g:ia P', $entry['published']) ?>
                 </time>
               <? endif ?>
+              <? $empty = false; ?>
             <? elseif(!empty($entry['url'])): ?>
               <a href="<?= e($entry['url']) ?>" class="u-url u-uid">
                 <?= e(\p3k\url\display_url($entry['url'])) ?>
               </a>
+              <? $empty = false; ?>
             <? endif ?>
             <? if(!empty($entry['syndication'])): ?>
               <span class="syndication">
@@ -45,5 +49,9 @@
               endforeach
               ?>
               </span>
+              <? $empty = false; ?>
+            <? endif ?>
+            <? if($empty): ?>
+              &nbsp;
             <? endif ?>
           </div>
