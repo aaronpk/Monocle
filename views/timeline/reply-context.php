@@ -5,3 +5,10 @@
               <? endforeach ?>
             </div>
           <? endif ?>
+          <? if(!empty($entry['bookmark-of'])): ?>
+            <div class="context">
+              <? foreach($entry['bookmark-of'] as $r): ?>
+                <div class="bookmark-of"><i class="fas fa-bookmark"></i> <a href="<?= $r ?>" class="u-bookmark-of"><?= e(\p3k\url\display_url($r)) ?></a></div>
+              <? endforeach ?>
+            </div>
+          <? endif ?>
