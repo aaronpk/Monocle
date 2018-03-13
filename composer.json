@@ -3,11 +3,18 @@
         "league/route": "^3.0",
         "league/plates": "^3.3",
         "guzzlehttp/guzzle": "^6.3",
-        "indieauth/client": ">=0.3.2",
+        "indieauth/client": ">=0.4.0",
+        "mf2/mf2": ">=0.4.0-alpha2",
         "p3k/utils": "^1.1",
         "zendframework/zend-diactoros": "^1.7",
         "p3k/http": "^0.1.6"
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/aaronpk/php-mf2.git"
+        }
+    ],
     "autoload": {
       "psr-4": {
         "App\\": "app/"
