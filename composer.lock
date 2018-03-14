@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef83469fbe3bf9513fd778271656ca2d",
+    "content-hash": "97dfb4b9e45a58b168a4ff81b4a210b0",
     "packages": [
         {
             "name": "barnabywalters/mf-cleaner",
@@ -260,16 +260,16 @@
         },
         {
             "name": "indieauth/client",
-            "version": "0.4.0",
+            "version": "0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/indieweb/indieauth-client-php.git",
-                "reference": "f05273ed7b3dae94095e46a6a38b9d8a74512b94"
+                "reference": "3e47004ccfccddc5760639f4faf9ed5ceadb460e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/indieweb/indieauth-client-php/zipball/f05273ed7b3dae94095e46a6a38b9d8a74512b94",
-                "reference": "f05273ed7b3dae94095e46a6a38b9d8a74512b94",
+                "url": "https://api.github.com/repos/indieweb/indieauth-client-php/zipball/3e47004ccfccddc5760639f4faf9ed5ceadb460e",
+                "reference": "3e47004ccfccddc5760639f4faf9ed5ceadb460e",
                 "shasum": ""
             },
             "require": {
@@ -298,7 +298,7 @@
                 }
             ],
             "description": "IndieAuth Client Library",
-            "time": "2018-03-13T22:32:42+00:00"
+            "time": "2018-03-13T23:39:55+00:00"
         },
         {
             "name": "indieweb/link-rel-parser",
@@ -577,11 +577,17 @@
         },
         {
             "name": "mf2/mf2",
-            "version": "v0.4.0-alpha2",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/aaronpk/php-mf2.git",
-                "reference": "acd29b83c6a7d89f33e554795bd4d3615c60cd82"
+                "url": "https://github.com/indieweb/php-mf2.git",
+                "reference": "42ef6eb9777bffe654a70cbbc1dbd777a61c1445"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/indieweb/php-mf2/zipball/42ef6eb9777bffe654a70cbbc1dbd777a61c1445",
+                "reference": "42ef6eb9777bffe654a70cbbc1dbd777a61c1445",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
@@ -604,6 +610,7 @@
                     "Mf2/Parser.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "CC0-1.0"
             ],
@@ -621,7 +628,7 @@
                 "parser",
                 "semantic"
             ],
-            "time": "2018-03-12T19:59:49+00:00"
+            "time": "2018-03-13T23:33:15+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -905,9 +912,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "mf2/mf2": 15
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
