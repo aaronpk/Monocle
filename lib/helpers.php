@@ -25,8 +25,12 @@ function is_logged_in() {
 }
 
 function display_date($format, $date) {
-  $d = new DateTime($date);
-  return $d->format($format);
+  try {
+    $d = new DateTime($date);
+    return $d->format($format);
+  } catch(Exception $e) {
+    return false;
+  }
 }
 
 function login_required(&$response) {
