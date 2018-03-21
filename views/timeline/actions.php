@@ -24,15 +24,17 @@
                 <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
               <?php endif ?>
             </div>
-            <div class="action-responses">
-              <div class="new-reply hidden">
-                <textarea class="textarea" rows="2"></textarea>
-                <a style="font-size: 0.8em;" href="https://quill.p3k.io/new?reply=<?= urlencode($entry['url']) ?>" target="_blank">reply with quill</a>
-                <div class="control" style="margin-top: 6px; float: right;">
-                  <span class="counter"></span>
-                  <button class="button is-primary is-small post-reply">Reply</button>
+            <?php if(isset($entry['url']) && $responses_enabled): ?>
+              <div class="action-responses">
+                <div class="new-reply hidden">
+                  <textarea class="textarea" rows="2"></textarea>
+                  <a style="font-size: 0.8em;" href="https://quill.p3k.io/new?reply=<?= urlencode($entry['url']) ?>" target="_blank">reply with quill</a>
+                  <div class="control" style="margin-top: 6px; float: right;">
+                    <span class="counter"></span>
+                    <button class="button is-primary is-small post-reply">Reply</button>
+                  </div>
+                  <div style="clear:both;"></div>
                 </div>
-                <div style="clear:both;"></div>
               </div>
-            </div>
+            <?php endif ?>
           </div>
