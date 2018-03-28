@@ -87,8 +87,7 @@ function micropub_post_form($endpoint, $token, $params=[]) {
     'Authorization: Bearer '.$token,
   ];
 
-  $params = http_build_query($params);
-  $params = preg_replace('/%5B[0-9]+%5D/', '%5B%5D', $params);
+  $params = p3k\http_build_query($params);
 
   return http_client()->post($endpoint, $params, $headers);
 }
@@ -112,6 +111,8 @@ function microsub_post($endpoint, $token, $action, $params=[]) {
 
   $params['action'] = $action;
 
-  return http_client()->post($endpoint, http_build_query($params), $headers);
+  $params = p3k\http_build_query($params);
+
+  return http_client()->post($endpoint, $params, $headers);
 }
 
