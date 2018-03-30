@@ -190,6 +190,7 @@ class Controller {
 
     if(preg_match('/\/channel\/(.+)/', $request->getUri()->getPath(), $match)) {
       $uid = $match[1];
+      $uid = urldecode($uid);
 
       $channel = false;
       foreach($_SESSION['channels'] as $ch) {
@@ -200,7 +201,7 @@ class Controller {
       }
 
       if(!$channel) {
-        $response->getBody()->write(view('not_found'));
+        $response->getBody()->write('The channel "'.e($uid).'" was not found.');
         return $response->withStatus(404);
       }
 
