@@ -40,6 +40,8 @@
                     </form>
 
                 </div>
+
+                <p class="info" style="color: #888;">In order to sign in to Monocle, you'll need a <a href="https://indieweb.org/Microsub">Microsub</a> server.</p>
             </div>
         </div>
     </div>
