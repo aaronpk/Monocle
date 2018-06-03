@@ -54,7 +54,7 @@
     var elements = document.querySelectorAll("input[type=url]");
     Array.prototype.forEach.call(elements, function(el, i){
       el.addEventListener("blur", function(e){
-        if(!e.target.value.match(/^https?:/)) {
+        if(e.target.value.match(/^(?!https?:).+\..+/)) {
           e.target.value = "http://"+e.target.value;
         }
       });
