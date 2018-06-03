@@ -17,4 +17,13 @@ $(function(){
     e.preventDefault();
   });
 
+  /* add http:// to URL fields on blur */
+  $("input[type=url]").on("blur", function(){
+    if(!$(this).val().match(/^https?:/)) {
+      $(this).val("http://"+$(this).val());
+    }
+  });
+
 });
+
+
