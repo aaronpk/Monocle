@@ -43,14 +43,14 @@ class Controller {
             <li>Your website: <code><?= htmlspecialchars($_SESSION['token']['me']) ?></code></li>
           </ul>
           <p>The endpoint returned the following response.</p>
-          <pre>
-          <?php
+          <pre><?php
           ob_start();
-          print_r($r);
+          echo json_encode($r, JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES);
           $debug = ob_get_clean();
           echo htmlspecialchars($debug);
           ?>
           </pre>
+          <p><a href="/logout">Start Over</a></p>
           <?php
           die();
         }
