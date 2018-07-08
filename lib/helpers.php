@@ -41,7 +41,7 @@ function http_client() {
   static $http;
   if(!isset($http))
     $http = new \p3k\HTTP(Config::$useragent);
-  $http->set_timeout(10);
+  $http->set_timeout(20);
   return $http;
 }
 

@@ -64,12 +64,6 @@ class LoginController {
     $micropub = IndieAuth\Client::discoverMicropubEndpoint($token['me']);
     $microsub = IndieAuth\Client::discoverMicrosubEndpoint($token['me']);
 
-    if(!$micropub) {
-      $_SESSION['auth_error'] = 'missing_endpoint';
-      $_SESSION['auth_error_description'] = 'We didn\'t find a Micropub endpoint at your website';
-      return $response->withHeader('Location', '/login')->withStatus(302);
-    }
-
     if(!$microsub) {
       $_SESSION['auth_error'] = 'missing_endpoint';
       $_SESSION['auth_error_description'] = 'We didn\'t find a Microsub endpoint at your website';
@@ -80,8 +74,10 @@ class LoginController {
     $_SESSION['microsub'] = $microsub;
 
     // Fetch Micropub config
-    $config = get_micropub_config($micropub, $token);
-    $_SESSION['micropub'] = $config;
+    if($micropub) {
+      $config = get_micropub_config($micropub, $token);
+      $_SESSION['micropub'] = $config;
+    }
 
     return $response->withHeader('Location', '/')->withStatus(302);
   }

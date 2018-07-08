@@ -188,12 +188,18 @@ class Controller {
   public function micropub_refresh(ServerRequestInterface $request, ResponseInterface $response) {
     $this->requireLogin();
 
-    $config = get_micropub_config($_SESSION['micropub']['endpoint'], $_SESSION['token']);
-    $_SESSION['micropub'] = $config;
+    if(isset($_SESSION['micropub'])) {
+      $config = get_micropub_config($_SESSION['micropub']['endpoint'], $_SESSION['token']);
+      $_SESSION['micropub'] = $config;
 
-    $response->getBody()->write(json_encode([
-      'micropub' => $_SESSION['micropub']
-    ]));
+      $response->getBody()->write(json_encode([
+        'micropub' => $_SESSION['micropub']
+      ]));
+    } else {
+      $response->getBody()->write(json_encode([
+        'micropub' => null
+      ]));
+    }
     return $response->withHeader('Content-type', 'application/json');
   }
 
@@ -232,19 +238,21 @@ class Controller {
       $destination = false;
       $responses_enabled = false;
 
-      if(isset($_SESSION['micropub']['config']['destination'])) {
-        foreach($_SESSION['micropub']['config']['destination'] as $dest) {
-          if(
-            (!isset($channel['destination']) && $dest['uid'] == '')
-            || (isset($channel['destination']) && $dest['uid'] == $channel['destination'])
-          ) {
-            $destination = $dest;
-            $responses_enabled = true;
+      if(isset($_SESSION['micropub'])) {
+        if(isset($_SESSION['micropub']['config']['destination'])) {
+          foreach($_SESSION['micropub']['config']['destination'] as $dest) {
+            if(
+              (!isset($channel['destination']) && $dest['uid'] == '')
+              || (isset($channel['destination']) && $dest['uid'] == $channel['destination'])
+            ) {
+              $destination = $dest;
+              $responses_enabled = true;
+            }
           }
+        } else {
+          // Enable responses if no destinations are configured or channel destination is not "none"
+          $responses_enabled = !isset($channel['destination']) || $channel['destination'] != 'none';
         }
-      } else {
-        // Enable responses if no destinations are configured or channel destination is not "none"
-        $responses_enabled = !isset($channel['destination']) || $channel['destination'] != 'none';
       }
 
       $response->getBody()->write(view('timeline', [
