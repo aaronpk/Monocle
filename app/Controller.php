@@ -35,9 +35,23 @@ class Controller {
       if(!isset($_SESSION['channels'])) {
         $r = $this->_reloadChannels();
         if(!$r || $r['code'] != 200) {
-          echo '<pre>';
+          ?>
+          <h2>Error</h2>
+          <p>There was a problem trying to load the channels from your Microsub endpoint.</p>
+          <ul>
+            <li>Microsub endpoint: <code><?= htmlspecialchars($_SESSION['microsub']) ?></code></li>
+            <li>Your website: <code><?= htmlspecialchars($_SESSION['token']['me']) ?></code></li>
+          </ul>
+          <p>The endpoint returned the following response.</p>
+          <pre>
+          <?php
+          ob_start();
           print_r($r);
-          echo '</pre>';
+          $debug = ob_get_clean();
+          echo htmlspecialchars($debug);
+          ?>
+          </pre>
+          <?php
           die();
         }
       }
