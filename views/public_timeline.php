@@ -62,6 +62,8 @@
 
             <?= $this->insert('timeline/photo-and-video', ['entry' => $entry]) ?>
 
+            <?= $this->insert('timeline/quotation', ['entry' => $entry]) ?>
+
             <? /* ************************************************ */ ?>
 
             <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>

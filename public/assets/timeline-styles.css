@@ -171,6 +171,45 @@ html, body {
   height: 200px;
 }
 
+.entry .quotation {
+  padding: 8px;
+  margin-bottom: 0;
+}
+.entry .quotation-post {
+  border: 1px #ddd solid;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.entry .quotation-post .photo {
+  width: 120px;
+}
+.entry .quotation-post .quotation-post-container {
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+}
+.entry .quotation-post .qphoto {
+  margin-right: 12px;
+  line-height: 0;
+}
+.entry .quotation-post .qcontent {
+  flex: 1;
+}
+
+.entry .quotation-post .content {
+  padding: 0;
+  margin: 6px 0;
+}
+.entry .quotation-post .author {
+  padding: 0;
+}
+.entry .quotation-post .author span {
+  font-weight: bold;
+}
+.entry .quotation-post .author a {
+  color: #999;
+}
+
 
 .entry .meta {
   padding: 0 8px 8px 8px;
