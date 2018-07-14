@@ -11,7 +11,20 @@
             <div class="content text"><span class="p-content"><?= e($entry['content']['text']) ?></span> <div class="read-more hidden"><a href="#" class="">Read More</a></div></div>
           <? endif ?>
 
-          <? /* add padding if there is no name or content */ ?>
-          <? if(empty($entry['name']) && empty($entry['checkin']) && empty($entry['content']['html']) && empty($entry['content']['text'])): ?>
+          <?
+          // If no other content is available to be displayed, show the summary instead
+          if(
+            !isset($entry['checkin'])
+            && empty($entry['name'])
+            && empty($entry['content'])
+            && empty($entry['audio'])
+            && empty($entry['video'])
+            && empty($entry['photo'])
+            && !empty($entry['summary'])
+          ):
+          ?>
+            <div class="content text"><span class="p-summary"><?= e($entry['summary']) ?></span></div>
+          <? else: ?>
+            <? /* add padding if there is no name or content */ ?>
             <div class="content text"></div>
           <? endif ?>
