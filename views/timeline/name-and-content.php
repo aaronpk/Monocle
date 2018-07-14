@@ -20,11 +20,13 @@
             && empty($entry['audio'])
             && empty($entry['video'])
             && empty($entry['photo'])
-            && !empty($entry['summary'])
           ):
           ?>
-            <div class="content text"><span class="p-summary"><?= e($entry['summary']) ?></span></div>
-          <? else: ?>
-            <? /* add padding if there is no name or content */ ?>
-            <div class="content text"></div>
+            <div class="content">
+              <? if(!empty($entry['summary'])): ?>
+                <div class="text"><span class="p-summary"><?= e($entry['summary']) ?></span></div>
+              <? else: ?>
+                <div class="content text"></div>
+              <? endif ?>
+            </div>
           <? endif ?>
