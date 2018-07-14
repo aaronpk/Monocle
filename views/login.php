@@ -41,7 +41,7 @@
 
                 </div>
 
-                <p class="info" style="color: #888;">In order to sign in to Monocle, you'll need a <a href="https://indieweb.org/Microsub">Microsub</a> server.</p>
+                <p class="info" style="color: #888;">In order to sign in to Monocle, you'll need a <a href="https://indieweb.org/Microsub">Microsub</a> server like <a href="https://aperture.p3k.io/" style="text-decoration: underline;">Aperture</a>.</p>
             </div>
         </div>
     </div>
