@@ -10,6 +10,10 @@
                 <a href="<?= e($entry['author']['url']) ?>" class="name p-name"><?= e($entry['author']['name']) ?></a>
                 <a href="<?= e($entry['author']['url']) ?>" class="url u-url"><?= e(\p3k\url\display_url($entry['author']['url'])) ?></a>
               </div>
+            <? elseif(!empty($entry['author']['name'])): ?>
+              <div class="author-name">
+                  <span class="name p-name"><?= e($entry['author']['name']) ?></span>
+              </div>
             <? else: ?>
 
             <? endif ?>
