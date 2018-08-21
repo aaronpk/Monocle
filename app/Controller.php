@@ -35,6 +35,9 @@ class Controller {
       if(!isset($_SESSION['channels'])) {
         $r = $this->_reloadChannels();
         if(!$r || $r['code'] != 200) {
+          $body = @json_decode($r['body']);
+          if($body)
+            $r['body'] = $body;
           ?>
           <h2>Error</h2>
           <p>There was a problem trying to load the channels from your Microsub endpoint.</p>
@@ -43,7 +46,7 @@ class Controller {
             <li>Your website: <code><?= htmlspecialchars($_SESSION['token']['me']) ?></code></li>
           </ul>
           <p>The endpoint returned the following response.</p>
-          <pre><?php
+          <pre style="white-space: pre-wrap;"><?php
           ob_start();
           echo json_encode($r, JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES);
           $debug = ob_get_clean();
