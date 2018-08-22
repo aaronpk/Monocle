@@ -213,6 +213,6 @@ main, label[for="nav-trigger"], #side-menu {
   transition: all 0.2s;
 }
 
-.xray-custom-emoji {
-    height: 1.2em;
+.xray-emoji {
+    height: 1em;
 }
