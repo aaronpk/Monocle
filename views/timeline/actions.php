@@ -9,8 +9,9 @@
                 </div>
                 <div class="dropdown-menu" id="dropdown-<?= md5($entry['_id']) ?>" role="menu">
                   <div class="dropdown-content">
-                    <a class="dropdown-item" href="#" data-action="remove">Remove from Channel</a>
-                    <a class="dropdown-item" href="#" data-action="debug">Debug</a>
+                    <a class="dropdown-item" href="#" data-action="remove"><span class="icon" style="color: #900;"><i class="fas fa-times-circle"></i></span> Remove from Channel</a>
+                    <a class="dropdown-item" href="#" data-action="debug"><span class="icon"><i class="fas fa-bug"></i></span> Debug</a>
+                    <a class="dropdown-item" href="#" data-action="mark-unread"><span class="icon"><i class="fas fa-eye"></i></span> Mark Unread</a>
                     <a class="dropdown-item disabled" href="#" data-action="">Mute this Person</a>
                     <a class="dropdown-item disabled" href="#" data-action="">Block this Person</a>
                     <a class="dropdown-item disabled" href="#" data-action="">Unfollow this Source</a>

@@ -266,7 +266,7 @@ $(function(){
         $(this).parents(".actions").find(".new-reply textarea").focus();
         break;
       case "remove":
-        var btn = $(this).parents(".dropdown").find(".dropdown-trigger button")
+        var btn = $(this).parents(".dropdown").find(".dropdown-trigger button");
         btn.addClass("is-loading");
 
         $.post("/microsub/remove", {
@@ -281,6 +281,22 @@ $(function(){
         $("#source-modal pre").html($(this).parents(".entry").find(".source").html());
         $("#source-modal").addClass("is-active");
         $(this).parents(".dropdown").removeClass("is-active");
+        break;
+      case "mark-unread":
+        e.stopPropagation();
+        var btn = $(this).parents(".dropdown").find(".dropdown-trigger button");
+
+        // Slow version, wait for server to confirm
+        // btn.addClass("is-loading");
+        // mark_unread($(this).parents(".entry").data("entry-id"), function(){
+        //   btn.removeClass("is-loading");
+        //   btn.parents(".dropdown").removeClass("is-active");
+        // });
+
+        // Make it look like it worked immediately
+        btn.parents(".dropdown").removeClass("is-active");
+        mark_unread($(this).parents(".entry").data("entry-id"));
+
         break;
       default:
         console.log("Unknown action");
@@ -371,6 +387,33 @@ function mark_read(entry_ids) {
     entry: entry_ids
   }, function(response){
     update_channel_list(response.channels);
+  });
+}
+
+function mark_unread(entry_ids, callback=null) {
+  if(typeof entry_ids != "object") {
+    entry_ids = [entry_ids];
+  }
+
+  // Make it look unread even before the server confirms
+  entry_ids.forEach(function(eid){
+    $(".entry[data-entry-id="+eid+"]").data("is-read", 0);
+    $(".entry[data-entry-id="+eid+"]").removeClass("read").addClass("unread");
+  });
+
+  $.post("/microsub/mark_unread", {
+    channel: $("#channel-uid").val(),
+    entry: entry_ids
+  }, function(response){
+    // Wait until the server confirms before marking as unread
+    // entry_ids.forEach(function(eid){
+    //   $(".entry[data-entry-id="+eid+"]").data("is-read", 0);
+    //   $(".entry[data-entry-id="+eid+"]").removeClass("read").addClass("unread");
+    // });
+    update_channel_list(response.channels);
+    if(callback) {
+      callback();
+    }
   });
 }
 
