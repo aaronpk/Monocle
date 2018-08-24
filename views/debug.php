@@ -3,14 +3,17 @@
 <div class="column">
 
   <h2 class="title">Endpoints</h2>
-  <p>Micropub: <code><?= e($session['micropub']['endpoint']) ?></code></p>
+  <p>Me: <code><?= e($session['token']['me']) ?></code></p>
+  <p>Micropub: <code><?= isset($session['micropub']) ? e($session['micropub']['endpoint']) : '' ?></code></p>
   <p>Microsub: <code><?= e($session['microsub']) ?></code></p>
   <br>
 
+  <?php if(isset($session['micropub'])): ?>
   <h3 class="subtitle">Config</h3>
   <a href="#" class="button reload-config">Reload</a>
   <pre><?= j($session['micropub']['config']) ?></pre>
   <br>
+  <?php endif ?>
 
   <h3 class="subtitle">Cached Channels</h3>
   <a href="#" class="button reload-channels">Reload</a>
