@@ -35,24 +35,16 @@ class Controller {
       if(!isset($_SESSION['channels'])) {
         $r = $this->_reloadChannels();
         if(!$r || $r['code'] != 200) {
-          ?>
-          <h2>Error</h2>
-          <p>There was a problem trying to load the channels from your Microsub endpoint.</p>
-          <ul>
-            <li>Microsub endpoint: <code><?= htmlspecialchars($_SESSION['microsub']) ?></code></li>
-            <li>Your website: <code><?= htmlspecialchars($_SESSION['token']['me']) ?></code></li>
-          </ul>
-          <p>The endpoint returned the following response.</p>
-          <pre><?php
-          ob_start();
-          echo json_encode($r, JSON_PRETTY_PRINT+JSON_UNESCAPED_SLASHES);
-          $debug = ob_get_clean();
-          echo htmlspecialchars($debug);
-          ?>
-          </pre>
-          <p><a href="/logout">Start Over</a></p>
-          <?php
-          die();
+
+          $body = @json_decode($r['body']);
+          if($body)
+            $r['body'] = $body;
+
+          $response->getBody()->write(view('error', [
+            'title' => 'Monocle Error',
+            'response' => $r,
+          ]));
+          return $response;
         }
       }
 
@@ -73,7 +65,7 @@ class Controller {
 
         $cacheKey = md5($public['microsub']['endpoint'].'::'.http_build_query($q));
         $cacheFile = 'cache/'.$cacheKey.'.json';
-        if(file_exists($cacheFile) && filemtime($cacheFile) >= time() - 300) {
+        if(false && file_exists($cacheFile) && filemtime($cacheFile) >= time() - 300) {
           $data = json_decode(file_get_contents($cacheFile), true);
         } else {
           $data = microsub_get($public['microsub']['endpoint'], $public['microsub']['access_token'], 'timeline', $q);
