@@ -63,12 +63,12 @@ body {
 }
 #side-menu li {
   transition: all 0.2s ease-in-out;
-  display: block;
-  padding: 1em 1em;
   border-bottom: 1px #444 solid;
 }
 #side-menu li a {
   color: white;
+  display: block;
+  padding: 1em 1em;
   text-decoration: none;
 }
 #side-menu li:hover {
