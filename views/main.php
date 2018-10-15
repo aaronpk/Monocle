@@ -16,6 +16,9 @@
 .channels a {
   text-decoration: none;
 }
+.channel-list a {
+  display: block;
+}
 </style>
 
 <div class="column">
