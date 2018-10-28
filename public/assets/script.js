@@ -4,7 +4,10 @@ $(function(){
   // Stashes the original display date in the "title" element so you can still see it on hover
   $("time").map(function(i, el){
     $(el).attr("title", $(el).text().trim());
-    $(el).text((new Date($(el).attr("datetime"))).toLocaleString());
+    var date = new Date($(el).attr("datetime"));
+    if(!isNaN(date.getTime())) {
+      $(el).text(date.toLocaleString());
+    }
   });
 
   /* Global JS to enable the close button on modals */
