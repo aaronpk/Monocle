@@ -30,7 +30,6 @@ class Controller {
     \p3k\session_setup();
 
     if(isset($_SESSION['token'])) {
-      // Logged-in home page
 
       if(!isset($_SESSION['channels'])) {
         $r = $this->_reloadChannels();
@@ -48,9 +47,9 @@ class Controller {
         }
       }
 
-      $response->getBody()->write(view('main', [
-        'title' => 'Monocle',
-      ]));
+      // Redirect to the first channel
+      $channel = $_SESSION['channels'][0];
+      return $response->withHeader('Location', '/channel/'.urlencode($channel['uid']))->withStatus(302);
     } else {
       // Logged out. Check if the hostname corresponds to any of the public hosted channels
 

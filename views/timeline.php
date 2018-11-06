@@ -10,7 +10,6 @@
     <label for="nav-trigger" id="nav-trigger-label"></label>
     <h2 class="title">
       <?= $channel['name'] ?>
-      <a href="/" class="back"><span class="icon is-small"><i class="fas fa-home"></i></span></a>
     </h2>
   </div>
 
