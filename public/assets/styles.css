@@ -176,6 +176,12 @@ body {
   vertical-align: middle;
 }
 
+/* match a.dropdown-item:hover so it can be triggered via js */
+a.dropdown-item.hover {
+  background-color: whitesmoke;
+  color: #0a0a0a;
+}
+
 
 .nav-trigger {
   position: absolute;

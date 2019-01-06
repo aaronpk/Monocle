@@ -186,11 +186,85 @@ function add_destination(params) {
 
 $(function(){
 
+  $(window).on('keydown', function(e){
+    // Open the new note interface on / unless typing into an input box
+    if(e.key == '/') {
+      if($("#new-post-modal").hasClass("is-active")) {
+        if($("#new-post-content").val() == "" || !$(e.target).is(':input, [contenteditable]')) {
+          $("#new-post-modal .delete").click();
+          e.preventDefault();
+        }
+      } else {
+        if(!$(e.target).is(':input, [contenteditable]')) {
+          $(".new-post-button a").click();
+          e.preventDefault();
+        }
+      }
+      return;
+    }
+
+    // Open the account chooser on \ unless typing into an input box
+    if(!$(e.target).is(':input, [contenteditable]') && (e.key == '\\' || e.keyCode == 13)) {
+      // If an account was selected with a keyboard shortcut, actually click it now
+      if($("#destination-chooser [data-destination-ch].hover").length > 0) {
+        $("#destination-chooser [data-destination-ch].hover").click();
+        $("#destination-chooser [data-destination-ch]").removeClass("hover");
+      } else {
+        if(e.key == '\\') {
+          $("#destination-chooser .dropdown-trigger").click();
+        }
+      }
+      e.preventDefault();
+      return;
+    }
+
+    // If the account chooser is active, then select the account based on the first letter typed
+    if($("#destination-chooser").hasClass("is-active")) {
+      if(e.keyCode >= 65 && e.keyCode <= 90) { // only for a-z
+        var num = $("#destination-chooser [data-destination-ch="+e.key+"]").length;
+        if(num == 1) {
+          // If only one match, select that one and close
+          $("#destination-chooser [data-destination-ch]").removeClass("hover");
+          $($("#destination-chooser [data-destination-ch="+e.key+"]")[0]).click();
+          e.preventDefault();
+          return;
+        } else if(num > 1) {
+          // If multiple matches, highlight the next one
+          var elements = $("#destination-chooser [data-destination-ch="+e.key+"]");
+          var selected = $("#destination-chooser [data-destination-ch="+e.key+"].hover");
+          if(selected.length == 0) {
+            // If none were selected, choose the first
+            $("#destination-chooser [data-destination-ch]").removeClass("hover");
+            $($("#destination-chooser [data-destination-ch="+e.key+"]")[0]).addClass("hover");
+          } else {
+            // Find the one that is selected and choose the next (and wrap around)
+            var index = 0;
+            elements.toArray().forEach(function(el,i){
+              if($(selected).data('destination') == $(el).data('destination')) {
+                // Mark this as the selected index
+                index = i;
+              }
+              if(i == index+1) {
+                // When the iterator gets around to the next element, select it
+                $("#destination-chooser [data-destination-ch]").removeClass("hover");
+                $(el).addClass("hover");
+              } else if(i == elements.length - 1 && $(elements[i]).data('destination') == $(selected).data('destination')) {
+                // Wrap around and select the first
+                $("#destination-chooser [data-destination-ch]").removeClass("hover");
+                $($("#destination-chooser [data-destination-ch="+e.key+"]")[0]).addClass("hover");
+              }
+            });
+          }
+        }
+      }
+    }
+  });
+
   $(".new-post-button a").click(function(){
     $("#new-post-modal .modal-card-title img").attr("src", $(".selected-destination img").attr("src"));
-    $("#new-post-content").val('');
     $("#new-post-content").removeClass('is-danger');
     $('#new-post-modal').addClass('is-active');
+    $("#new-post-content").val('').focus();
   });
 
   $("#new-post-modal a.post").click(function(){
