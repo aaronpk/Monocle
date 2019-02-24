@@ -250,13 +250,16 @@ class Controller {
       if(isset($_SESSION['micropub'])) {
         if(isset($_SESSION['micropub']['config']['destination'])) {
           foreach($_SESSION['micropub']['config']['destination'] as $dest) {
-            if(
-              (!isset($channel['destination']) && $dest['uid'] == '')
-              || (isset($channel['destination']) && $dest['uid'] == $channel['destination'])
-            ) {
+            // Enable the selected destination if the channel specifies one
+            if(isset($channel['destination']) && $dest['uid'] == $channel['destination']) {
               $destination = $dest;
               $responses_enabled = true;
             }
+          }
+          // If the channel doesn't specify one, use the first in the list
+          if(!$destination) {
+            $destination = $_SESSION['micropub']['config']['destination'][0];
+            $responses_enabled = true;
           }
         } else {
           // Enable responses if no destinations are configured or channel destination is not "none"
