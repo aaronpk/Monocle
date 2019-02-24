@@ -20,9 +20,15 @@
               </div>
 
               <?php if(isset($entry['url']) && !isset($entry['like-of']) && $responses_enabled): ?>
-                <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-star"></i></span></a>
-                <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
-                <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
+                <?php if(supports_post_type('like')): ?>
+                  <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-star"></i></span></a>
+                <?php endif ?>
+                <?php if(supports_post_type('repost')): ?>
+                  <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
+                <?php endif ?>
+                <?php if(supports_post_type('reply')): ?>
+                  <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
+                <?php endif ?>
               <?php endif ?>
             </div>
             <?php if(isset($entry['url']) && $responses_enabled): ?>

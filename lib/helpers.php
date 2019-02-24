@@ -116,3 +116,17 @@ function microsub_post($endpoint, $token, $action, $params=[]) {
   return http_client()->post($endpoint, $params, $headers);
 }
 
+function supports_post_type($type) {
+  if(!isset($_SESSION['micropub']['config']['post-types']))
+    return true;
+
+  $types = $_SESSION['micropub']['config']['post-types'];
+
+  foreach($types as $t) {
+    if(is_array($t) && isset($t['type']) && $t['type'] == $type) {
+      return true;
+    }
+  }
+
+  return false;
+}
