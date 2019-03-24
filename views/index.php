@@ -8,22 +8,15 @@
         <title>Monocle</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+        <link href="/assets/bulma-0.6.2/css/bulma.css" rel="stylesheet">
+        <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 
         <?php include('views/components/favicon.php') ?>
 
         <!-- Styles -->
         <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Lato', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
             .full-height {
-                height: 95vh;
+                min-height: 100vh;
             }
 
             .flex-center {
@@ -42,22 +35,44 @@
                 top: 18px;
             }
 
-            .content {
-                text-align: center;
+            .top-left {
+                position: absolute;
+                left: 10px;
+                top: 18px;
             }
+
+          .tile .icon {
+            float: left;
+            margin-right: 40px;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            margin-top: 20px;
+          }
 
             .title {
                 font-size: 84px;
             }
 
             .links > a {
-                color: #636b6f;
+                color: #fff;
                 padding: 0 25px;
                 font-size: 12px;
                 font-weight: 600;
                 letter-spacing: .1rem;
                 text-decoration: none;
                 text-transform: uppercase;
+            }
+
+            .cover-photo-main {
+              background: url(/images/indieweb-reader.jpg);
+              background-position: center;
+              background-size: cover;
+            }
+
+            .tagline {
+              text-align: center;
+              font-size: 2em;
+              padding: 2em 0;
             }
 
             .m-b-md {
@@ -72,102 +87,80 @@
               padding: 3em;
             }
 
-            /* Mailchimp Form */
-            #mc_embed_signup {
-              width: 260px;
-              text-align: center;
-            }
-
-            .mc-field-group {
-              margin-bottom: 0.5em;
-            }
-
-            .mc-field-group label {
-              display: block;
-            }
-
-            #mc_embed_signup input {
-              display: block;
-              background: #fff;
-              color: black;
-              border: 2px #444 solid;
-              border-radius: 4px;
-              padding: 1em 2em;
-              font-size: 1em;
-              margin-left: auto;
-              margin-right: auto;
-            }
-
-            #mc_embed_signup .button {
-              border: 2px #444 solid;
-              border-radius: 4px;
-              cursor: pointer;
-              background: #ddd;
-              color: black;
-              text-decoration: none;
-              margin-top: 1em;
-              margin-left: auto;
-              margin-right: auto;
-            }
-            #mc_embed_signup .button:hover {
-              background: #ccc;
-            }
-
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height h-x-app">
+        <div class="flex-center position-ref full-height cover-photo-main h-x-app h-app">
             <div class="top-right links">
-                <?php if(is_logged_in()): ?>
-                    <a href="/home">Home</a>
-                <?php else: ?>
-                    <a href="/login">Login</a>
-                <?php endif; ?>
+                <a href="/login">Sign In</a>
             </div>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    <img src="/icons/monocle.png" alt="Monocle Logo" class="u-logo" width="90" style="margin-bottom: -15px;">
-                    <span class="p-name">Monocle</span>
-                </div>
-                <a href="/" class="u-url"></a>
+            <div class="top-left links">
+                <img src="/icons/monocle-white.png" alt="Monocle Logo" class="u-logo" width="30" style="margin-bottom: -12px; margin-left: 20px;">
+                <a class="p-name u-url" href="/">Monocle</a>
             </div>
         </div>
 
+        <section class="section">
+          <div class="container">
+            <div class="flex-center position-ref full-height">
+                <div class="content">
 
-        <?php if(isset(Config::$emailSignup) && Config::$emailSignup): ?>
-        <div class="flex-center position-ref full-height signup">
-          <div class="content">
+                  <div class="logo" style="text-align: center;">
+                    <img src="/icons/monocle.png" alt="Monocle Logo" width="96">
+                  </div>
 
-            <!-- Begin MailChimp Signup Form -->
-            <div id="mc_embed_signup">
-              <form action="https://nicernet.us12.list-manage.com/subscribe/post?u=3da16cdb35a3696d18f3d5001&amp;id=22aff5733e" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-                <div id="mc_embed_signup_scroll">
-                  <div class="mc-field-group full-width">
-                    <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="enter your email">
+                  <div class="tagline">Monocle is your <a href="https://aaronparecki.com/2018/04/20/46/indieweb-reader-my-new-home-on-the-internet">new home on the Internet</a>.</div>
+
+
+                  <div class="tile is-ancestor">
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <span class="icon">
+                          <i class="fas fa-3x fa-search"></i>
+                        </span>
+                        <p>Monocle is an IndieWeb reader. Read and respond to any kind of content online! Monocle provides an interface to read and reply to posts from anything you follow.</p>
+                      </article>
+                    </div>
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <span class="icon">
+                          <i class="fas fa-3x fa-rss-square"></i>
+                        </span>
+                        <p>Monocle doesn't subscribe to feeds itself, instead it's an interface on top of your own feed subscriptions. Your website may already provide this API, or you can use an external service like <a href="https://aperture.p3k.io">Aperture</a>, or <a href="https://indieweb.org/Microsub#Servers">many others</a>.</p>
+                      </article>
+                    </div>
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <span class="icon">
+                          <i class="fas fa-3x fa-mobile"></i>
+                        </span>
+                        <p>Monocle is just one of many IndieWeb readers! It works great on a mobile device, but if you prefer a native app you can use Indigenous for <a href="https://indieweb.org/Indigenous_for_iOS">iPhone</a> or <a href="https://indieweb.org/Indigenous_for_Android">Android</a>.</p>
+                      </article>
+                    </div>
                   </div>
-                  <div id="mce-responses" class="clear">
-                    <div class="response" id="mce-error-response" style="display:none"></div>
-                    <div class="response" id="mce-success-response" style="display:none"></div>
-                  </div>
-                  <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_3da16cdb35a3696d18f3d5001_22aff5733e" tabindex="-1" value=""></div>
-                  <div class="clear full-width">
-                    <input type="submit" value="Keep me updated!" name="subscribe" id="mc-embedded-subscribe" class="button">
-                  </div>
+
                 </div>
-                <input type="hidden" name="SOURCE" value="monocle">
-              </form>
             </div>
-            <!--End mc_embed_signup-->
-
           </div>
-        </div>
-        <?php endif ?>
+        </section>
 
+        <section class="section">
+          <div class="container content">
+            <h2>Technical Details</h2>
 
-        <div class="flex-center position-ref credits">
-          <div>Monocle is created by <a href="https://aaronparecki.com/">Aaron Parecki</a> and is part of the <a href="https://indieweb.org/">IndieWeb</a>.</div>
-        </div>
+            <p>Monocle is a <a href="https://indieweb.org/Microsub">Microsub</a> client. Microsub is a spec that provides a standardized way for reader apps to interact with feeds. By splitting feed parsing and displaying posts into separate parts, a reader app can focus on presenting posts to the user instead of also having to parse feeds. A Microsub server manages the list of people you're following and collects their posts, and a Micropub app shows the posts to the user by fetching them from the server.</p>
+            <p>To use Monocle, you need to have a website which points to a Microsub server so that Monocle knows where to find content to display.</p>
+            <p>If your website also supports <a href="https://micropub.net/">Micropub</a>, then you'll be able to favorite and reply to posts from within Monocle too.</p>
+            <p>You can read more about the technical details of Monocle at <a href="https://aaronparecki.com/2018/03/12/17/building-an-indieweb-reader">Building an IndieWeb Reader</a>.</p>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <div class="flex-center position-ref credits">
+            <div>Monocle is created by <a href="https://aaronparecki.com/">Aaron Parecki</a> and is part of the <a href="https://indieweb.org/">IndieWeb</a>.</div>
+          </div>
+        </footer>
 
     </body>
 </html>
