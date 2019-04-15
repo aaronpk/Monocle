@@ -1,5 +1,5 @@
     <?php foreach($_SESSION['channels'] as $channel): ?>
-      <li data-channel-uid="<?= e($channel['uid']) ?>">
+      <li data-channel-uid="<?= e($channel['uid']) ?>" class="<?= $selected == $channel['uid'] ? 'selected' : '' ?>">
         <a href="/channel/<?= e(urlencode($channel['uid'])) ?>">
           <?= e($channel['name']) ?>
           <?php if(isset($channel['unread'])): ?>

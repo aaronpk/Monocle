@@ -212,70 +212,78 @@ class Controller {
     return $response->withHeader('Content-type', 'application/json');
   }
 
-  public function timeline(ServerRequestInterface $request, ResponseInterface $response) {
+  public function timeline(ServerRequestInterface $request, ResponseInterface $response, $args) {
     $this->requireLogin();
 
     $params = $request->getQueryParams();
 
-    if(preg_match('/\/channel\/(.+)/', $request->getUri()->getPath(), $match)) {
-      $uid = $match[1];
-      $uid = urldecode($uid);
 
-      $channel = false;
-      foreach($_SESSION['channels'] as $ch) {
-        if($ch['uid'] == $uid) {
-          $channel = $ch;
-          break;
-        }
+    $uid = urldecode($args['uid']);
+
+    $channel = false;
+    foreach($_SESSION['channels'] as $ch) {
+      if($ch['uid'] == $uid) {
+        $channel = $ch;
+        break;
       }
+    }
 
-      if(!$channel) {
-        $response->getBody()->write('The channel "'.e($uid).'" was not found.');
-        return $response->withStatus(404);
-      }
+    if(!$channel) {
+      $response->getBody()->write('The channel "'.e($uid).'" was not found.');
+      return $response->withStatus(404);
+    }
 
-      $q = ['channel'=>$uid];
-      if(isset($params['after']))
-        $q['after'] = $params['after'];
+    $q = ['channel'=>$uid];
+    if(isset($params['after']))
+      $q['after'] = $params['after'];
 
-      $data = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', $q);
-      $data = json_decode($data['body'], true);
+    $source = false;
+    if(isset($args['source'])) {
+      $q['source'] = $args['source'];
+    }
 
-      $entries = $data['items'] ?? [];
-      $paging = $data['paging'] ?? [];
+    $data = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', $q);
+    $data = json_decode($data['body'], true);
 
-      $destination = false;
-      $responses_enabled = false;
+    $entries = $data['items'] ?? [];
+    $paging = $data['paging'] ?? [];
 
-      if(isset($_SESSION['micropub'])) {
-        if(isset($_SESSION['micropub']['config']['destination'])) {
-          foreach($_SESSION['micropub']['config']['destination'] as $dest) {
-            // Enable the selected destination if the channel specifies one
-            if(isset($channel['destination']) && $dest['uid'] == $channel['destination']) {
-              $destination = $dest;
-              $responses_enabled = true;
-            }
-          }
-          // If the channel doesn't specify one, use the first in the list
-          if(!$destination) {
-            $destination = $_SESSION['micropub']['config']['destination'][0];
+    if(isset($data['source'])) {
+      $source = $data['source'];
+    }
+
+    $destination = false;
+    $responses_enabled = false;
+
+    if(isset($_SESSION['micropub'])) {
+      if(isset($_SESSION['micropub']['config']['destination'])) {
+        foreach($_SESSION['micropub']['config']['destination'] as $dest) {
+          // Enable the selected destination if the channel specifies one
+          if(isset($channel['destination']) && $dest['uid'] == $channel['destination']) {
+            $destination = $dest;
             $responses_enabled = true;
           }
-        } else {
-          // Enable responses if no destinations are configured or channel destination is not "none"
-          $responses_enabled = !isset($channel['destination']) || $channel['destination'] != 'none';
         }
+        // If the channel doesn't specify one, use the first in the list
+        if(!$destination) {
+          $destination = $_SESSION['micropub']['config']['destination'][0];
+          $responses_enabled = true;
+        }
+      } else {
+        // Enable responses if no destinations are configured or channel destination is not "none"
+        $responses_enabled = !isset($channel['destination']) || $channel['destination'] != 'none';
       }
-
-      $response->getBody()->write(view('timeline', [
-        'title' => 'Monocle',
-        'channel' => $channel,
-        'entries' => $entries,
-        'paging' => $paging,
-        'destination' => $destination,
-        'responses_enabled' => $responses_enabled
-      ]));
     }
+
+    $response->getBody()->write(view('timeline', [
+      'title' => 'Monocle',
+      'channel' => $channel,
+      'source' => $source,
+      'entries' => $entries,
+      'paging' => $paging,
+      'destination' => $destination,
+      'responses_enabled' => $responses_enabled
+    ]));
 
     return $response;
   }

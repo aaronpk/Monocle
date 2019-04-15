@@ -9,19 +9,31 @@
   <div id="main-top">
     <label for="nav-trigger" id="nav-trigger-label"></label>
     <h2 class="title">
-      <?= $channel['name'] ?>
+      <? if($source): ?>
+        <a href="/channel/<?= e($channel['uid']) ?>"><?= e($channel['name']) ?></a>
+      <? else: ?>
+        <?= e($channel['name']) ?>
+      <? endif ?>
     </h2>
   </div>
 
+
   <nav id="side-menu">
     <ul class="channels channel-list">
-      <?= $this->insert('components/channel-list') ?>
+      <?= $this->insert('components/channel-list', ['selected' => $channel['uid']]) ?>
     </ul>
   </nav>
 
   <div id="main-container">
 
     <div class="column"><div class="inner">
+
+      <? if($source): ?>
+        <h3 class="source-name">
+          <a href="/channel/<?= e($channel['uid']) ?>"><i class="fa fa-arrow-circle-left"></i></a>
+          <?= e($source['name']) ?>
+        </h3>
+      <? endif ?>
 
       <? foreach($entries as $i=>$entry): ?>
         <div class="entry h-entry <?= isset($entry['like-of']) ? 'like-of' : '' ?> <?= isset($entry['_is_read']) && $entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
@@ -65,7 +77,7 @@
 
             <?= $this->insert('timeline/reply-context', ['entry' => $entry]) ?>
 
-            <?= $this->insert('timeline/author-card', ['entry' => $entry]) ?>
+            <?= $this->insert('timeline/author-card', ['entry' => $entry, 'channel' => $channel]) ?>
 
             <? /* ************************************************ */ ?>
             <? /* POST CONTENTS                                    */ ?>

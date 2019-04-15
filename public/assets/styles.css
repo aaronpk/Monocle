@@ -75,6 +75,13 @@ body {
   background: #555;
   border-color: #666;
 }
+#side-menu li.selected {
+  background: #444;
+}
+#side-menu li.selected:hover {
+  background: #666;
+  border-color: #777;
+}
 #side-menu .tag {
   float: right;
 }
@@ -102,6 +109,12 @@ body {
 #main-container {
   padding-top: 60px;
   padding-bottom: 50px;
+}
+
+h3.source-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 9px;
 }
 
 #main-bottom {
