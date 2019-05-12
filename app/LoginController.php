@@ -41,6 +41,14 @@ class LoginController {
     $scope = 'create update read follow channels';
     list($authorizationURL, $error) = IndieAuth\Client::begin($params['url'], $scope);
 
+    // If the scheme was added automatically, and if we got an ssl error, try again with http
+    if($params['auto-scheme']) {
+      if($error && $error['error'] == 'ssl_cert_error') {
+        $params['url'] = str_replace('https://', 'http://', $params['url']);
+        list($authorizationURL, $error) = IndieAuth\Client::begin($params['url'], $scope);
+      }
+    }
+
     if($error) {
       $_SESSION['auth_error'] = $error['error'];
       $_SESSION['auth_error_description'] = $error['error_description'];

@@ -37,6 +37,8 @@
                         </div>
 
                         <button type="submit" class="button is-primary">Log In</button>
+
+                        <input type="hidden" id="auto-scheme" name="auto-scheme" value="0">
                     </form>
 
                 </div>
@@ -53,7 +55,10 @@
   document.addEventListener('DOMContentLoaded', function() {
     function addDefaultScheme(target) {
       if(target.value.match(/^(?!https?:).+\..+/)) {
-        target.value = "http://"+target.value;
+        target.value = "https://"+target.value;
+        document.getElementById('auto-scheme').value = "1";
+      } else {
+        document.getElementById('auto-scheme').value = "0";
       }
     }
     var elements = document.querySelectorAll("input[type=url]");
