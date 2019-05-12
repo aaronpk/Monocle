@@ -8,3 +8,6 @@
         </a>
       </li>
     <?php endforeach; ?>
+    <li class="logout">
+      <a href="/logout"><span>Log Out</span></a>
+    </li>

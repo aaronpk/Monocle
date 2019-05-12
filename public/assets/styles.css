@@ -85,6 +85,10 @@ body {
 #side-menu .tag {
   float: right;
 }
+#side-menu li.logout a {
+  padding: 0.75em 1em;
+  color: #aaa;
+}
 
 #main-top {
   z-index: 2;
