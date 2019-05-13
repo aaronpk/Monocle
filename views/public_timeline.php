@@ -56,7 +56,7 @@
 
             <?= $this->insert('timeline/checkin', ['entry' => $entry]) ?>
 
-            <?= $this->insert('timeline/name-and-content', ['entry' => $entry]) ?>
+            <?= $this->insert('timeline/name-and-summary', ['entry' => $entry]) ?>
 
             <?= $this->insert('timeline/audio', ['entry' => $entry]) ?>
 
