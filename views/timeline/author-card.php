@@ -1,6 +1,6 @@
           <div class="author u-author h-card">
             <? if(!empty($entry['author']['photo'])): ?>
-              <? if(isset($entry['_source'])): ?>
+              <? if(isset($entry['_source']) && isset($channel)): ?>
                 <a href="/channel/<?= e($channel['uid']) ?>/<?= e($entry['_source']) ?>">
                   <img src="<?= e($entry['author']['photo']) ?>" class="u-photo">
                 </a>
@@ -12,7 +12,7 @@
               <div class="author-name">
                 <? if(!empty($entry['author']['url'])): ?>
                   <? if(!empty($entry['author']['name'])): ?>
-                    <? if(isset($entry['_source'])): ?>
+                    <? if(isset($entry['_source']) && isset($channel)): ?>
                       <a href="/channel/<?= e($channel['uid']) ?>/<?= e($entry['_source']) ?>" class="name p-name"><?= e($entry['author']['name']) ?></a>
                     <? else: ?>
                       <a href="<?= e($entry['author']['url']) ?>" class="name p-name"><?= e($entry['author']['name']) ?></a>
