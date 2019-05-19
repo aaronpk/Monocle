@@ -475,6 +475,30 @@ function mark_read(entry_ids) {
   });
 }
 
+function mark_all_as_read() {
+  var marked = {};
+  var entry_ids = [];
+  document.querySelectorAll(".entry").forEach(function(entry){
+    var entryNum = $(entry).data("entry");
+    if(marked[entryNum] == null && $(entry).data("is-read") == 0) {
+      marked[entryNum] = true;
+      entry_ids.push($(entry).data("entry-id"));
+    }
+  });
+  entry_ids.forEach(function(eid){
+    $(".entry[data-entry-id="+eid+"]").data("is-read", 1);
+    $(".entry[data-entry-id="+eid+"]").removeClass("unread").addClass("read");
+  });
+
+  $.post("/microsub/mark_all_as_read", {
+    channel: $("#channel-uid").val(),
+    entry: $("#last-id").val()
+  }, function(response){
+    console.log(response);
+    update_channel_list(response.channels);
+  });
+}
+
 function mark_unread(entry_ids, callback=null) {
   if(typeof entry_ids != "object") {
     entry_ids = [entry_ids];
