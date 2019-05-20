@@ -8,12 +8,56 @@
 
   <div id="main-top">
     <label for="nav-trigger" id="nav-trigger-label"></label>
-    <h2 class="title">
+    <h2 class="title is-hidden-mobile">
       <? if($source): ?>
         <a href="/channel/<?= e($channel['uid']) ?>"><?= e($channel['name']) ?></a>
       <? else: ?>
         <?= e($channel['name']) ?>
       <? endif ?>
+      
+    </h2>
+
+    <div class="dropdown is-right is-hidden-mobile">
+      <div class="dropdown-trigger">
+        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+        <span class="icon is-small">
+          <i class="fas fa-check" aria-hidden="true"></i>
+        </span>
+        <span class="icon is-small">
+          <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </span>
+        </button>
+      </div>
+      <div class="dropdown-menu" id="dropdown-menu" role="menu">
+        <div class="dropdown-content">
+          <a href="#" class="dropdown-item mark-all-read-button">
+            Mark All Read
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Combo Menu/Title for mobile -->
+    <h2 class="title title-combo is-hidden-tablet">
+      <div class="dropdown">
+        <div class="dropdown-trigger">
+          <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+            <?= e($channel['name']) ?>
+            <span class="icon is-small">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+          <div class="dropdown-content">
+            <a href="#" class="dropdown-item mark-all-read-button">
+            <span class="icon is-small">
+              <i class="fas fa-check" aria-hidden="true"></i>
+            </span> Mark All Read
+            </a>
+          </div>
+        </div>
+      </div>
     </h2>
   </div>
 
@@ -179,7 +223,6 @@
   </div>
 </div>
 
-
 <input type="hidden" id="last-id" value="<?= $entries[0]['_id'] ?? '' ?>">
 <input type="hidden" id="channel-uid" value="<?= $channel['uid'] ?>">
 <input type="hidden" id="destination-uid" value="<?= e($destination['uid'] ?? '') ?>">
@@ -293,6 +336,39 @@ $(function(){
         $("#new-post-content").addClass('is-danger');
       }
     });
+  });
+
+  // $(".mark-all-read-button a").click(function(){
+  //   $("#mark-all-read-modal").addClass("is-active");
+  // });
+
+  $("a.mark-all-read-button").click(function(e){
+    e.preventDefault();
+    var marked = {};
+    var entry_ids = [];
+    document.querySelectorAll(".entry").forEach(function(entry){
+      var entryNum = $(entry).data("entry");
+      if(marked[entryNum] == null && $(entry).data("is-read") == 0) {
+        marked[entryNum] = true;
+        entry_ids.push($(entry).data("entry-id"));
+      }
+    });
+    entry_ids.forEach(function(eid){
+      $(".entry[data-entry-id="+eid+"]").data("is-read", 1);
+      $(".entry[data-entry-id="+eid+"]").removeClass("unread").addClass("read");
+    });
+
+    $.post("/microsub/mark_all_as_read", {
+      channel: $("#channel-uid").val(),
+      entry: $("#last-id").val()
+    }, function(response){
+      update_channel_list(response.channels);
+      $("a.mark-all-read-button").parents(".dropdown").removeClass("is-active");
+    });
+    
+  });
+  $("#mark-all-read-modal a.close").click(function(){
+    $("#mark-all-read-modal").removeClass("is-active");
   });
 
   $(".content.html").each(function(i,content){
@@ -494,7 +570,6 @@ function mark_all_as_read() {
     channel: $("#channel-uid").val(),
     entry: $("#last-id").val()
   }, function(response){
-    console.log(response);
     update_channel_list(response.channels);
   });
 }
