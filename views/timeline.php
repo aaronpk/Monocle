@@ -338,10 +338,6 @@ $(function(){
     });
   });
 
-  // $(".mark-all-read-button a").click(function(){
-  //   $("#mark-all-read-modal").addClass("is-active");
-  // });
-
   $("a.mark-all-read-button").click(function(e){
     e.preventDefault();
     var marked = {};
