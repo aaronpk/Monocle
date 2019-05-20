@@ -254,3 +254,6 @@ main, label[for="nav-trigger"], #side-menu {
   margin-left: 0.5rem;
   font-size: 1.3rem;
 }
+#main-top>div.dropdown {
+  margin-right: 1rem;
+}
