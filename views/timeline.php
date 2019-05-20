@@ -19,14 +19,14 @@
 
     <div class="dropdown is-right is-hidden-mobile">
       <div class="dropdown-trigger">
-        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+        <a href="#" class="button" aria-haspopup="true" aria-controls="dropdown-menu">
         <span class="icon is-small">
           <i class="fas fa-check" aria-hidden="true"></i>
         </span>
         <span class="icon is-small">
           <i class="fas fa-angle-down" aria-hidden="true"></i>
         </span>
-        </button>
+        </a>
       </div>
       <div class="dropdown-menu" id="dropdown-menu" role="menu">
         <div class="dropdown-content">
