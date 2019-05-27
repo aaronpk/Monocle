@@ -97,11 +97,16 @@ body {
   position: fixed;
   width: 100vw;
   padding: .75rem;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
 }
 
 #main-top h2.title {
   position: relative;
   padding-left: 45px;
+  margin-bottom: 0;
 }
 #main-top h2.title .back {
   font-size: 12pt;
@@ -219,9 +224,9 @@ label[for="nav-trigger"]:hover {
   opacity: 0.6;
 }
 
-.nav-trigger:checked + label {
-  /* left: 255px; */
-}
+/*.nav-trigger:checked + label {
+   left: 255px; 
+}*/
 
 .nav-trigger:checked ~ main {
   left: 240px;
@@ -238,4 +243,19 @@ main, label[for="nav-trigger"], #side-menu {
 
 .xray-emoji, .xray-custom-emoji {
     height: 1em;
+}
+
+.title-combo .button {
+  height: auto;
+  border: none;
+  font-size: 2rem;
+  padding: 0;
+  line-height: 1;
+}
+.title-combo .button .icon:first-child:last-child {
+  margin-left: 0.5rem;
+  font-size: 1.3rem;
+}
+#main-top>div.dropdown {
+  margin-right: 1rem;
 }

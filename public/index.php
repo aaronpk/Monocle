@@ -28,6 +28,7 @@ $route->map('GET', '/channel/{uid}', 'App\\Controller::timeline');
 $route->map('GET', '/channel/{uid}/{source}', 'App\\Controller::timeline');
 $route->map('POST', '/channels/reload', 'App\\Controller::reload_channels');
 $route->map('POST', '/microsub/mark_read', 'App\\Controller::mark_as_read');
+$route->map('POST', '/microsub/mark_all_as_read', 'App\\Controller::mark_all_as_read');
 $route->map('POST', '/microsub/mark_unread', 'App\\Controller::mark_as_unread');
 $route->map('POST', '/microsub/remove', 'App\\Controller::remove_entry');
 

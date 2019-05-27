@@ -141,6 +141,23 @@ class Controller {
     ]));
     return $response->withHeader('Content-type', 'application/json');
   }
+  public function mark_all_as_read(ServerRequestInterface $request, ResponseInterface $response) {
+    $this->requireLogin();
+    $body = $request->getParsedBody();
+
+    microsub_post($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', [
+      'channel' => $body['channel'],
+      'method' => 'mark_read',
+      'last_read_entry' => $body['entry'],
+    ]);
+
+    $r = $this->_reloadChannels();
+
+    $response->getBody()->write(json_encode([
+      'channels' => $_SESSION['channels']
+    ]));
+    return $response->withHeader('Content-type', 'application/json');
+  }
 
   public function mark_as_unread(ServerRequestInterface $request, ResponseInterface $response) {
     $this->requireLogin();
