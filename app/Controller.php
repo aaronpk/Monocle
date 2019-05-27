@@ -47,9 +47,13 @@ class Controller {
         }
       }
 
-      // Redirect to the first channel
-      $channel = $_SESSION['channels'][0];
-      return $response->withHeader('Location', '/channel/'.urlencode($channel['uid']))->withStatus(302);
+      if(isset($_SESSION['channels'][0])) {
+        // Redirect to the first channel
+        $channel = $_SESSION['channels'][0];
+        return $response->withHeader('Location', '/channel/'.urlencode($channel['uid']))->withStatus(302);
+      } else {
+        return $response->withHeader('Location', '/debug')->withStatus(302);
+      }
     } else {
       // Logged out. Check if the hostname corresponds to any of the public hosted channels
 
