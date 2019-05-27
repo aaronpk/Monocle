@@ -157,6 +157,11 @@ h3.source-name {
 #main-bottom .dropdown-item.selected {
   background: #ffffdd;
 }
+#main-bottom .dropdown-content {
+  /* prevent the account chooser from being too tall */
+  max-height: calc(100vh - 53px - 61px);
+  overflow: auto;
+}
 
 
 @media(min-width: 800px) {
@@ -225,7 +230,7 @@ label[for="nav-trigger"]:hover {
 }
 
 /*.nav-trigger:checked + label {
-   left: 255px; 
+   left: 255px;
 }*/
 
 .nav-trigger:checked ~ main {
