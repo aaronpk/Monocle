@@ -263,6 +263,9 @@ class Controller {
       $q['source'] = $args['source'];
     }
 
+    if(isset($params['unread']))
+      $q['is_read'] = 'false';
+
     $data = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', $q);
     $data = json_decode($data['body'], true);
 
@@ -303,7 +306,8 @@ class Controller {
       'entries' => $entries,
       'paging' => $paging,
       'destination' => $destination,
-      'responses_enabled' => $responses_enabled
+      'responses_enabled' => $responses_enabled,
+      'show_unread' => isset($params['unread']),
     ]));
 
     return $response;

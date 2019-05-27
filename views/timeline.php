@@ -14,7 +14,7 @@
       <? else: ?>
         <?= e($channel['name']) ?>
       <? endif ?>
-      
+
     </h2>
 
     <div class="dropdown is-right is-hidden-mobile">
@@ -32,6 +32,9 @@
         <div class="dropdown-content">
           <a href="#" class="dropdown-item mark-all-read-button">
             Mark All Read
+          </a>
+          <a href="/channel/<?= e($channel['uid']) ?>?unread" class="dropdown-item show-unread-button">
+            Show Only Unread Entries
           </a>
         </div>
       </div>
@@ -51,9 +54,14 @@
         <div class="dropdown-menu" id="dropdown-menu" role="menu">
           <div class="dropdown-content">
             <a href="#" class="dropdown-item mark-all-read-button">
-            <span class="icon is-small">
-              <i class="fas fa-check" aria-hidden="true"></i>
-            </span> Mark All Read
+              <span class="icon is-small">
+                <i class="fas fa-check" aria-hidden="true"></i>
+              </span> Mark All Read
+            </a>
+            <a href="/channel/<?= e($channel['uid']) ?>?unread" class="dropdown-item show-unread-button">
+              <span class="icon is-small">
+                <i class="fas fa-circle" aria-hidden="true"></i>
+              </span> Show Only Unread Entries
             </a>
           </div>
         </div>
@@ -149,7 +157,7 @@
 
       <? if(isset($paging['after'])): ?>
       <nav class="pagination" role="navigation" aria-label="pagination">
-        <a class="pagination-next" href="?after=<?= e($paging['after']) ?>">More</a>
+        <a class="pagination-next" href="?after=<?= e($paging['after']) ?><?= $show_unread ? '&unread' : '' ?>">More</a>
       </nav>
       <? endif ?>
 
@@ -361,7 +369,7 @@ $(function(){
       update_channel_list(response.channels);
       $("a.mark-all-read-button").parents(".dropdown").removeClass("is-active");
     });
-    
+
   });
 
   $(".content.html").each(function(i,content){
