@@ -35,6 +35,8 @@ $route->map('POST', '/microsub/remove', 'App\\Controller::remove_entry');
 $route->map('POST', '/micropub', 'App\\Controller::micropub');
 $route->map('POST', '/micropub/refresh', 'App\\Controller::micropub_refresh');
 
+$route->map('GET', '/{path}', 'App\\Controller::path');
+
 
 $templates = new League\Plates\Engine(dirname(__FILE__).'/../views');
 

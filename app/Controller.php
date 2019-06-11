@@ -56,42 +56,55 @@ class Controller {
       }
     } else {
       // Logged out. Check if the hostname corresponds to any of the public hosted channels
+      $this->path($request, $response);
+      return $response;
+    }
+    return $response;
+  }
 
-      if(isset(Config::$public[$_SERVER['SERVER_NAME']])) {
-        $public = Config::$public[$_SERVER['SERVER_NAME']];
+  public function path(ServerRequestInterface $request, ResponseInterface $response) {
+    // Check the config to see if either this hostname or this host+path match
+    if($_SERVER['REQUEST_URI'] !== '/') {
+      $path = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    } else {
+      $path = $_SERVER['SERVER_NAME'];
+    }
 
-        $params = $request->getQueryParams();
+    if(isset(Config::$public[$path])) {
+      $public = Config::$public[$path];
 
-        $q = ['channel'=>$public['microsub']['channel']];
-        if(isset($params['after']))
-          $q['after'] = $params['after'];
+      $params = $request->getQueryParams();
 
-        $cacheKey = md5($public['microsub']['endpoint'].'::'.http_build_query($q));
-        $cacheFile = 'cache/'.$cacheKey.'.json';
-        if(false && file_exists($cacheFile) && filemtime($cacheFile) >= time() - 300) {
-          $data = json_decode(file_get_contents($cacheFile), true);
-        } else {
-          $data = microsub_get($public['microsub']['endpoint'], $public['microsub']['access_token'], 'timeline', $q);
-          $data = json_decode($data['body'], true);
-          file_put_contents($cacheFile, json_encode($data));
-        }
+      $q = ['channel'=>$public['microsub']['channel']];
 
-        $entries = $data['items'] ?? [];
-        $paging = $data['paging'] ?? [];
+      if(isset($params['after']))
+        $q['after'] = $params['after'];
 
-        $response->getBody()->write(view('public_timeline', [
-          'title' => $public['title'],
-          'channel' => [],
-          'entries' => $entries,
-          'paging' => $paging,
-          'responses_enabled' => false
-        ]));
-
+      $cacheKey = md5($public['microsub']['endpoint'].'::'.http_build_query($q));
+      $cacheFile = 'cache/'.$cacheKey.'.json';
+      if(false && file_exists($cacheFile) && filemtime($cacheFile) >= time() - 300) {
+        $data = json_decode(file_get_contents($cacheFile), true);
       } else {
-        $response->getBody()->write(view('index', [
-          'title' => 'Monocle',
-        ]));
+        $data = microsub_get($public['microsub']['endpoint'], $public['microsub']['access_token'], 'timeline', $q);
+        $data = json_decode($data['body'], true);
+        file_put_contents($cacheFile, json_encode($data));
       }
+
+      $entries = $data['items'] ?? [];
+      $paging = $data['paging'] ?? [];
+
+      $response->getBody()->write(view('public_timeline', [
+        'title' => $public['title'],
+        'channel' => [],
+        'entries' => $entries,
+        'paging' => $paging,
+        'responses_enabled' => false
+      ]));
+
+    } else {
+      $response->getBody()->write(view('index', [
+        'title' => 'Monocle',
+      ]));
     }
     return $response;
   }
