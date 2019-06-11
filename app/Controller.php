@@ -102,9 +102,14 @@ class Controller {
       ]));
 
     } else {
-      $response->getBody()->write(view('index', [
-        'title' => 'Monocle',
-      ]));
+      if($_SERVER['REQUEST_URI'] == '/') {
+        $response->getBody()->write(view('index', [
+          'title' => 'Monocle',
+        ]));
+      } else {
+        $response->getBody()->write('Not found');
+        return $response->withStatus(404);
+      }
     }
     return $response;
   }
