@@ -64,8 +64,8 @@ class Controller {
 
   public function path(ServerRequestInterface $request, ResponseInterface $response) {
     // Check the config to see if either this hostname or this host+path match
-    if($_SERVER['REQUEST_URI'] !== '/') {
-      $path = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    if($request->getURI()->getPath() !== '/') {
+      $path = $_SERVER['SERVER_NAME'].$request->getURI()->getPath();
     } else {
       $path = $_SERVER['SERVER_NAME'];
     }
