@@ -130,3 +130,22 @@ function supports_post_type($type) {
 
   return false;
 }
+
+function image_placeholder(&$entry, $photo) {
+  if(isset($entry['refs'][$photo])) {
+    $p = $entry['refs'][$photo];
+
+    if(isset($p['ratio'])) {
+      $im = imagecreate(1000*$p['ratio'], 1000);
+      $color = imagecolorallocate($im, 80, 80, 80);
+      imagefill($im, 0,0, $color);
+      ob_start();
+      imagepng($im);
+      $data = base64_encode(ob_get_clean());
+      return 'data:image/png;base64,'.$data;
+    }
+
+  }
+
+  return '';
+}

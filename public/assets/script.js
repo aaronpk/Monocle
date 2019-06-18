@@ -27,6 +27,36 @@ $(function(){
     e.preventDefault();
   });
 
+
+  /***************************************************************
+   * Lazy-load images
+   * https://www.zachleat.com/web/facepile/
+   */
+  if( typeof IntersectionObserver !== "undefined" && "forEach" in NodeList.prototype ) {
+    var observer = new IntersectionObserver(function(changes) {
+      if("connection" in navigator && navigator.connection.saveData === true) {
+        return;
+      }
+      changes.forEach(function(change) {
+        if(change.isIntersecting) {
+          if(change.target.getAttribute("data-lazy-style")) {
+            change.target.setAttribute("style", change.target.getAttribute("data-lazy-style"));
+          }
+          if(change.target.getAttribute("data-lazy-src")) {
+            change.target.setAttribute("src", change.target.getAttribute("data-lazy-src"));
+          }
+          observer.unobserve(change.target);
+        }
+      });
+    });
+    document.querySelectorAll("img[data-lazy-src],a[data-lazy-style]").forEach(function(img) {
+      observer.observe(img);
+    });
+  } else {
+    // IntersectionObserver is not supported
+  }
+  /****************************************************************/
+
 });
 
 
@@ -42,3 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+
+
