@@ -74,4 +74,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+function parseQueryString(string) {
+  if(string == "") { return {}; }
+  var segments = string.split("&").map(s => s.split("=") );
+  var queryString = {};
+  segments.forEach(s => queryString[s[0]] = decodeURIComponent(s[1]));
+  return queryString;
+}
+
 

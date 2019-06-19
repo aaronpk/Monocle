@@ -12,14 +12,14 @@
               <? if(count($entry['photo']) > 1): ?>
                 <div class="multi-photo photos-<?= count($entry['photo']) ?>">
                   <? foreach($entry['photo'] as $photo): ?>
-                    <a href="<?= $photo ?>" data-featherlight="<?= $photo ?>" class="photo" data-lazy-style="background-image:url(<?= $photo ?>);">
+                    <a href="<?= $photo ?>" data-featherlight="<?= $photo ?>" class="photo" <?= defined('LAZYLOAD') ? 'data-lazy-' : '' ?>style="background-image:url(<?= $photo ?>);">
                       <img src="<?= $photo ?>" class="post-img u-photo">
                     </a>
                   <? endforeach ?>
                   <div class="multi-photo-clear"></div>
                 </div>
               <? else: ?>
-                <img src="<?= image_placeholder($entry, $entry['photo'][0]) ?>" data-lazy-src="<?= $entry['photo'][0] ?>" class="photo u-photo">
+                <img <?= defined('LAZYLOAD') ? 'src="'.image_placeholder($entry, $entry['photo'][0]).'" data-lazy-' : '' ?>src="<?= $entry['photo'][0] ?>" class="photo u-photo">
               <? endif ?>
               <div class="photoclear"></div>
             </div>

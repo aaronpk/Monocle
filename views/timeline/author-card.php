@@ -2,10 +2,10 @@
             <? if(!empty($entry['author']['photo'])): ?>
               <? if(isset($entry['_source']) && isset($channel)): ?>
                 <a href="/channel/<?= e($channel['uid']) ?>/<?= e($entry['_source']) ?>">
-                  <img src="/images/no-profile-photo.png" data-lazy-src="<?= e($entry['author']['photo']) ?>" class="u-photo">
+                  <img <?= defined('LAZYLOAD') ? 'src="/images/no-profile-photo.png" data-lazy-' : '' ?>src="<?= e($entry['author']['photo']) ?>" class="u-photo">
                 </a>
               <? else: ?>
-                <img src="/images/no-profile-photo.png" data-lazy-src="<?= e($entry['author']['photo']) ?>" class="u-photo">
+                <img <?= defined('LAZYLOAD') ? 'src="/images/no-profile-photo.png" data-lazy-' : '' ?>src="<?= e($entry['author']['photo']) ?>" class="u-photo">
               <? endif ?>
             <? endif ?>
             <? if(!empty($entry['author']['name']) || !empty($entry['author']['url'])): ?>

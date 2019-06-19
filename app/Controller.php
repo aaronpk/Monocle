@@ -317,6 +317,7 @@ class Controller {
       }
     }
 
+    define('LAZYLOAD', true);
     $response->getBody()->write(view('timeline', [
       'title' => 'Monocle',
       'channel' => $channel,

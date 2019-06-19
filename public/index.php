@@ -35,6 +35,9 @@ $route->map('POST', '/microsub/remove', 'App\\Controller::remove_entry');
 $route->map('POST', '/micropub', 'App\\Controller::micropub');
 $route->map('POST', '/micropub/refresh', 'App\\Controller::micropub_refresh');
 
+$route->map('GET', '/preview', 'App\\PreviewController::get');
+$route->map('POST', '/preview', 'App\\PreviewController::post');
+
 $route->map('GET', '/{path}', 'App\\Controller::path');
 
 
