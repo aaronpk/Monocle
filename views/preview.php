@@ -15,7 +15,9 @@
     </div>
   </div>
 <?php else: ?>
-  <div id="window"></div>
+  <h1 class="title">Feed Preview</h1>
+  <h2 class="subtitle"><a href="<?= e($_GET['url']) ?>"><?= e(p3k\url\display_url($_GET['url'])) ?></a></h2>
+  <div id="window" class="column"></div>
 <?php endif ?>
 
 
@@ -25,6 +27,8 @@ $(function(){
   var query = parseQueryString(window.location.search.substring(1));
 
   if(query && query.url) {
+
+    $("#window").html('<progress class="progress is-small is-primary" max="100"></progress>');
 
     $.post("/preview", {
       url: query.url
@@ -41,7 +45,10 @@ $(function(){
     padding-top: 6rem;
     padding-bottom: 1rem;
     text-align: center;
-    font-size: 32px;
+  }
+
+  h2.subtitle {
+    text-align: center;
   }
 
   a {
