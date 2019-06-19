@@ -5,11 +5,11 @@
 
 <?php if(!isset($_GET['url'])): ?>
   <div class="column">
-    <h1>Preview Your Feed</h1>
+    <h1 class="title">Preview Your Feed</h1>
 
     <div class="section url-form">
       <form class="" action="" method="get">
-        <div class="field"><input type="url" name="url" class="input" placeholder="https://example.com/" value="https://aaronparecki.com/"></div>
+        <div class="field"><input type="url" name="url" class="input" placeholder="https://example.com/"></div>
         <div class="field"><button type="submit" class="button is-primary is-fullwidth" value="Go">Go</button></div>
       </form>
     </div>
