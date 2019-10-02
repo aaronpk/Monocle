@@ -16,7 +16,7 @@
             <? if(isset($entry['repost-of'])): ?>
 
               <div class="repost context">
-                <a href="<?= e($entry['repost-of'][0]) ?>"><i class="fas fa-retweet"></i></a>
+                <a href="<?= e($entry['repost-of'][0]) ?>"><?= fa('retweet') ?></a>
                 <? if(!empty($entry['author']['url'])): ?>
                   <a href="<?= e($entry['author']['url']) ?>" class="u-url p-name">
                     <?= e($entry['author']['name'] ?? \p3k\url\display_url($entry['author']['url'])) ?>

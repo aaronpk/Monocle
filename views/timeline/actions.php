@@ -4,14 +4,14 @@
               <div class="dropdown">
                 <div class="dropdown-trigger">
                   <button class="button is-rounded" aria-haspopup="true" aria-controls="dropdown-<?= md5($entry['_id']) ?>">
-                    <span class="icon"><i class="fas fa-ellipsis-h" aria-hidden="true"></i></span>
+                    <span class="icon"><?= fa('ellipsis-h') ?></span>
                   </button>
                 </div>
                 <div class="dropdown-menu" id="dropdown-<?= md5($entry['_id']) ?>" role="menu">
                   <div class="dropdown-content">
-                    <a class="dropdown-item" href="#" data-action="remove"><span class="icon" style="color: #900;"><i class="fas fa-times-circle"></i></span> Remove from Channel</a>
-                    <a class="dropdown-item" href="#" data-action="debug"><span class="icon"><i class="fas fa-bug"></i></span> Debug</a>
-                    <a class="dropdown-item" href="#" data-action="mark-unread"><span class="icon"><i class="fas fa-eye"></i></span> Mark Unread</a>
+                    <a class="dropdown-item" href="#" data-action="remove"><span class="icon" style="color: #900;"><?= fa('times-circle') ?></span> Remove from Channel</a>
+                    <a class="dropdown-item" href="#" data-action="debug"><span class="icon"><?= fa('bug') ?></span> Debug</a>
+                    <a class="dropdown-item" href="#" data-action="mark-unread"><span class="icon"><?= fa('eye') ?></span> Mark Unread</a>
                     <a class="dropdown-item disabled" href="#" data-action="">Mute this Person</a>
                     <a class="dropdown-item disabled" href="#" data-action="">Block this Person</a>
                     <a class="dropdown-item disabled" href="#" data-action="">Unfollow this Source</a>
@@ -21,13 +21,13 @@
 
               <?php if(isset($entry['url']) && !isset($entry['like-of']) && $responses_enabled): ?>
                 <?php if(supports_post_type('like')): ?>
-                  <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><i class="fas fa-star"></i></span></a>
+                  <a href="#" class="button is-rounded" data-action="favorite"><span class="icon is-small"><?= fa('star') ?></span></a>
                 <?php endif ?>
                 <?php if(supports_post_type('repost')): ?>
-                  <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><i class="fas fa-retweet"></i></span></a>
+                  <a href="#" class="button is-rounded" data-action="repost"><span class="icon is-small"><?= fa('retweet') ?></span></a>
                 <?php endif ?>
                 <?php if(supports_post_type('reply')): ?>
-                  <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><i class="fas fa-reply"></i></span></a>
+                  <a href="#" class="button is-rounded" data-action="reply"><span class="icon is-small"><?= fa('reply') ?></span></a>
                 <?php endif ?>
               <?php endif ?>
             </div>

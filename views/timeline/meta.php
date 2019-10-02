@@ -37,15 +37,23 @@
               <?
               foreach($entry['syndication'] as $syn):
                 $host = parse_url($syn, PHP_URL_HOST);
-                if($host == 'twitter.com' || $host == 'www.twitter.com')
-                  $icon = 'fab fa-twitter';
-                elseif($host == 'facebook.com' || $host == 'www.facebook.com')
-                  $icon = 'fab fa-facebook';
-                elseif($host == 'github.com')
-                  $icon = 'fab fa-github';
-                else
-                  $icon = 'fas fa-link';
-                echo '<a href="'.$syn.'" class="u-syndication"><i class="'.$icon.'"></i></a> ';
+                if($host == 'twitter.com' || $host == 'www.twitter.com')        $icon = 'twitter';
+                elseif($host == 'facebook.com' || $host == 'www.facebook.com')  $icon = 'facebook';
+                elseif($host == 'instagram.com')                                $icon = 'instagram';
+                elseif($host == 'linkedin.com')                                 $icon = 'linkedin';
+                elseif($host == 'github.com')                                   $icon = 'github';
+                elseif($host == 'medium.com')                                   $icon = 'medium';
+                elseif($host == 'swarmapp.com' || $host == 'foursquare.com')    $icon = 'foursquare';
+                elseif($host == 'amazon.com')                                   $icon = 'amazon';
+                elseif($host == 'flickr.com')                                   $icon = 'flickr';
+                elseif($host == 'meetup.com')                                   $icon = 'meetup';
+                elseif($host == 'slideshare.net')                               $icon = 'slideshare';
+                elseif($host == 'news.ycombinator.com')                         $icon = 'y-combinator';
+                elseif($host == 'soundcloud.com')                               $icon = 'soundcloud';
+                elseif($host == 'yelp.com')                                     $icon = 'yelp';
+                elseif($host == 'youtube.com')                                  $icon = 'youtube';
+                else                                                            $icon = 'link';
+                echo '<a href="'.$syn.'" class="u-syndication">'.fa($icon, 'brands').'</a> ';
               endforeach
               ?>
               </span>

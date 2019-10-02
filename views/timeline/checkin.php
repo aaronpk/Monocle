@@ -1,7 +1,7 @@
           <? if(!empty($entry['checkin'])): ?>
             <div class="content checkin p-checkin h-card">
               <div class="name">
-                <i class="fas fa-map-marker-alt"></i>
+                <?= fa('map-marker-alt') ?>
                 <span class="p-name"><?= e($entry['checkin']['name'] ?? '(unknown)') ?></span>
               </div>
               <? if(!empty($entry['checkin']['latitude'])): ?>

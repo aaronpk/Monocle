@@ -21,10 +21,10 @@
       <div class="dropdown-trigger">
         <a href="#" class="button" aria-haspopup="true" aria-controls="dropdown-menu">
         <span class="icon is-small">
-          <i class="fas fa-check" aria-hidden="true"></i>
+          <?= fa('check') ?>
         </span>
         <span class="icon is-small">
-          <i class="fas fa-angle-down" aria-hidden="true"></i>
+          <?= fa('angle-down') ?>
         </span>
         </a>
       </div>
@@ -47,7 +47,7 @@
           <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
             <?= e($channel['name']) ?>
             <span class="icon is-small">
-              <i class="fas fa-angle-down" aria-hidden="true"></i>
+              <?= fa('angle-down') ?>
             </span>
           </button>
         </div>
@@ -55,12 +55,12 @@
           <div class="dropdown-content">
             <a href="#" class="dropdown-item mark-all-read-button">
               <span class="icon is-small">
-                <i class="fas fa-check" aria-hidden="true"></i>
+                <?= fa('check') ?>
               </span> Mark All Read
             </a>
             <a href="/channel/<?= e($channel['uid']) ?>?unread" class="dropdown-item show-unread-button">
               <span class="icon is-small">
-                <i class="fas fa-circle" aria-hidden="true"></i>
+                <?= fa('circle') ?>
               </span> Show Only Unread Entries
             </a>
           </div>
@@ -82,8 +82,8 @@
 
       <? if($source): ?>
         <h3 class="source-name">
-          <a href="/channel/<?= e($channel['uid']) ?>"><i class="fa fa-arrow-circle-left"></i></a>
-          <?= e($source['name']) ?>
+          <a href="/channel/<?= e($channel['uid']) ?>"><?= fa('arrow-circle-left') ?></a>
+          <span style="word-break: break-all;"><?= e($source['name']) ?></span>
         </h3>
       <? endif ?>
 
@@ -103,7 +103,7 @@
             <? if(isset($entry['repost-of'])): ?>
 
               <div class="repost context">
-                <a href="<?= e($entry['repost-of'][0]) ?>"><i class="fas fa-retweet"></i></a>
+                <a href="<?= e($entry['repost-of'][0]) ?>"><?= fa('retweet') ?></a>
                 <? if(!empty($entry['author']['url'])): ?>
                   <a href="<?= e($entry['author']['url']) ?>" class="u-url p-name">
                     <?= e($entry['author']['name'] ?? \p3k\url\display_url($entry['author']['url'])) ?>
@@ -167,7 +167,7 @@
       <div id="main-bottom">
 
           <div class="new-post-button">
-            <a href="#"><span class="icon"><i class="fas fa-pen-square"></i></span></a>
+            <a href="#"><span class="icon"><?= fa('pen-square') ?></span></a>
           </div>
 
           <? if(isset($_SESSION['micropub']['config']['destination'])): ?>

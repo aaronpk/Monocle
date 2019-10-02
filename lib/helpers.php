@@ -149,3 +149,8 @@ function image_placeholder(&$entry, $photo) {
 
   return '';
 }
+
+function fa($name, $collection='solid') {
+  return '<svg class="svg-icon"><use xlink:href="/assets/font-awesome-5.11.2/'.$collection.'.svg#'.$name.'"></use></svg>';
+}
+

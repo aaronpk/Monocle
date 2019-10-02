@@ -10,7 +10,6 @@
 
   <link href="/assets/styles.css" rel="stylesheet" type="text/css">
 
-  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="/assets/jquery-3.3.1.min.js"></script>
   <script src="/assets/featherlight-1.5.0/featherlight.min.js"></script>
   <script src="/assets/script.js?v=2"></script>
