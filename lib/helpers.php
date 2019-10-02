@@ -154,3 +154,11 @@ function fa($name, $collection='solid') {
   return '<svg class="svg-icon"><use xlink:href="/assets/font-awesome-5.11.2/'.$collection.'.svg#'.$name.'"></use></svg>';
 }
 
+function image_proxy($url, $opts='1240x0') {
+  if(!Config::$imageProxyURL)
+    return $url;
+
+  $urlToSign = $url.'#'.$opts;
+  $sig = strtr(base64_encode(hash_hmac('sha256', $urlToSign, Config::$imageProxyKey, 1)), '/+' , '_-');
+  return Config::$imageProxyURL.$opts.',s'.$sig.'/'.$url;
+}

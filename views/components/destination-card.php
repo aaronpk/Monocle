@@ -2,7 +2,7 @@
                   <span class="destination-card">
                     <? if(isset($destination['user'])): ?>
                       <? if(isset($destination['user']['photo'])): ?>
-                        <img src="<?= e($destination['user']['photo']) ?>" width="40">
+                        <img src="<?= e(image_proxy($destination['user']['photo'], '80x80')) ?>" width="40">
                       <? else: ?>
                         <img src="/assets/no-profile-photo.png" width="40">
                       <? endif ?>

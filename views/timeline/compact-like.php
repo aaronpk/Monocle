@@ -1,7 +1,7 @@
             <div class="content">
               <span class="author u-author h-card">
                 <? if(!empty($entry['author']['photo'])): ?>
-                  <img src="<?= e($entry['author']['photo']) ?>" class="u-photo">
+                  <img src="<?= e(image_proxy($entry['author']['photo'], '90x90')) ?>" class="u-photo">
                 <? endif ?>
                 <? if(!empty($entry['author']['url'])): ?>
                   <a href="<?= e($entry['author']['url']) ?>" class="u-url p-name">

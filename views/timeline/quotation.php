@@ -5,7 +5,7 @@
 
                 <? if(isset($quote['photo'])): ?>
                   <div class="qphoto">
-                    <a href="<?= e($quote['url']) ?>"><img src="<?= $quote['photo'][0] ?>" class="photo u-photo"></a>
+                    <a href="<?= e($quote['url']) ?>"><img src="<?= image_proxy($quote['photo'][0]) ?>" class="photo u-photo"></a>
                   </div>
                 <? endif ?>
 
