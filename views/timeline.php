@@ -516,6 +516,7 @@ setInterval(function(){
     reload_channels();
   }
 }, 5000);
+reload_channels();
 
 function reload_channels() {
   $.post("/channels/reload?format=json", function(response){
