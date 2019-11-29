@@ -12,7 +12,7 @@
 
             <? if(!empty($entry['content']['html'])): ?>
               <div class="content html">
-                <span class="e-content"><?= $entry['content']['html'] ?></span>
+                <span class="e-content"><?= p3k\HTML::sanitize($entry['content']['html']) ?></span>
                 <div class="read-more hidden"><a href="#" class="">Read More</a></div>
               </div>
             <? elseif(!empty($entry['content']['text'])): ?>
