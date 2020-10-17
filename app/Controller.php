@@ -251,6 +251,33 @@ class Controller {
     return $response->withHeader('Content-type', 'application/json');
   }
 
+  public function widget(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    $params = $request->getQueryParams();
+
+    if(!isset($params['token'])) {
+      die('Token required');
+    }
+
+    if(!isset($params['endpoint'])) {
+      die('Microsub endpoint required');
+    }
+
+    $uid = urldecode($args['uid']);
+
+    $q = ['channel' => $uid];
+    $data = microsub_get($params['endpoint'], $params['token'], 'timeline', $q);
+    $data = json_decode($data['body'], true);
+
+    $entries = $data['items'] ?? [];
+
+    $response->getBody()->write(view('widget', [
+      'title' => 'Monocle',
+      'entries' => $entries,
+    ]));
+
+    return $response;
+  }
+
   public function timeline(ServerRequestInterface $request, ResponseInterface $response, $args) {
     $this->requireLogin();
 
