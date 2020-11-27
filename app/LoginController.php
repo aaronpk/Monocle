@@ -38,7 +38,7 @@ class LoginController {
       return $response->withHeader('Location', '/login')->withStatus(302);
     }
 
-    $scope = 'create update read follow channels';
+    $scope = 'create update read follow channels profile';
     list($authorizationURL, $error) = IndieAuth\Client::begin($params['url'], $scope);
 
     // If the scheme was added automatically, and if we got an ssl error, try again with http
@@ -69,6 +69,12 @@ class LoginController {
       return $response->withHeader('Location', '/login')->withStatus(302);
     }
 
+    if(!isset($token['response']['access_token'])) {
+      $_SESSION['auth_error'] = 'error';
+      $_SESSION['auth_error_description'] = 'No access token was found from the token endpoint response';
+      return $response->withHeader('Location', '/login')->withStatus(302);
+    }
+
     $micropub = IndieAuth\Client::discoverMicropubEndpoint($token['me']);
     $microsub = IndieAuth\Client::discoverMicrosubEndpoint($token['me']);
 
@@ -78,12 +84,12 @@ class LoginController {
       return $response->withHeader('Location', '/login')->withStatus(302);
     }
 
-    $_SESSION['token'] = $token;
+    $_SESSION['token'] = $token['response'];
     $_SESSION['microsub'] = $microsub;
 
     // Fetch Micropub config
     if($micropub) {
-      $config = get_micropub_config($micropub, $token);
+      $config = get_micropub_config($micropub, $_SESSION['token']);
       $_SESSION['micropub'] = $config;
     }
 
