@@ -5,7 +5,7 @@
 
 <?php if(!isset($_GET['url'])): ?>
   <div class="column">
-    <h1 class="title">Preview Your Feed</h1>
+    <h1 class="title">Preview Your Feed Or Permalink</h1>
 
     <div class="section url-form">
       <form class="" action="" method="get">
