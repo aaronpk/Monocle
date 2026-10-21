@@ -1,0 +1,25 @@
+{
+  "channels": [
+    {
+      "uid": "notifications",
+      "name": "Notifications",
+      "unread": 0
+    },
+    {
+      "uid": "home",
+      "name": "Home",
+      "unread": 3
+    },
+    {
+      "uid": "edge",
+      "name": "Edge Cases",
+      "unread": true
+    },
+    {
+      "uid": "nodest",
+      "name": "No Responses",
+      "unread": false,
+      "destination": "none"
+    }
+  ]
+}

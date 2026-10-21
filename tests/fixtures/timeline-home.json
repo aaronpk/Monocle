@@ -1,0 +1,291 @@
+{
+  "items": [
+    {
+      "type": "entry",
+      "_id": "101",
+      "_source": "7",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://alice.example/notes/1",
+      "published": "2026-10-20T10:00:00-07:00",
+      "content": {
+        "text": "A plain note with café ünïcode",
+        "html": "A plain note with <b>café</b> ünïcode"
+      },
+      "category": [
+        "indieweb",
+        "#php",
+        "https://bob.example/"
+      ],
+      "syndication": [
+        "https://twitter.com/alice/status/1",
+        "https://github.com/alice",
+        "https://example.net/x"
+      ]
+    },
+    {
+      "type": "entry",
+      "_id": "102",
+      "_source": "7",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://alice.example/articles/2",
+      "published": "2026-10-19T09:00:00+00:00",
+      "name": "An Article Title",
+      "summary": "A summary of the article",
+      "content": {
+        "text": "Long article body",
+        "html": "<p>Long article body</p><script>alert(1)</script><img src=\"https://alice.example/inline.jpg\">"
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "103",
+      "_source": "8",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Bob",
+        "url": "https://bob.example/",
+        "photo": null
+      },
+      "url": "https://bob.example/photos/3",
+      "published": "2026-10-18T08:00:00+00:00",
+      "photo": [
+        "https://bob.example/a.jpg",
+        "https://bob.example/b.jpg",
+        "https://bob.example/c.jpg"
+      ]
+    },
+    {
+      "type": "entry",
+      "_id": "104",
+      "_source": "8",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Bob",
+        "url": "https://bob.example/",
+        "photo": null
+      },
+      "url": "https://bob.example/photos/4",
+      "published": "2026-10-18T07:00:00+00:00",
+      "photo": [
+        "https://bob.example/single.jpg"
+      ],
+      "refs": {
+        "https://bob.example/single.jpg": {
+          "type": "image",
+          "ratio": 1.5
+        }
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "105",
+      "_source": "8",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Bob",
+        "url": "https://bob.example/",
+        "photo": null
+      },
+      "url": "https://bob.example/videos/5",
+      "published": "2026-10-17T07:00:00+00:00",
+      "video": [
+        "https://bob.example/v.mp4"
+      ],
+      "photo": [
+        "https://bob.example/poster.jpg"
+      ]
+    },
+    {
+      "type": "entry",
+      "_id": "106",
+      "_source": "7",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://alice.example/checkins/6",
+      "published": "2026-10-16T12:00:00+00:00",
+      "checkin": {
+        "type": "card",
+        "name": "Coffee Shop",
+        "latitude": 45.5,
+        "longitude": -122.6
+      },
+      "content": {
+        "text": "Having coffee"
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "107",
+      "_source": "7",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://alice.example/replies/7",
+      "published": "2026-10-15T12:00:00+00:00",
+      "in-reply-to": [
+        "https://www.bob.example/notes/1",
+        "https://carol.example/"
+      ],
+      "bookmark-of": [
+        "https://dave.example/post"
+      ],
+      "content": {
+        "text": "Replying to two posts"
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "108",
+      "_source": "7",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://alice.example/likes/8",
+      "published": "2026-10-14T12:00:00+00:00",
+      "like-of": [
+        "https://bob.example/notes/9"
+      ]
+    },
+    {
+      "type": "entry",
+      "_id": "109",
+      "_source": "7",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "url": "https://alice.example/"
+      },
+      "url": "https://alice.example/likes/9",
+      "published": "2026-10-14T11:00:00+00:00",
+      "like-of": [
+        "https://bob.example/a",
+        "https://www.carol.example/b",
+        "https://dave.example/"
+      ]
+    },
+    {
+      "type": "entry",
+      "_id": "110",
+      "_source": "7",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://alice.example/reposts/10",
+      "published": "2026-10-13T12:00:00+00:00",
+      "repost-of": [
+        "https://bob.example/notes/11"
+      ],
+      "refs": {
+        "https://bob.example/notes/11": {
+          "type": "entry",
+          "author": {
+            "type": "card",
+            "name": "Bob",
+            "url": "https://bob.example/",
+            "photo": null
+          },
+          "url": "https://bob.example/notes/11",
+          "content": {
+            "text": "The reposted note"
+          },
+          "published": "2026-10-12T00:00:00+00:00"
+        }
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "111",
+      "_source": "8",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Bob",
+        "url": "https://bob.example/",
+        "photo": null
+      },
+      "url": "https://bob.example/quotes/12",
+      "published": "2026-10-12T12:00:00+00:00",
+      "content": {
+        "text": "Quoting this"
+      },
+      "quotation-of": "https://carol.example/q",
+      "refs": {
+        "https://carol.example/q": {
+          "type": "entry",
+          "url": "https://carol.example/q",
+          "photo": [
+            "https://carol.example/q.jpg"
+          ],
+          "author": {
+            "name": "Carol",
+            "url": "https://carol.example/"
+          },
+          "content": {
+            "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "112",
+      "_source": "9",
+      "_is_read": true,
+      "url": "https://feed.example/items/13",
+      "summary": "Only a summary, no author or date"
+    },
+    {
+      "type": "entry",
+      "_id": "113",
+      "_source": "9",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "published": "not a date",
+      "audio": [
+        "https://alice.example/podcast.mp3"
+      ],
+      "name": "Podcast episode"
+    }
+  ],
+  "paging": {
+    "before": "b1",
+    "after": "a1"
+  }
+}

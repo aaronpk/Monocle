@@ -1,0 +1,211 @@
+{
+  "items": [
+    {
+      "type": "entry",
+      "_id": "201",
+      "_is_read": 0,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/1",
+      "category": [
+        {
+          "type": "card",
+          "name": "Tagged Person",
+          "url": "https://tagged.example/"
+        },
+        "plain"
+      ],
+      "content": {
+        "text": "h-card category"
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "202",
+      "_is_read": "0",
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/2",
+      "like-of": "https://liked.example/post"
+    },
+    {
+      "type": "entry",
+      "_id": "203",
+      "_is_read": "false",
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/3",
+      "in-reply-to": "https://reply.example/post",
+      "bookmark-of": "https://bm.example/",
+      "content": {
+        "text": "string reply context"
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "204",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/4",
+      "repost-of": "https://reposted.example/post"
+    },
+    {
+      "type": "entry",
+      "_id": "205",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/5",
+      "audio": [
+        {
+          "value": "https://e.example/a.mp3",
+          "alt": "An audio file"
+        }
+      ]
+    },
+    {
+      "type": "entry",
+      "_id": "206",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/6",
+      "photo": [
+        "https://e.example/tiny.jpg"
+      ],
+      "refs": {
+        "https://e.example/tiny.jpg": {
+          "type": "image",
+          "ratio": 0.0004
+        }
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "207",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/7",
+      "photo": [
+        "https://e.example/frac.jpg"
+      ],
+      "refs": {
+        "https://e.example/frac.jpg": {
+          "type": "image",
+          "ratio": 1.3337
+        }
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "208",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/8",
+      "content": {
+        "text": "quote with html only"
+      },
+      "quotation-of": "https://q.example/",
+      "refs": {
+        "https://q.example/": {
+          "type": "entry",
+          "content": {
+            "html": "<p>html only</p>"
+          },
+          "author": {
+            "type": "card"
+          }
+        }
+      }
+    },
+    {
+      "type": "entry",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/9",
+      "content": {
+        "text": "no _id"
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "210",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://e.example/10",
+      "checkin": {
+        "type": "card",
+        "name": "Latitude Only",
+        "latitude": "12.5"
+      }
+    },
+    {
+      "type": "entry",
+      "_id": "211",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": null,
+        "url": null,
+        "photo": ""
+      },
+      "content": {
+        "html": ""
+      },
+      "name": ""
+    },
+    {
+      "type": "entry",
+      "_id": "212",
+      "_is_read": false,
+      "photo": "https://e.example/single-string.jpg",
+      "url": "https://e.example/12"
+    }
+  ],
+  "paging": {}
+}

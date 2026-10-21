@@ -1,0 +1,53 @@
+{
+  "items": [
+    {
+      "type": "entry",
+      "_id": "101",
+      "_source": "7",
+      "_is_read": false,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://alice.example/notes/1",
+      "published": "2026-10-20T10:00:00-07:00",
+      "content": {
+        "text": "A plain note with café ünïcode",
+        "html": "A plain note with <b>café</b> ünïcode"
+      },
+      "category": [
+        "indieweb",
+        "#php",
+        "https://bob.example/"
+      ],
+      "syndication": [
+        "https://twitter.com/alice/status/1",
+        "https://github.com/alice",
+        "https://example.net/x"
+      ]
+    },
+    {
+      "type": "entry",
+      "_id": "102",
+      "_source": "7",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://alice.example/articles/2",
+      "published": "2026-10-19T09:00:00+00:00",
+      "name": "An Article Title",
+      "summary": "A summary of the article",
+      "content": {
+        "text": "Long article body",
+        "html": "<p>Long article body</p><script>alert(1)</script><img src=\"https://alice.example/inline.jpg\">"
+      }
+    }
+  ],
+  "paging": {}
+}

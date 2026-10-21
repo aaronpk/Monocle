@@ -1,0 +1,4 @@
+# GET requests recorded against the second test server, which has the image proxy enabled.
+/channel/home | Cookie: PHPSESSID=monocletest
+/channel/edge | Cookie: PHPSESSID=monocletest
+/widget/home?token=t&endpoint=http%3A%2F%2F127.0.0.1%3A18080%2Fmicrosub

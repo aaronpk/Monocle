@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "type": "entry",
+      "_id": "120",
+      "_source": "7",
+      "_is_read": true,
+      "author": {
+        "type": "card",
+        "name": "Alice Example",
+        "url": "https://www.alice.example/",
+        "photo": "https://alice.example/photo.jpg"
+      },
+      "url": "https://alice.example/notes/20",
+      "published": "2026-10-01T00:00:00+00:00",
+      "content": {
+        "text": "Page two"
+      }
+    }
+  ],
+  "paging": {
+    "before": "b2"
+  }
+}

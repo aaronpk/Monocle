@@ -1,0 +1,35 @@
+# GET requests recorded by tests/run.sh against the main test server (no image proxy).
+# Lines with a Cookie use the logged-in session written by tests/seed-session.php.
+
+# Logged out
+/
+/login
+/preview
+/debug
+/stream
+/stream?after=a1
+/no-such-page
+/channel/home/
+/micropub
+/widget/home?token=t&endpoint=http%3A%2F%2F127.0.0.1%3A18080%2Fmicrosub
+/widget/edge?token=t&endpoint=http%3A%2F%2F127.0.0.1%3A18080%2Fmicrosub
+/widget/home
+/widget/home?token=t
+/assets/styles.css
+
+# Logged in
+/ | Cookie: PHPSESSID=monocletest
+/channel/home | Cookie: PHPSESSID=monocletest
+/channel/home?after=a1 | Cookie: PHPSESSID=monocletest
+/channel/home?unread | Cookie: PHPSESSID=monocletest
+/channel/home?after=a1&unread | Cookie: PHPSESSID=monocletest
+/channel/home/7 | Cookie: PHPSESSID=monocletest
+/channel/edge | Cookie: PHPSESSID=monocletest
+/channel/nodest | Cookie: PHPSESSID=monocletest
+/channel/notifications | Cookie: PHPSESSID=monocletest
+/channel/missing | Cookie: PHPSESSID=monocletest
+/channel/Home%20Two | Cookie: PHPSESSID=monocletest
+/debug | Cookie: PHPSESSID=monocletest
+/login | Cookie: PHPSESSID=monocletest
+HEAD /channel/home | Cookie: PHPSESSID=monocletest
+HEAD /no-such-page

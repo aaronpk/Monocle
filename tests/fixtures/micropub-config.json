@@ -1,0 +1,27 @@
+{
+  "media-endpoint": "http://127.0.0.1:18080/media",
+  "destination": [
+    {
+      "uid": "https://alice.example/",
+      "name": "alice.example",
+      "user": {
+        "name": "Alice",
+        "photo": "https://alice.example/photo.jpg"
+      }
+    },
+    {
+      "uid": "https://blog.example/",
+      "name": "Blog Without User"
+    }
+  ],
+  "post-types": [
+    {
+      "type": "like",
+      "name": "Like"
+    },
+    {
+      "type": "reply",
+      "name": "Reply"
+    }
+  ]
+}

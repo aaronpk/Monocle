@@ -1,0 +1,25 @@
+{
+  "type": "feed",
+  "items": [
+    {
+      "type": "entry",
+      "url": "https://preview.example/1",
+      "published": "2026-10-10T00:00:00+00:00",
+      "author": {
+        "name": "Preview Author",
+        "url": "https://www.preview.example/"
+      },
+      "content": {
+        "text": "Preview item one"
+      }
+    },
+    {
+      "type": "entry",
+      "url": "https://preview.example/2",
+      "name": "Preview Article",
+      "content": {
+        "html": "<p>Two</p>"
+      }
+    }
+  ]
+}
