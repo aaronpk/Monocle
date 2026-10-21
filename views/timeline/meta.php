@@ -1,40 +1,40 @@
           <div class="meta">
-            <? $empty = true; ?>
-            <? if(!empty($entry['category'])): ?>
+            <?php $empty = true; ?>
+            <?php if(!empty($entry['category'])): ?>
               <div class="categories">
-                <? foreach($entry['category'] as $tag): if(trim($tag)): ?>
-                  <? if(preg_match('~https?://~', $tag)): ?>
+                <?php foreach($entry['category'] as $tag): if(is_scalar($tag) && trim($tag)): ?>
+                  <?php if(preg_match('~https?://~', $tag)): ?>
                     <span class="category"><a href="<?= e($tag) ?>" class="u-category"><?= \p3k\url\display_url($tag) ?></a></span>
-                  <? else: ?>
+                  <?php else: ?>
                     <span class="category">#<span class="p-category"><?= trim($tag,'#') ?></span></span>
-                  <? endif ?>
-                <? endif; endforeach ?>
+                  <?php endif ?>
+                <?php endif; endforeach ?>
               </div>
-              <? $empty = false; ?>
-            <? endif ?>
+              <?php $empty = false; ?>
+            <?php endif ?>
 
-            <? if(!empty($entry['published'])): ?>
-              <? if(!empty($entry['url'])): ?>
+            <?php if(!empty($entry['published'])): ?>
+              <?php if(!empty($entry['url'])): ?>
                 <a href="<?= e($entry['url']) ?>" class="u-url u-uid">
                   <time class="dt-published" datetime="<?= display_date('c', $entry['published']) ?>">
                     <?= display_date('F j, Y g:ia P', $entry['published']) ?>
                   </time>
                 </a>
-              <? else: ?>
+              <?php else: ?>
                 <time class="dt-published" datetime="<?= display_date('c', $entry['published']) ?>">
                   <?= display_date('F j, Y g:ia P', $entry['published']) ?>
                 </time>
-              <? endif ?>
-              <? $empty = false; ?>
-            <? elseif(!empty($entry['url'])): ?>
+              <?php endif ?>
+              <?php $empty = false; ?>
+            <?php elseif(!empty($entry['url'])): ?>
               <a href="<?= e($entry['url']) ?>" class="u-url u-uid">
                 <?= e(\p3k\url\display_url($entry['url'])) ?>
               </a>
-              <? $empty = false; ?>
-            <? endif ?>
-            <? if(!empty($entry['syndication'])): ?>
+              <?php $empty = false; ?>
+            <?php endif ?>
+            <?php if(!empty($entry['syndication'])): ?>
               <span class="syndication">
-              <?
+              <?php
               foreach($entry['syndication'] as $syn):
                 $host = parse_url($syn, PHP_URL_HOST);
                 if($host == 'twitter.com' || $host == 'www.twitter.com')        $icon = 'twitter';
@@ -57,9 +57,9 @@
               endforeach
               ?>
               </span>
-              <? $empty = false; ?>
-            <? endif ?>
-            <? if($empty): ?>
+              <?php $empty = false; ?>
+            <?php endif ?>
+            <?php if($empty): ?>
               &nbsp;
-            <? endif ?>
+            <?php endif ?>
           </div>

@@ -2,34 +2,34 @@
 
     <div class="column"><div class="inner">
 
-      <? foreach($entries as $i=>$entry): ?>
+      <?php foreach($entries as $i=>$entry): ?>
         <div class="entry h-entry <?= isset($entry['like-of']) ? 'like-of' : '' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id'] ?? '') ?>">
 
-          <? if(isset($entry['like-of'])): ?>
+          <?php if(isset($entry['like-of'])): ?>
 
-            <? /* TODO: if expanded content of the like-of is available, render that post instead */ ?>
+            <?php /* TODO: if expanded content of the like-of is available, render that post instead */ ?>
             <?= $this->insert('timeline/compact-like', ['entry' => $entry]) ?>
             <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
 
-          <? else: ?>
+          <?php else: ?>
 
-            <? if(isset($entry['repost-of'])): ?>
+            <?php if(isset($entry['repost-of'])): ?>
 
               <div class="repost context">
                 <a href="<?= e($entry['repost-of'][0]) ?>"><?= fa('retweet') ?></a>
-                <? if(!empty($entry['author']['url'])): ?>
+                <?php if(!empty($entry['author']['url'])): ?>
                   <a href="<?= e($entry['author']['url']) ?>" class="u-url p-name">
                     <?= e($entry['author']['name'] ?? \p3k\url\display_url($entry['author']['url'])) ?>
                   </a>
-                <? elseif(!empty($entry['author']['name'])): ?>
+                <?php elseif(!empty($entry['author']['name'])): ?>
                   <?= e($entry['author']['name']) ?>
-                <? else: ?>
+                <?php else: ?>
                   someone
-                <? endif ?>
+                <?php endif ?>
                 reposted
               </div>
 
-              <?
+              <?php
                 /* overwrite $entry so that the reposted post is displayed instead */
                 if(isset($entry['refs'][$entry['repost-of'][0]])) {
                   $_id = $entry['_id'];
@@ -38,14 +38,14 @@
                 }
               ?>
 
-            <? endif ?>
+            <?php endif ?>
 
             <?= $this->insert('timeline/reply-context', ['entry' => $entry]) ?>
 
             <?= $this->insert('timeline/author-card', ['entry' => $entry]) ?>
 
-            <? /* ************************************************ */ ?>
-            <? /* POST CONTENTS                                    */ ?>
+            <?php /* ************************************************ */ ?>
+            <?php /* POST CONTENTS                                    */ ?>
 
             <?= $this->insert('timeline/checkin', ['entry' => $entry]) ?>
 
@@ -61,20 +61,20 @@
 
             <?= $this->insert('timeline/quotation', ['entry' => $entry]) ?>
 
-            <? /* ************************************************ */ ?>
+            <?php /* ************************************************ */ ?>
 
             <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
-          <? endif ?>
+          <?php endif ?>
 
           <pre style="display: none;" class="source"><?= j($entry) ?></pre>
         </div>
-      <? endforeach ?>
+      <?php endforeach ?>
 
-      <? if(isset($paging['after'])): ?>
+      <?php if(isset($paging['after'])): ?>
       <nav class="pagination" role="navigation" aria-label="pagination">
         <a class="pagination-next" href="?after=<?= e($paging['after']) ?>">More</a>
       </nav>
-      <? endif ?>
+      <?php endif ?>
 
     </div></div>
 

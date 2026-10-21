@@ -1,17 +1,17 @@
-          <? if(!empty($entry['name'])): ?>
+          <?php if(!empty($entry['name'])): ?>
             <h2 class="name p-name"><?= e($entry['name']) ?></h2>
-          <? endif ?>
+          <?php endif ?>
 
-          <? if(!empty($entry['content']['html'])): ?>
+          <?php if(!empty($entry['content']['html'])): ?>
             <div class="content html">
               <span class="e-content"><?= p3k\HTML::sanitize($entry['content']['html']) ?></span>
               <div class="read-more hidden"><a href="#" class="">Read More</a></div>
             </div>
-          <? elseif(!empty($entry['content']['text'])): ?>
+          <?php elseif(!empty($entry['content']['text'])): ?>
             <div class="content text"><span class="p-content"><?= e($entry['content']['text']) ?></span> <div class="read-more hidden"><a href="#" class="">Read More</a></div></div>
-          <? endif ?>
+          <?php endif ?>
 
-          <?
+          <?php
           // If no other content is available to be displayed, show the summary instead
           if(
             !isset($entry['checkin'])
@@ -23,10 +23,10 @@
           ):
           ?>
             <div class="content">
-              <? if(!empty($entry['summary'])): ?>
+              <?php if(!empty($entry['summary'])): ?>
                 <div class="text"><span class="p-summary"><?= e($entry['summary']) ?></span></div>
-              <? else: ?>
+              <?php else: ?>
                 <div class="content text"></div>
-              <? endif ?>
+              <?php endif ?>
             </div>
-          <? endif ?>
+          <?php endif ?>

@@ -1,5 +1,5 @@
-          <? if(!empty($entry['audio'])): ?>
-            <? foreach($entry['audio'] as $audio): ?>
+          <?php if(!empty($entry['audio'])): ?>
+            <?php foreach($entry['audio'] as $audio): ?>
               <audio src="<?= e($audio) ?>" controls class="u-audio"></audio>
-            <? endforeach ?>
-          <? endif ?>
+            <?php endforeach ?>
+          <?php endif ?>

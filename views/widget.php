@@ -37,17 +37,17 @@
 
     <div class="column"><div class="inner">
 
-      <? foreach($entries as $i=>$entry): ?>
-        <? if(!isset($entry['like-of']) && !isset($entry['repost-of'])): ?>
-          <div class="entry h-entry <?= isset($entry['like-of']) ? 'like-of' : '' ?> <?= isset($entry['_is_read']) && $entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
+      <?php foreach($entries as $i=>$entry): ?>
+        <?php if(!isset($entry['like-of']) && !isset($entry['repost-of'])): ?>
+          <div class="entry h-entry <?= isset($entry['like-of']) ? 'like-of' : '' ?> <?= isset($entry['_is_read']) && (int)$entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id'] ?? '') ?>"
             data-is-read="<?= isset($entry['_is_read']) ? ($entry['_is_read'] ? 1 : 0) : 1 ?>">
 
             <?= $this->insert('timeline/reply-context', ['entry' => $entry]) ?>
 
             <?= $this->insert('timeline/author-card', ['entry' => $entry]) ?>
 
-            <? /* ************************************************ */ ?>
-            <? /* POST CONTENTS                                    */ ?>
+            <?php /* ************************************************ */ ?>
+            <?php /* POST CONTENTS                                    */ ?>
 
             <?= $this->insert('timeline/checkin', ['entry' => $entry]) ?>
 
@@ -59,13 +59,13 @@
 
             <?= $this->insert('timeline/quotation', ['entry' => $entry]) ?>
 
-            <? /* ************************************************ */ ?>
+            <?php /* ************************************************ */ ?>
 
             <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
 
           </div>
-        <? endif ?>
-      <? endforeach ?>
+        <?php endif ?>
+      <?php endforeach ?>
 
     </div></div>
 

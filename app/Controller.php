@@ -1,8 +1,8 @@
 <?php
 namespace App;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Monocle\Http\Request;
+use Monocle\Http\Response;
 use IndieAuth;
 use Config;
 
@@ -26,7 +26,7 @@ class Controller {
     return $r;
   }
 
-  public function index(ServerRequestInterface $request, ResponseInterface $response) {
+  public function index(Request $request, Response $response) {
     \p3k\session_setup();
 
     if(isset($_SESSION['token'])) {
@@ -62,7 +62,7 @@ class Controller {
     return $response;
   }
 
-  public function path(ServerRequestInterface $request, ResponseInterface $response) {
+  public function path(Request $request, Response $response) {
     // Check the config to see if either this hostname or this host+path match
     if($request->getURI()->getPath() !== '/') {
       $path = $_SERVER['SERVER_NAME'].$request->getURI()->getPath();
@@ -114,7 +114,7 @@ class Controller {
     return $response;
   }
 
-  public function debug(ServerRequestInterface $request, ResponseInterface $response) {
+  public function debug(Request $request, Response $response) {
     \p3k\session_setup();
 
     $response->getBody()->write(view('debug', [
@@ -124,7 +124,7 @@ class Controller {
     return $response;
   }
 
-  public function micropub(ServerRequestInterface $request, ResponseInterface $response) {
+  public function micropub(Request $request, Response $response) {
     $this->requireLogin();
     $body = $request->getParsedBody();
 
@@ -146,7 +146,7 @@ class Controller {
     return $response->withHeader('Content-type', 'application/json');
   }
 
-  public function mark_as_read(ServerRequestInterface $request, ResponseInterface $response) {
+  public function mark_as_read(Request $request, Response $response) {
     $this->requireLogin();
     $body = $request->getParsedBody();
 
@@ -163,7 +163,7 @@ class Controller {
     ]));
     return $response->withHeader('Content-type', 'application/json');
   }
-  public function mark_all_as_read(ServerRequestInterface $request, ResponseInterface $response) {
+  public function mark_all_as_read(Request $request, Response $response) {
     $this->requireLogin();
     $body = $request->getParsedBody();
 
@@ -181,7 +181,7 @@ class Controller {
     return $response->withHeader('Content-type', 'application/json');
   }
 
-  public function mark_as_unread(ServerRequestInterface $request, ResponseInterface $response) {
+  public function mark_as_unread(Request $request, Response $response) {
     $this->requireLogin();
     $body = $request->getParsedBody();
 
@@ -199,7 +199,7 @@ class Controller {
     return $response->withHeader('Content-type', 'application/json');
   }
 
-  public function remove_entry(ServerRequestInterface $request, ResponseInterface $response) {
+  public function remove_entry(Request $request, Response $response) {
     $this->requireLogin();
     $body = $request->getParsedBody();
 
@@ -216,7 +216,7 @@ class Controller {
     return $response->withHeader('Content-type', 'application/json');
   }
 
-  public function reload_channels(ServerRequestInterface $request, ResponseInterface $response) {
+  public function reload_channels(Request $request, Response $response) {
     $this->requireLogin();
     $params = $request->getQueryParams();
 
@@ -233,7 +233,7 @@ class Controller {
     }
   }
 
-  public function micropub_refresh(ServerRequestInterface $request, ResponseInterface $response) {
+  public function micropub_refresh(Request $request, Response $response) {
     $this->requireLogin();
 
     if(isset($_SESSION['micropub'])) {
@@ -251,7 +251,7 @@ class Controller {
     return $response->withHeader('Content-type', 'application/json');
   }
 
-  public function widget(ServerRequestInterface $request, ResponseInterface $response, $args) {
+  public function widget(Request $request, Response $response, $args) {
     $params = $request->getQueryParams();
 
     if(!isset($params['token'])) {
@@ -278,7 +278,7 @@ class Controller {
     return $response;
   }
 
-  public function timeline(ServerRequestInterface $request, ResponseInterface $response, $args) {
+  public function timeline(Request $request, Response $response, $args) {
     $this->requireLogin();
 
     $params = $request->getQueryParams();

@@ -13,7 +13,10 @@ function view($template, $data=[]) {
 }
 
 function e($text) {
-  return htmlspecialchars($text);
+  // Before PHP 8, htmlspecialchars() returned null for arrays, which printed nothing
+  if(is_array($text) || is_object($text))
+    return null;
+  return htmlspecialchars((string)$text);
 }
 
 function j($json) {
@@ -136,7 +139,12 @@ function image_placeholder(&$entry, $photo) {
     $p = $entry['refs'][$photo];
 
     if(isset($p['ratio'])) {
-      $im = imagecreate(1000*$p['ratio'], 1000);
+      // An image less than 1px wide used to fail quietly and leave an empty
+      // placeholder. PHP 8 throws instead.
+      $width = (int)(1000*$p['ratio']);
+      if($width < 1)
+        return 'data:image/png;base64,';
+      $im = imagecreate($width, 1000);
       $color = imagecolorallocate($im, 80, 80, 80);
       imagefill($im, 0,0, $color);
       ob_start();

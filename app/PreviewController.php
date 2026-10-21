@@ -1,14 +1,14 @@
 <?php
 namespace App;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Monocle\Http\Request;
+use Monocle\Http\Response;
 use IndieAuth;
 use Config;
 
 class PreviewController {
 
-  public function get(ServerRequestInterface $request, ResponseInterface $response) {
+  public function get(Request $request, Response $response) {
 
     $entries = [];
 
@@ -19,7 +19,7 @@ class PreviewController {
     return $response;
   }
 
-  public function post(ServerRequestInterface $request, ResponseInterface $response) {
+  public function post(Request $request, Response $response) {
     $body = $request->getParsedBody();
 
     $ch = curl_init(Config::$xray.'parse?'.http_build_query([

@@ -1,8 +1,8 @@
 <?php
 namespace App;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Monocle\Http\Request;
+use Monocle\Http\Response;
 use IndieAuth;
 use Config;
 
@@ -14,14 +14,14 @@ class LoginController {
     IndieAuth\Client::$redirectURL = Config::$base.'login/callback';
   }
 
-  public function login(ServerRequestInterface $request, ResponseInterface $response) {
+  public function login(Request $request, Response $response) {
     $response->getBody()->write(view('login', [
       'title' => 'Monocle',
     ]));
     return $response;
   }
 
-  public function logout(ServerRequestInterface $request, ResponseInterface $response) {
+  public function logout(Request $request, Response $response) {
     unset($_SESSION['token']);
     unset($_SESSION['micropub']);
     unset($_SESSION['microsub']);
@@ -29,7 +29,7 @@ class LoginController {
     return $response->withHeader('Location', '/')->withStatus(302);
   }
 
-  public function login_start(ServerRequestInterface $request, ResponseInterface $response) {
+  public function login_start(Request $request, Response $response) {
     $params = $request->getParsedBody();
 
     if(!isset($params['url'])) {
@@ -58,7 +58,7 @@ class LoginController {
     return $response->withHeader('Location', $authorizationURL)->withStatus(302);
   }
 
-  public function login_callback(ServerRequestInterface $request, ResponseInterface $response) {
+  public function login_callback(Request $request, Response $response) {
     $params = $request->getQueryParams();
 
     list($token, $error) = IndieAuth\Client::complete($params);

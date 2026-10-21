@@ -3,11 +3,11 @@
 
               <div class="dropdown">
                 <div class="dropdown-trigger">
-                  <button class="button is-rounded" aria-haspopup="true" aria-controls="dropdown-<?= md5($entry['_id']) ?>">
+                  <button class="button is-rounded" aria-haspopup="true" aria-controls="dropdown-<?= md5($entry['_id'] ?? '') ?>">
                     <span class="icon"><?= fa('ellipsis-h') ?></span>
                   </button>
                 </div>
-                <div class="dropdown-menu" id="dropdown-<?= md5($entry['_id']) ?>" role="menu">
+                <div class="dropdown-menu" id="dropdown-<?= md5($entry['_id'] ?? '') ?>" role="menu">
                   <div class="dropdown-content">
                     <a class="dropdown-item" href="#" data-action="remove"><span class="icon" style="color: #900;"><?= fa('times-circle') ?></span> Remove from Channel</a>
                     <a class="dropdown-item" href="#" data-action="debug"><span class="icon"><?= fa('bug') ?></span> Debug</a>

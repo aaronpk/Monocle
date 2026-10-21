@@ -9,11 +9,11 @@
   <div id="main-top">
     <label for="nav-trigger" id="nav-trigger-label"></label>
     <h2 class="title is-hidden-mobile">
-      <? if($source): ?>
+      <?php if($source): ?>
         <a href="/channel/<?= e($channel['uid']) ?>"><?= e($channel['name']) ?></a>
-      <? else: ?>
+      <?php else: ?>
         <?= e($channel['name']) ?>
-      <? endif ?>
+      <?php endif ?>
 
     </h2>
 
@@ -80,43 +80,43 @@
 
     <div class="column"><div class="inner">
 
-      <? if($source): ?>
+      <?php if($source): ?>
         <h3 class="source-name">
           <a href="/channel/<?= e($channel['uid']) ?>"><?= fa('arrow-circle-left') ?></a>
           <span style="word-break: break-all;"><?= e($source['name']) ?></span>
         </h3>
-      <? endif ?>
+      <?php endif ?>
 
-      <? foreach($entries as $i=>$entry): ?>
-        <div class="entry h-entry <?= isset($entry['like-of']) ? 'like-of' : '' ?> <?= isset($entry['_is_read']) && $entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id']) ?>"
+      <?php foreach($entries as $i=>$entry): ?>
+        <div class="entry h-entry <?= isset($entry['like-of']) ? 'like-of' : '' ?> <?= isset($entry['_is_read']) && (int)$entry['_is_read'] == 0 ? 'unread' : 'read' ?>" data-entry="<?= $i ?>" data-entry-id="<?= e($entry['_id'] ?? '') ?>"
           data-is-read="<?= isset($entry['_is_read']) ? ($entry['_is_read'] ? 1 : 0) : 1 ?>">
 
-          <? if(isset($entry['like-of'])): ?>
+          <?php if(isset($entry['like-of'])): ?>
 
-            <? /* TODO: if expanded content of the like-of is available, render that post instead */ ?>
+            <?php /* TODO: if expanded content of the like-of is available, render that post instead */ ?>
             <?= $this->insert('timeline/compact-like', ['entry' => $entry]) ?>
             <?= $this->insert('timeline/actions', ['entry' => $entry, 'responses_enabled' => $responses_enabled]) ?>
             <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
 
-          <? else: ?>
+          <?php else: ?>
 
-            <? if(isset($entry['repost-of'])): ?>
+            <?php if(isset($entry['repost-of'])): ?>
 
               <div class="repost context">
                 <a href="<?= e($entry['repost-of'][0]) ?>"><?= fa('retweet') ?></a>
-                <? if(!empty($entry['author']['url'])): ?>
+                <?php if(!empty($entry['author']['url'])): ?>
                   <a href="<?= e($entry['author']['url']) ?>" class="u-url p-name">
                     <?= e($entry['author']['name'] ?? \p3k\url\display_url($entry['author']['url'])) ?>
                   </a>
-                <? elseif(!empty($entry['author']['name'])): ?>
+                <?php elseif(!empty($entry['author']['name'])): ?>
                   <?= e($entry['author']['name']) ?>
-                <? else: ?>
+                <?php else: ?>
                   someone
-                <? endif ?>
+                <?php endif ?>
                 reposted
               </div>
 
-              <?
+              <?php
                 /* overwrite $entry so that the reposted post is displayed instead */
                 if(isset($entry['refs'][$entry['repost-of'][0]])) {
                   $_id = $entry['_id'];
@@ -125,14 +125,14 @@
                 }
               ?>
 
-            <? endif ?>
+            <?php endif ?>
 
             <?= $this->insert('timeline/reply-context', ['entry' => $entry]) ?>
 
             <?= $this->insert('timeline/author-card', ['entry' => $entry, 'channel' => $channel]) ?>
 
-            <? /* ************************************************ */ ?>
-            <? /* POST CONTENTS                                    */ ?>
+            <?php /* ************************************************ */ ?>
+            <?php /* POST CONTENTS                                    */ ?>
 
             <?= $this->insert('timeline/checkin', ['entry' => $entry]) ?>
 
@@ -144,55 +144,55 @@
 
             <?= $this->insert('timeline/quotation', ['entry' => $entry]) ?>
 
-            <? /* ************************************************ */ ?>
+            <?php /* ************************************************ */ ?>
 
             <?= $this->insert('timeline/meta', ['entry' => $entry]) ?>
 
             <?= $this->insert('timeline/actions', ['entry' => $entry, 'responses_enabled' => $responses_enabled]) ?>
-          <? endif ?>
+          <?php endif ?>
 
           <pre style="display: none;" class="source"><?= j($entry) ?></pre>
         </div>
-      <? endforeach ?>
+      <?php endforeach ?>
 
-      <? if(isset($paging['after'])): ?>
+      <?php if(isset($paging['after'])): ?>
       <nav class="pagination" role="navigation" aria-label="pagination">
         <a class="pagination-next" href="?after=<?= e($paging['after']) ?><?= $show_unread ? '&unread' : '' ?>">More</a>
       </nav>
-      <? endif ?>
+      <?php endif ?>
 
     </div></div>
 
-    <? if($responses_enabled): ?>
+    <?php if($responses_enabled): ?>
       <div id="main-bottom">
 
           <div class="new-post-button">
             <a href="#"><span class="icon"><?= fa('pen-square') ?></span></a>
           </div>
 
-          <? if(isset($_SESSION['micropub']['config']['destination'])): ?>
+          <?php if(isset($_SESSION['micropub']['config']['destination'])): ?>
           <div class="dropdown is-up is-right" id="destination-chooser">
             <div class="dropdown-trigger is-right is-mobile">
               <div class="selected-destination">
-                <? if(isset($destination['user']['photo'])): ?>
+                <?php if(isset($destination['user']['photo'])): ?>
                   <img src="<?= e(image_proxy($destination['user']['photo'], '80x80')) ?>" width="40">
-                <? else: ?>
+                <?php else: ?>
                   <img src="/assets/no-profile-photo.png" width="40">
-                <? endif ?>
+                <?php endif ?>
               </div>
             </div>
             <div class="dropdown-menu">
               <div class="dropdown-content">
-                <? foreach($_SESSION['micropub']['config']['destination'] as $dest): ?>
+                <?php foreach($_SESSION['micropub']['config']['destination'] as $dest): ?>
                   <?= $this->insert('components/destination-card', ['destination'=>$dest, 'selected' => $dest['uid']==$destination['uid'], 'tag'=>'a', 'href'=>'#']) ?>
-                <? endforeach; ?>
+                <?php endforeach; ?>
               </div>
             </div>
           </div>
-          <? endif ?>
+          <?php endif ?>
 
       </div>
-    <? endif ?>
+    <?php endif ?>
 
   </div>
 </div>
