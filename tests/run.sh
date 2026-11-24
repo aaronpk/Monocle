@@ -17,22 +17,31 @@ ROOT=$(cd "$(dirname "$0")/.." && pwd)
 FIXTURE_PHP=${FIXTURE_PHP:-php8.4}
 SESSION=monocletest
 FIX=http://127.0.0.1:18080
+FIX_TLS=https://127.0.0.1:18443
 
 rm -rf "$OUT"
 mkdir -p "$OUT/sessions" "$OUT/responses"
 export FIXTURE_LOG="$OUT/fixture-requests.log"
 : > "$FIXTURE_LOG"
 
+# The fixture server over https, for the IndieAuth server metadata login: the
+# issuer has to be https. The certificate is made for this run and is the only
+# one the Monocle servers trust.
+mkdir -p "$OUT/tls"
+openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -nodes -days 2 -subj /CN=127.0.0.1 \
+  -addext subjectAltName=IP:127.0.0.1 -keyout "$OUT/tls/key.pem" -out "$OUT/tls/cert.pem" 2> "$OUT/tls/openssl.log"
+
 PHPFLAGS=(-d display_errors=0 -d log_errors=1 -d error_reporting=-1 -d "error_log=$OUT/php-errors.log"
-          -d expose_php=0 -d "session.save_path=$OUT/sessions" "$@")
+          -d expose_php=0 -d "session.save_path=$OUT/sessions" -d "curl.cainfo=$OUT/tls/cert.pem" "$@")
 
 pids=()
 trap 'kill "${pids[@]}" 2>/dev/null; wait 2>/dev/null' EXIT
 $FIXTURE_PHP -S 127.0.0.1:18080 "$ROOT/tests/fixtures/server.php" > "$OUT/fixture-server.log" 2>&1 & pids+=($!)
+python3 -I "$ROOT/tests/fixtures/tls-proxy.py" 18443 18080 "$OUT/tls/cert.pem" "$OUT/tls/key.pem" > "$OUT/tls/proxy.log" 2>&1 & pids+=($!)
 ENV=test $PHP "${PHPFLAGS[@]}" -S 127.0.0.1:18081 -t "$ROOT/public" "$ROOT/tests/router.php" > "$OUT/server.log" 2>&1 & pids+=($!)
 ENV=testproxy $PHP "${PHPFLAGS[@]}" -S 127.0.0.1:18082 -t "$ROOT/public" "$ROOT/tests/router.php" > "$OUT/server-proxy.log" 2>&1 & pids+=($!)
-for port in 18080 18081 18082; do
-  for i in $(seq 50); do curl -s -o /dev/null "http://127.0.0.1:$port/" && break; sleep 0.1; done
+for url in $FIX/ http://127.0.0.1:18081/ http://127.0.0.1:18082/ $FIX_TLS/; do
+  for i in $(seq 50); do curl -s -o /dev/null --cacert "$OUT/tls/cert.pem" "$url" && break; sleep 0.1; done
 done
 
 pass=0; fail=0
@@ -116,6 +125,24 @@ record login-missing-url-page "${J[@]}" $B/login
 
 grep -q 'fixture-access-token' "$OUT/responses/login-debug.txt"; check "login stores the token in the session" $?
 grep -q 'invalid_state' "$OUT/responses/login-bad-state-page.txt"; check "bad state is reported" $?
+
+# --- Login with a profile that only has IndieAuth server metadata ---------------
+# The authorization and token endpoints come from the metadata document, and
+# the callback has to carry the issuer from it.
+M=(-b "$OUT/jar-metadata" -c "$OUT/jar-metadata")
+ISS=$(printf %s "$FIX_TLS/" | sed 's#:#%3A#g; s#/#%2F#g')
+record login-metadata-start "${M[@]}" -d "url=$FIX/me-metadata/" -d auto-scheme=0 $B/login
+state=$(grep -i '^location:' "$OUT/responses/login-metadata-start.txt" | grep -o 'state=[^&]*' | cut -d= -f2)
+record login-metadata-no-iss-callback "${M[@]}" "$B/login/callback?code=fixture-code-metadata&state=$state"
+record login-metadata-no-iss-page "${M[@]}" $B/login
+record login-metadata-restart "${M[@]}" -d "url=$FIX/me-metadata/" -d auto-scheme=0 $B/login
+state=$(grep -i '^location:' "$OUT/responses/login-metadata-restart.txt" | grep -o 'state=[^&]*' | cut -d= -f2)
+record login-metadata-callback "${M[@]}" "$B/login/callback?code=fixture-code-metadata&state=$state&iss=$ISS"
+record login-metadata-debug "${M[@]}" $B/debug
+
+grep -qi "^location: $FIX/auth?" "$OUT/responses/login-metadata-start.txt"; check "metadata login finds the authorization endpoint" $?
+grep -q 'missing_iss' "$OUT/responses/login-metadata-no-iss-page.txt"; check "metadata login without iss is rejected" $?
+grep -q 'me-metadata' "$OUT/responses/login-metadata-debug.txt" && grep -q 'fixture-access-token' "$OUT/responses/login-metadata-debug.txt"; check "metadata login stores the token in the session" $?
 
 # --- Summaries -----------------------------------------------------------------
 # PHP error log without timestamps and paths, counted by message

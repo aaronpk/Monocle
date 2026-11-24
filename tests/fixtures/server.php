@@ -7,6 +7,7 @@
 
 $dir = __DIR__;
 $base = 'http://127.0.0.1:18080';
+$tls = 'https://127.0.0.1:18443';
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 $body = file_get_contents('php://input');
@@ -84,15 +85,37 @@ switch($path) {
     echo "</head><body>Fixture user</body></html>\n";
     exit;
 
+  // A profile that only advertises IndieAuth server metadata: no
+  // authorization_endpoint or token_endpoint link, so signing in works only
+  // if the client reads them from the metadata document.
+  case '/me-metadata/':
+    header('Content-Type: text/html');
+    echo "<!doctype html><html><head>\n";
+    echo "<link rel=\"indieauth-metadata\" href=\"$tls/metadata\">\n";
+    echo "<link rel=\"micropub\" href=\"$base/micropub\">\n";
+    echo "<link rel=\"microsub\" href=\"$base/microsub\">\n";
+    echo "</head><body>Fixture user with server metadata</body></html>\n";
+    exit;
+
+  // The issuer has to be https, so this is fetched through tests/fixtures/tls-proxy.py
+  case '/metadata':
+    json([
+      'issuer' => "$tls/",
+      'authorization_endpoint' => "$base/auth",
+      'token_endpoint' => "$base/token",
+      'code_challenge_methods_supported' => ['S256'],
+    ]);
+
   case '/token':
     parse_str($body, $params);
-    if(($params['code'] ?? '') != 'fixture-code')
+    $users = ['fixture-code' => "$base/me/", 'fixture-code-metadata' => "$base/me-metadata/"];
+    if(!isset($users[$params['code'] ?? '']))
       json(['error' => 'invalid_grant'], 400);
     json([
       'access_token' => 'fixture-access-token',
       'token_type' => 'Bearer',
       'scope' => 'create update read follow channels profile',
-      'me' => "$base/me/",
+      'me' => $users[$params['code']],
     ]);
 
   case '/xray/parse':
