@@ -274,3 +274,184 @@ main, label[for="nav-trigger"], #side-menu {
   fill: currentColor;
 }
 
+
+
+/**
+ * Dark mode, following the system setting.
+ * Bulma 0.6/0.7 has no dark theme, so its components are overridden here too.
+ * The entry styles are at the end of timeline-styles.css.
+ */
+
+@media (prefers-color-scheme: dark) {
+  html, body {
+    background: #121212;
+    color: #ddd;
+  }
+
+  a {
+    color: #6ea8ff;
+  }
+  a:hover {
+    color: #a3c7ff;
+  }
+  strong,
+  .title,
+  .label,
+  .modal-card-title,
+  .content h1, .content h2, .content h3, .content h4, .content h5, .content h6,
+  .content table th {
+    color: #eee;
+  }
+  .subtitle {
+    color: #bbb;
+  }
+  hr {
+    background-color: #333;
+  }
+  code {
+    background-color: #262626;
+    color: #ff8fa3;
+  }
+  pre {
+    background-color: #1e1e1e;
+    color: #ddd;
+  }
+  .content blockquote {
+    background-color: #262626;
+    border-color: #444;
+  }
+  .content table td, .content table th {
+    border-color: #444;
+  }
+
+  .box {
+    background-color: #1e1e1e;
+    color: #ddd;
+    box-shadow: 0 0 0 1px #333;
+  }
+  .hero.is-light {
+    background-color: #121212;
+    color: #ddd;
+  }
+  .footer {
+    background-color: #1a1a1a;
+  }
+
+  .button {
+    background-color: #2a2a2a;
+    border-color: #444;
+    color: #ddd;
+  }
+  .button:hover, .button:focus, .button:active {
+    border-color: #666;
+    color: #fff;
+  }
+  .button.is-primary {
+    border-color: transparent;
+  }
+  .title-combo .button {
+    background-color: transparent;
+  }
+
+  .input, .textarea {
+    background-color: #1a1a1a;
+    border-color: #444;
+    color: #eee;
+  }
+  .input:hover, .textarea:hover {
+    border-color: #666;
+  }
+  .input::placeholder, .textarea::placeholder {
+    color: #777;
+  }
+
+  .dropdown-content {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px #3a3a3a;
+  }
+  .dropdown-item, a.dropdown-item {
+    color: #ddd;
+  }
+  a.dropdown-item:hover, a.dropdown-item.hover {
+    background-color: #3a3a3a;
+    color: #fff;
+  }
+  #main-bottom .dropdown-item.selected {
+    background: #453f1c;
+  }
+
+  .modal-card-head, .modal-card-foot {
+    background-color: #262626;
+    border-color: #3a3a3a;
+  }
+  .modal-card-body {
+    background-color: #1e1e1e;
+    color: #ddd;
+  }
+
+  .message.is-danger {
+    background-color: #2b1518;
+  }
+  .message.is-danger .message-body {
+    border-color: #ff3860;
+    color: #ffb3bf;
+  }
+
+  .pagination-next, .pagination-previous, .pagination-link {
+    border-color: #444;
+    color: #ddd;
+  }
+  .pagination-next:hover, .pagination-previous:hover, .pagination-link:hover {
+    border-color: #666;
+    color: #fff;
+  }
+  .progress {
+    background-color: #333;
+  }
+  .progress::-webkit-progress-bar {
+    background-color: #333;
+  }
+
+  #main-top, #main-bottom {
+    background: #1e1e1e;
+    border-color: #333;
+  }
+  #side-menu {
+    background: #1a1a1a;
+  }
+  #side-menu li {
+    border-color: #2a2a2a;
+  }
+  #side-menu li:hover {
+    background: #333;
+    border-color: #3a3a3a;
+  }
+  #side-menu li.selected {
+    background: #2e2e2e;
+  }
+  #side-menu li.selected:hover {
+    background: #3a3a3a;
+    border-color: #444;
+  }
+  /* photo lightbox */
+  .featherlight .featherlight-content {
+    background: #1e1e1e;
+    color: #ddd;
+    box-shadow: 0 0 0 1px #333;
+  }
+  .featherlight .featherlight-close-icon {
+    background: rgba(30,30,30,0.6);
+    color: #ddd;
+  }
+
+  /* the menu icon is a black svg */
+  label[for="nav-trigger"] {
+    filter: invert(0.87);
+  }
+
+  .destination-card img,
+  #main-bottom .dropdown-trigger .selected-destination img,
+  #new-post-modal .modal-card-title img {
+    border-color: #444;
+  }
+}

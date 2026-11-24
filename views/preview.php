@@ -1,6 +1,6 @@
 <?php $this->layout('layout', ['title' => $title]) ?>
 
-<link rel="stylesheet" href="/assets/timeline-styles.css">
+<link rel="stylesheet" href="/assets/timeline-styles.css?v=2">
 <link rel="stylesheet" href="/assets/public-timeline.css">
 
 <?php if(!isset($_GET['url'])): ?>
@@ -66,5 +66,15 @@ $(function(){
   .help {
     text-align: center;
     font-size: 0.9rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    a {
+      color: #6ea8ff;
+    }
+    .section {
+      border-color: #333;
+      background: #1e1e1e;
+    }
   }
 </style>

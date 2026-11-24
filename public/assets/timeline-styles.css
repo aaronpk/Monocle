@@ -288,3 +288,73 @@ html, body {
 #source-modal pre {
   font-size: 11px;
 }
+
+
+/**
+ * Dark mode, following the system setting. See also the end of styles.css.
+ */
+
+@media (prefers-color-scheme: dark) {
+  html, body {
+    background: #121212;
+  }
+
+  .entry {
+    border-color: #333;
+    background: #1e1e1e;
+  }
+  .entry .author img {
+    border-color: #444;
+  }
+  /* a soft grey glow instead of the yellow one */
+  .entry.unread {
+    border-color: #6a6a6a;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(200,200,200,0.35);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(200,200,200,0.35);
+    box-shadow: 0px 0px 10px 0px rgba(200,200,200,0.35);
+  }
+
+  .entry .content .read-more {
+    background: linear-gradient(to bottom, rgba(30,30,30,0) 0%, rgba(30,30,30,0.86) 85%, rgba(30,30,30,1) 100%);
+  }
+  .entry .content .read-more a {
+    background-color: rgba(30,30,30,0.9);
+    border-color: #333;
+  }
+  .entry .content blockquote {
+    border-color: #444;
+  }
+
+  .entry .quotation-post {
+    border-color: #444;
+  }
+
+  .entry .meta, .entry .meta a {
+    color: #888;
+  }
+
+  .entry .context, .entry .actions {
+    background-color: #262626;
+  }
+  .entry.like-of .actions {
+    background-color: transparent;
+  }
+
+  #main-bottom .new-post-button a, .action-buttons a.button, .action-buttons .dropdown-trigger button {
+    color: #aaa;
+  }
+  #main-bottom .new-post-button a:hover, .action-buttons a.button:hover, .action-buttons .dropdown-trigger button:hover {
+    color: #eee;
+  }
+
+  /* the icon has an inline dark red */
+  .action-buttons .dropdown-item[data-action="remove"] .icon {
+    color: #ff6b6b !important;
+  }
+  .action-buttons .dropdown-item.disabled {
+    color: #666;
+  }
+  .action-buttons .dropdown-item.disabled:hover {
+    background: #2a2a2a;
+  }
+}

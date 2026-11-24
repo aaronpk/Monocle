@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
 
     <title>Log In</title>
 
     <link href="/assets/bulma-0.6.2/css/bulma.css" rel="stylesheet">
-    <link href="/assets/styles.css" rel="stylesheet">
+    <link href="/assets/styles.css?v=3" rel="stylesheet">
 
     <?php include('views/components/favicon.php') ?>
 </head>

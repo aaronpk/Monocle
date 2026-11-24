@@ -1,6 +1,6 @@
 <?php $this->layout('layout', ['title' => 'Monocle']) ?>
 
-<link rel="stylesheet" href="/assets/timeline-styles.css">
+<link rel="stylesheet" href="/assets/timeline-styles.css?v=2">
 <style>
 #main-container {
   padding-top: 0;

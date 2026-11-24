@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="color-scheme" content="light dark">
 
         <title>Monocle</title>
 
@@ -85,6 +86,37 @@
 
             .credits {
               padding: 3em;
+            }
+
+            /* this page doesn't load styles.css, so it has its own dark mode */
+            @media (prefers-color-scheme: dark) {
+              html, body {
+                background: #121212;
+                color: #ddd;
+              }
+              a {
+                color: #6ea8ff;
+              }
+              a:hover {
+                color: #a3c7ff;
+              }
+              .links > a, .links > a:hover {
+                color: #fff;
+              }
+              strong, .content h1, .content h2, .content h3 {
+                color: #eee;
+              }
+              .box {
+                background-color: #1e1e1e;
+                color: #ddd;
+                box-shadow: 0 0 0 1px #333;
+              }
+              .footer {
+                background-color: #1a1a1a;
+              }
+              .logo img {
+                filter: brightness(0) invert(0.87);
+              }
             }
 
         </style>

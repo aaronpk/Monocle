@@ -1,6 +1,6 @@
 <?php $this->layout('layout', ['title' => $channel['name']]) ?>
 
-<link rel="stylesheet" href="/assets/timeline-styles.css">
+<link rel="stylesheet" href="/assets/timeline-styles.css?v=2">
 
 <div id="window">
 
