@@ -47,8 +47,8 @@ function http_allow_list() {
 }
 
 // For URLs that come from visitors: the site someone signs in with, the
-// endpoints it declares, the widget's endpoint parameter. Safe mode refuses
-// anything that is not a public http(s) address, on every redirect hop.
+// endpoints it declares. Safe mode refuses anything that is not a public
+// http(s) address, on every redirect hop.
 function http_client() {
   static $http;
   if(!isset($http)) {

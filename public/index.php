@@ -26,8 +26,6 @@ $route->map('POST', '/micropub/refresh', 'App\\Controller::micropub_refresh');
 $route->map('GET', '/preview', 'App\\PreviewController::get');
 $route->map('POST', '/preview', 'App\\PreviewController::post');
 
-$route->map('GET', '/widget/{uid}', 'App\\Controller::widget');
-
 $route->map('GET', '/{path}', 'App\\Controller::path');
 
 

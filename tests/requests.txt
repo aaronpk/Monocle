@@ -11,10 +11,6 @@
 /no-such-page
 /channel/home/
 /micropub
-/widget/home?token=t&endpoint=http%3A%2F%2F127.0.0.1%3A18080%2Fmicrosub
-/widget/edge?token=t&endpoint=http%3A%2F%2F127.0.0.1%3A18080%2Fmicrosub
-/widget/home
-/widget/home?token=t
 /assets/styles.css
 
 # Logged in

@@ -79,7 +79,7 @@ grep -q 'An Article Title' "$OUT"/responses/get/*GET-channel-home.txt; check "ho
 grep -q '^status: 200' "$OUT"/responses/get/*GET-channel-edge.txt; check "edge-case timeline renders (200)" $?
 grep -q 'Page two' "$OUT"/responses/get/*GET-channel-home-after-a1.txt; check "paging" $?
 grep -q '^status: 200' "$OUT"/responses/get/0000-GET-.txt; check "logged-out / shows the index" $?
-grep -q '^location: /channel/notifications' "$OUT"/responses/get/0014-GET-.txt; check "logged-in / redirects to the first channel" $?
+grep -q '^location: /channel/notifications' "$OUT"/responses/get/0010-GET-.txt; check "logged-in / redirects to the first channel" $?
 grep -q 'https://imageproxy.example/1240x0,s' "$OUT"/responses/get-proxy/*GET-channel-home.txt; check "image proxy URLs are signed" $?
 
 # The placeholder for a photo with refs ratio 1.5 is a 1500x1000 PNG
@@ -153,8 +153,8 @@ grep -q 'me-metadata' "$OUT/responses/login-metadata-debug.txt" && grep -q 'fixt
 # on 127.0.0.2 logs any request it gets with "server":"127.0.0.2".
 seed_private() { $PHP "$ROOT/tests/seed-session.php" "$OUT/sessions" monocleprivate "$PRIVATE/micropub"; }
 seed_private
-record ssrf-widget "$B/widget/home?token=t&endpoint=$PRIVATE/microsub"
-record ssrf-widget-redirect "$B/widget/home?token=t&endpoint=$FIX/redirect-private"
+$PHP "$ROOT/tests/seed-session.php" "$OUT/sessions" monocleredirect "$FIX/redirect-private"
+record ssrf-redirect -b PHPSESSID=monocleredirect -X POST $B/micropub/refresh
 record ssrf-login -c "$OUT/jar-ssrf" -d "url=$PRIVATE/me/" -d auto-scheme=0 $B/login
 record ssrf-login-page -b "$OUT/jar-ssrf" $B/login
 record ssrf-micropub -b PHPSESSID=monocleprivate -d content=Hello $B/micropub
@@ -162,7 +162,7 @@ record ssrf-micropub -b PHPSESSID=monocleprivate -d content=Hello $B/micropub
 curl -s -o /dev/null "$PRIVATE/microsub?action=channels"
 grep -q '"server":"127.0.0.2"' "$FIXTURE_LOG"; check "the private fixture is reachable and logs requests" $?
 ! cat "$OUT"/responses/ssrf-*.forwarded.txt | grep -q '"server":"127.0.0.2"'; check "no visitor-supplied URL reached the private address" $?
-grep -q '/redirect-private' "$OUT/responses/ssrf-widget-redirect.forwarded.txt"; check "the redirect to a private address was fetched but not followed" $?
+grep -q '/redirect-private' "$OUT/responses/ssrf-redirect.forwarded.txt"; check "the redirect to a private address was fetched but not followed" $?
 grep -q 'blocked_url' "$OUT/responses/ssrf-micropub.txt"; check "a private micropub endpoint is reported as blocked" $?
 grep -q 'blocked_url' "$OUT/responses/ssrf-login-page.txt"; check "signing in with a private URL is reported as blocked" $?
 
