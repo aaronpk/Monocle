@@ -5,6 +5,12 @@ class Config {
 
   public static $xray = 'https://xray.p3k.app/';
 
+  // Monocle only fetches public addresses when a URL comes from a visitor (the
+  // site they sign in with and its Microsub/Micropub endpoints). List any
+  // hostnames, IP addresses or CIDR ranges on a private network that should
+  // be reachable anyway, e.g. a Microsub server on the same machine.
+  public static $httpAllow = [];
+
   // If you are running this image proxy, configure the base URL and secret
   // https://github.com/willnorris/imageproxy
   public static $imageProxyURL = false;

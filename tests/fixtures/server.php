@@ -20,6 +20,7 @@ if($log = getenv('FIXTURE_LOG')) {
   file_put_contents($log, json_encode([
     'method' => $method,
     'uri' => $_SERVER['REQUEST_URI'],
+  ] + (getenv('FIXTURE_PRIVATE') ? ['server' => '127.0.0.2'] : []) + [
     'headers' => $headers,
     'body' => $body,
   ], JSON_UNESCAPED_SLASHES)."\n", FILE_APPEND);
@@ -117,6 +118,11 @@ switch($path) {
       'scope' => 'create update read follow channels profile',
       'me' => $users[$params['code']],
     ]);
+
+  // Redirects to the copy of this server on 127.0.0.2, which Monocle must not follow
+  case '/redirect-private':
+    header('Location: http://127.0.0.2:18080/microsub?'.$_SERVER['QUERY_STRING'], true, 302);
+    exit;
 
   case '/xray/parse':
     $url = $_GET['url'] ?? '';

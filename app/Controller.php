@@ -85,7 +85,8 @@ class Controller {
       if(false && file_exists($cacheFile) && filemtime($cacheFile) >= time() - 300) {
         $data = json_decode(file_get_contents($cacheFile), true);
       } else {
-        $data = microsub_get($public['microsub']['endpoint'], $public['microsub']['access_token'], 'timeline', $q);
+        // The endpoint is from the config file, so it is not held to public addresses
+        $data = microsub_get($public['microsub']['endpoint'], $public['microsub']['access_token'], 'timeline', $q, true);
         $data = json_decode($data['body'], true);
         #file_put_contents($cacheFile, json_encode($data));
       }

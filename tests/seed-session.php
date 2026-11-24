@@ -2,8 +2,9 @@
 // Writes a logged-in Monocle session into a session save path, so tests can
 // request pages that require login without going through IndieAuth.
 //
-//   php tests/seed-session.php <session.save_path> <session id>
+//   php tests/seed-session.php <session.save_path> <session id> [micropub endpoint]
 list(, $savePath, $id) = $argv;
+$micropub = $argv[3] ?? null;
 $fixtures = __DIR__.'/fixtures';
 $base = 'http://127.0.0.1:18080';
 
@@ -26,7 +27,7 @@ $_SESSION = [
   'channels' => json_decode(file_get_contents("$fixtures/channels.json"), true)['channels'],
   'channels_timestamp' => 1700000000,
   'micropub' => [
-    'endpoint' => "$base/micropub",
+    'endpoint' => $micropub ?: "$base/micropub",
     'config' => json_decode(file_get_contents("$fixtures/micropub-config.json"), true),
   ],
 ];

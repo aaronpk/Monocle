@@ -7,6 +7,10 @@ class Config {
 
   public static $xray = 'http://127.0.0.1:18080/xray/';
 
+  // The fixture server is on loopback. 127.0.0.2 is left out on purpose:
+  // tests/run.sh uses it to check that private addresses are refused.
+  public static $httpAllow = ['127.0.0.1'];
+
   public static $imageProxyURL = false;
   public static $imageProxyKey = false;
 

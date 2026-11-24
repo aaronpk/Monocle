@@ -12,6 +12,9 @@ class LoginController {
     \p3k\session_setup(true);
     IndieAuth\Client::$clientID = Config::$base;
     IndieAuth\Client::$redirectURL = Config::$base.'login/callback';
+    // The profile URL and every endpoint it declares come from the visitor
+    IndieAuth\Client::setUpHTTP();
+    IndieAuth\Client::$http->set_safe_mode(true, http_allow_list());
   }
 
   public function login(Request $request, Response $response) {
@@ -39,13 +42,13 @@ class LoginController {
     }
 
     $scope = 'create update read follow channels profile';
-    list($authorizationURL, $error) = IndieAuth\Client::begin($params['url'], $scope);
+    list($authorizationURL, $error) = $this->begin($params['url'], $scope);
 
     // If the scheme was added automatically, and if we got an ssl error, try again with http
     if($params['auto-scheme']) {
       if($error && $error['error'] == 'ssl_cert_error') {
         $params['url'] = str_replace('https://', 'http://', $params['url']);
-        list($authorizationURL, $error) = IndieAuth\Client::begin($params['url'], $scope);
+        list($authorizationURL, $error) = $this->begin($params['url'], $scope);
       }
     }
 
@@ -56,6 +59,26 @@ class LoginController {
     }
 
     return $response->withHeader('Location', $authorizationURL)->withStatus(302);
+  }
+
+  // IndieAuth\Client::begin(), reporting a URL that can't be fetched as a login
+  // error. The library parses whatever comes back, and an empty page (a blocked
+  // or unreachable URL) makes the HTML parser throw on PHP 8.
+  private function begin($url, $scope) {
+    if(parse_url($url, PHP_URL_SCHEME)) {
+      $check = (new \p3k\HTTP\Guard(http_allow_list()))->check($url);
+      if(isset($check['error']))
+        return [false, $check];
+    }
+
+    try {
+      return IndieAuth\Client::begin($url, $scope);
+    } catch(\ValueError $e) {
+      return [false, [
+        'error' => 'invalid_url',
+        'error_description' => 'There was a problem fetching the URL you entered',
+      ]];
+    }
   }
 
   public function login_callback(Request $request, Response $response) {

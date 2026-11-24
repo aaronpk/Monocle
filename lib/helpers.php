@@ -40,7 +40,27 @@ function login_required(&$response) {
   return $response->withHeader('Location', '/?login_required')->withStatus(302);
 }
 
+// Hostnames, IP addresses or CIDR ranges that may be fetched although they are
+// not public addresses. Optional in the config file.
+function http_allow_list() {
+  return property_exists('Config', 'httpAllow') ? Config::$httpAllow : [];
+}
+
+// For URLs that come from visitors: the site someone signs in with, the
+// endpoints it declares, the widget's endpoint parameter. Safe mode refuses
+// anything that is not a public http(s) address, on every redirect hop.
 function http_client() {
+  static $http;
+  if(!isset($http)) {
+    $http = new \p3k\HTTP(Config::$useragent);
+    $http->set_safe_mode(true, http_allow_list());
+  }
+  $http->set_timeout(20);
+  return $http;
+}
+
+// Only for URLs from the config file, which may be on a private network
+function trusted_http_client() {
   static $http;
   if(!isset($http))
     $http = new \p3k\HTTP(Config::$useragent);
@@ -95,7 +115,7 @@ function micropub_post_form($endpoint, $token, $params=[]) {
   return http_client()->post($endpoint, $params, $headers);
 }
 
-function microsub_get($endpoint, $token, $action, $params=[]) {
+function microsub_get($endpoint, $token, $action, $params=[], $trusted=false) {
   $headers = [
     'Accept: application/json',
     'Authorization: Bearer '.$token,
@@ -103,7 +123,8 @@ function microsub_get($endpoint, $token, $action, $params=[]) {
 
   $params['action'] = $action;
 
-  return http_client()->get(\p3k\url\add_query_params_to_url($endpoint, $params), $headers);
+  $http = $trusted ? trusted_http_client() : http_client();
+  return $http->get(\p3k\url\add_query_params_to_url($endpoint, $params), $headers);
 }
 
 function microsub_post($endpoint, $token, $action, $params=[]) {

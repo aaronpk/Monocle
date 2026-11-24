@@ -18,6 +18,7 @@ FIXTURE_PHP=${FIXTURE_PHP:-php8.4}
 SESSION=monocletest
 FIX=http://127.0.0.1:18080
 FIX_TLS=https://127.0.0.1:18443
+PRIVATE=http://127.0.0.2:18080
 
 rm -rf "$OUT"
 mkdir -p "$OUT/sessions" "$OUT/responses"
@@ -37,10 +38,13 @@ PHPFLAGS=(-d display_errors=0 -d log_errors=1 -d error_reporting=-1 -d "error_lo
 pids=()
 trap 'kill "${pids[@]}" 2>/dev/null; wait 2>/dev/null' EXIT
 $FIXTURE_PHP -S 127.0.0.1:18080 "$ROOT/tests/fixtures/server.php" > "$OUT/fixture-server.log" 2>&1 & pids+=($!)
+# The same fixture on a loopback address that is not in the test config's
+# $httpAllow, standing in for a private server Monocle must refuse to fetch
+FIXTURE_PRIVATE=1 $FIXTURE_PHP -S 127.0.0.2:18080 "$ROOT/tests/fixtures/server.php" > "$OUT/fixture-server-private.log" 2>&1 & pids+=($!)
 python3 -I "$ROOT/tests/fixtures/tls-proxy.py" 18443 18080 "$OUT/tls/cert.pem" "$OUT/tls/key.pem" > "$OUT/tls/proxy.log" 2>&1 & pids+=($!)
 ENV=test $PHP "${PHPFLAGS[@]}" -S 127.0.0.1:18081 -t "$ROOT/public" "$ROOT/tests/router.php" > "$OUT/server.log" 2>&1 & pids+=($!)
 ENV=testproxy $PHP "${PHPFLAGS[@]}" -S 127.0.0.1:18082 -t "$ROOT/public" "$ROOT/tests/router.php" > "$OUT/server-proxy.log" 2>&1 & pids+=($!)
-for url in $FIX/ http://127.0.0.1:18081/ http://127.0.0.1:18082/ $FIX_TLS/; do
+for url in $FIX/ $PRIVATE/ http://127.0.0.1:18081/ http://127.0.0.1:18082/ $FIX_TLS/; do
   for i in $(seq 50); do curl -s -o /dev/null --cacert "$OUT/tls/cert.pem" "$url" && break; sleep 0.1; done
 done
 
@@ -143,6 +147,24 @@ record login-metadata-debug "${M[@]}" $B/debug
 grep -qi "^location: $FIX/auth?" "$OUT/responses/login-metadata-start.txt"; check "metadata login finds the authorization endpoint" $?
 grep -q 'missing_iss' "$OUT/responses/login-metadata-no-iss-page.txt"; check "metadata login without iss is rejected" $?
 grep -q 'me-metadata' "$OUT/responses/login-metadata-debug.txt" && grep -q 'fixture-access-token' "$OUT/responses/login-metadata-debug.txt"; check "metadata login stores the token in the session" $?
+
+# --- SSRF guards -----------------------------------------------------------------
+# URLs that come from visitors must not reach private addresses. The fixture
+# on 127.0.0.2 logs any request it gets with "server":"127.0.0.2".
+seed_private() { $PHP "$ROOT/tests/seed-session.php" "$OUT/sessions" monocleprivate "$PRIVATE/micropub"; }
+seed_private
+record ssrf-widget "$B/widget/home?token=t&endpoint=$PRIVATE/microsub"
+record ssrf-widget-redirect "$B/widget/home?token=t&endpoint=$FIX/redirect-private"
+record ssrf-login -c "$OUT/jar-ssrf" -d "url=$PRIVATE/me/" -d auto-scheme=0 $B/login
+record ssrf-login-page -b "$OUT/jar-ssrf" $B/login
+record ssrf-micropub -b PHPSESSID=monocleprivate -d content=Hello $B/micropub
+
+curl -s -o /dev/null "$PRIVATE/microsub?action=channels"
+grep -q '"server":"127.0.0.2"' "$FIXTURE_LOG"; check "the private fixture is reachable and logs requests" $?
+! cat "$OUT"/responses/ssrf-*.forwarded.txt | grep -q '"server":"127.0.0.2"'; check "no visitor-supplied URL reached the private address" $?
+grep -q '/redirect-private' "$OUT/responses/ssrf-widget-redirect.forwarded.txt"; check "the redirect to a private address was fetched but not followed" $?
+grep -q 'blocked_url' "$OUT/responses/ssrf-micropub.txt"; check "a private micropub endpoint is reported as blocked" $?
+grep -q 'blocked_url' "$OUT/responses/ssrf-login-page.txt"; check "signing in with a private URL is reported as blocked" $?
 
 # --- Summaries -----------------------------------------------------------------
 # PHP error log without timestamps and paths, counted by message
