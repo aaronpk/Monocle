@@ -7,6 +7,11 @@ list(, $savePath, $id) = $argv;
 $fixtures = __DIR__.'/fixtures';
 $base = 'http://127.0.0.1:18080';
 
+// PHP 8.6 turns session.use_strict_mode on by default, which replaces an id
+// PHP didn't issue itself with a random one. Turn it off here so the session
+// is written under the given id; the app still accepts that id in strict mode
+// because the session file exists by then.
+ini_set('session.use_strict_mode', '0');
 session_save_path($savePath);
 session_id($id);
 session_start();

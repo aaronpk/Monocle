@@ -7,6 +7,10 @@
 #   tests/run.sh <php-binary> <out-dir> [-d ini=value ...]
 #
 # e.g. tests/run.sh php7.4 /tmp/out-74 -d short_open_tag=On
+#
+# PHP 8.6 changed three session defaults, which show up in the Set-Cookie
+# headers. To compare an older PHP against 8.6 or later, run the older one with
+#   -d session.use_strict_mode=1 -d session.cookie_httponly=1 -d session.cookie_samesite=Lax
 set -u
 PHP=$1; OUT=$2; shift 2
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
@@ -37,13 +41,14 @@ resp() { cat "$OUT/responses/$1"; }
 
 seed() { $PHP "$ROOT/tests/seed-session.php" "$OUT/sessions" "$SESSION"; }
 
-# Save the response (status line and headers minus Date, then body) plus the
-# requests Monocle sent to the fixture server while handling it
+# Save the response (status line and headers minus Date and Host, then body)
+# plus the requests Monocle sent to the fixture server while handling it.
+# Host is dropped because the built-in server only sends it before PHP 8.6.
 record() {
   local name=$1; shift
   local before; before=$(wc -l < "$FIXTURE_LOG")
   curl -s -D "$OUT/h.tmp" -o "$OUT/b.tmp" "$@"
-  { grep -iv '^date:' "$OUT/h.tmp" | tr -d '\r'; cat "$OUT/b.tmp"; } > "$OUT/responses/$name.txt"
+  { grep -ivE '^(date|host):' "$OUT/h.tmp" | tr -d '\r'; cat "$OUT/b.tmp"; } > "$OUT/responses/$name.txt"
   { echo "forwarded:"; sed -n "$((before+1)),\$p" "$FIXTURE_LOG"; } > "$OUT/responses/$name.forwarded.txt"
   rm -f "$OUT/h.tmp" "$OUT/b.tmp"
 }
@@ -52,9 +57,9 @@ seed
 
 # --- GET pages ---------------------------------------------------------------
 python3 -I "$ROOT/tests/replay.py" record --base http://127.0.0.1:18081 --requests "$ROOT/tests/requests.txt" \
-  --out "$OUT/responses/get" --all-headers > /dev/null
+  --out "$OUT/responses/get" --all-headers --drop-header host > /dev/null
 python3 -I "$ROOT/tests/replay.py" record --base http://127.0.0.1:18082 --requests "$ROOT/tests/requests-proxy.txt" \
-  --out "$OUT/responses/get-proxy" --all-headers > /dev/null
+  --out "$OUT/responses/get-proxy" --all-headers --drop-header host > /dev/null
 cp "$FIXTURE_LOG" "$OUT/responses/get.forwarded.txt"
 
 grep -q 'An Article Title' "$OUT"/responses/get/*GET-channel-home.txt; check "home timeline renders" $?
