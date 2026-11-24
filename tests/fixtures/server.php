@@ -41,6 +41,13 @@ function fixture($name) {
 switch($path) {
 
   case '/microsub':
+    // A token the user revoked: what Aperture answers when the token endpoint
+    // says {"active": false}
+    if(($_SERVER['HTTP_AUTHORIZATION'] ?? '') == 'Bearer revoked-token')
+      json(['error' => 'invalid_token_response', 'error_description' => 'The token endpoint did not return a "me" URL for the token'], 400);
+    // A valid token that may list channels but not read timelines
+    if(($_SERVER['HTTP_AUTHORIZATION'] ?? '') == 'Bearer limited-token' && ($_GET['action'] ?? '') == 'timeline')
+      json(['error' => 'insufficient_scope'], 403);
     if($method == 'GET') {
       switch($_GET['action'] ?? '') {
         case 'channels':

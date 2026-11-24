@@ -26,6 +26,27 @@ class Controller {
     return $r;
   }
 
+  // If the channels response shows the access token is no longer accepted,
+  // forget the login and leave a message for the login page.
+  private function signedOut($r) {
+    if(!microsub_token_rejected($r))
+      return false;
+
+    unset($_SESSION['token'], $_SESSION['microsub'], $_SESSION['micropub'], $_SESSION['channels'], $_SESSION['channels_timestamp']);
+    $_SESSION['auth_error'] = 'Signed out';
+    $_SESSION['auth_error_description'] = 'Your Microsub server no longer accepts the access token Monocle had. Sign in again to continue.';
+    return true;
+  }
+
+  // For the requests made from JavaScript: script.js sends the browser to /login
+  private function tokenRejectedResponse(Response $response) {
+    $response->getBody()->write(json_encode([
+      'error' => 'token_rejected',
+      'login' => '/login',
+    ]));
+    return $response->withHeader('Content-type', 'application/json')->withStatus(401);
+  }
+
   public function index(Request $request, Response $response) {
     \p3k\session_setup();
 
@@ -34,6 +55,9 @@ class Controller {
       if(!isset($_SESSION['channels'])) {
         $r = $this->_reloadChannels();
         if(!$r || $r['code'] != 200) {
+
+          if($this->signedOut($r))
+            return $response->withHeader('Location', '/login')->withStatus(302);
 
           $body = @json_decode($r['body']);
           if($body)
@@ -158,6 +182,8 @@ class Controller {
     ]);
 
     $r = $this->_reloadChannels();
+    if($this->signedOut($r))
+      return $this->tokenRejectedResponse($response);
 
     $response->getBody()->write(json_encode([
       'channels' => $_SESSION['channels']
@@ -175,6 +201,8 @@ class Controller {
     ]);
 
     $r = $this->_reloadChannels();
+    if($this->signedOut($r))
+      return $this->tokenRejectedResponse($response);
 
     $response->getBody()->write(json_encode([
       'channels' => $_SESSION['channels']
@@ -193,6 +221,8 @@ class Controller {
     ]);
 
     $r = $this->_reloadChannels();
+    if($this->signedOut($r))
+      return $this->tokenRejectedResponse($response);
 
     $response->getBody()->write(json_encode([
       'channels' => $_SESSION['channels']
@@ -222,6 +252,8 @@ class Controller {
     $params = $request->getQueryParams();
 
     $r = $this->_reloadChannels();
+    if($this->signedOut($r))
+      return $this->tokenRejectedResponse($response);
 
     if(isset($params['format']) && $params['format'] == 'json') {
       $response->getBody()->write(json_encode([
@@ -313,6 +345,12 @@ class Controller {
       $q['is_read'] = 'false';
 
     $data = microsub_get($_SESSION['microsub'], $_SESSION['token']['access_token'], 'timeline', $q);
+
+    // A refused timeline may only mean this channel is off limits. Ask for the
+    // channel list to find out whether the access token itself was rejected.
+    if(in_array((int)$data['code'], [400, 401, 403]) && $this->signedOut($this->_reloadChannels()))
+      return $response->withHeader('Location', '/login')->withStatus(302);
+
     $data = json_decode($data['body'], true);
 
     $entries = $data['items'] ?? [];

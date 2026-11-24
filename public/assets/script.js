@@ -1,3 +1,11 @@
+// When the Microsub server no longer accepts the access token, Monocle signs
+// the user out and answers background requests with 401 token_rejected
+$(document).ajaxError(function(event, xhr){
+  if(xhr.status == 401 && xhr.responseJSON && xhr.responseJSON.error == "token_rejected") {
+    window.location = xhr.responseJSON.login || "/login";
+  }
+});
+
 $(function(){
 
   // Display all dates in the browser's locale and timezone

@@ -140,6 +140,29 @@ function microsub_post($endpoint, $token, $action, $params=[]) {
   return http_client()->post($endpoint, $params, $headers);
 }
 
+// Whether a response from the Microsub channels request means the server no
+// longer accepts the access token (revoked or expired), as opposed to the
+// server being down or the token lacking a scope.
+function microsub_token_rejected($r) {
+  if(!is_array($r) || empty($r['code']))
+    return false;
+
+  $body = json_decode((string)($r['body'] ?? ''), true);
+  $error = is_array($body) && isset($body['error']) && is_string($body['error']) ? $body['error'] : '';
+
+  switch((int)$r['code']) {
+    case 401:
+      return true;
+    case 403:
+      return $error != 'insufficient_scope';
+    case 400:
+      // Aperture answers 400 invalid_token_response when the user's token
+      // endpoint no longer returns the token's details
+      return in_array($error, ['invalid_token', 'invalid_token_response']);
+  }
+  return false;
+}
+
 function supports_post_type($type) {
   if(!isset($_SESSION['micropub']['config']['post-types']))
     return true;

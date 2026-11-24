@@ -166,6 +166,31 @@ grep -q '/redirect-private' "$OUT/responses/ssrf-widget-redirect.forwarded.txt";
 grep -q 'blocked_url' "$OUT/responses/ssrf-micropub.txt"; check "a private micropub endpoint is reported as blocked" $?
 grep -q 'blocked_url' "$OUT/responses/ssrf-login-page.txt"; check "signing in with a private URL is reported as blocked" $?
 
+# --- Access token revoked or expired ----------------------------------------------
+# The fixture Microsub server refuses "revoked-token". Monocle signs the user
+# out instead of showing channels with no posts. A token that is only missing
+# a scope stays signed in.
+seed_token() { $PHP "$ROOT/tests/seed-session.php" "$OUT/sessions" "$1" "" "$2"; }
+R=(-b PHPSESSID=monoclerevoked)
+seed_token monoclerevoked revoked-token
+record token-revoked-timeline "${R[@]}" $B/channel/home
+record token-revoked-login-page "${R[@]}" $B/login
+record token-revoked-debug "${R[@]}" $B/debug
+seed_token monoclerevoked revoked-token
+record token-revoked-reload "${R[@]}" -X POST "$B/channels/reload?format=json"
+seed_token monoclerevoked revoked-token
+record token-revoked-mark-read "${R[@]}" -d channel=home -d 'entry[]=101' $B/microsub/mark_read
+seed_token monoclelimited limited-token
+record token-limited-timeline -b PHPSESSID=monoclelimited $B/channel/home
+record token-limited-debug -b PHPSESSID=monoclelimited $B/debug
+
+grep -qi '^location: /login' "$OUT/responses/token-revoked-timeline.txt"; check "a rejected token redirects the timeline to the login page" $?
+grep -q 'no longer accepts the access token' "$OUT/responses/token-revoked-login-page.txt"; check "the login page says why the user was signed out" $?
+! grep -q 'revoked-token' "$OUT/responses/token-revoked-debug.txt"; check "the rejected token is removed from the session" $?
+grep -q '^HTTP/1.1 401' "$OUT/responses/token-revoked-reload.txt" && grep -q 'token_rejected' "$OUT/responses/token-revoked-reload.txt"; check "channel reload answers 401 token_rejected" $?
+grep -q 'token_rejected' "$OUT/responses/token-revoked-mark-read.txt"; check "mark read answers 401 token_rejected" $?
+grep -q '^HTTP/1.1 200' "$OUT/responses/token-limited-timeline.txt" && grep -q 'limited-token' "$OUT/responses/token-limited-debug.txt"; check "a token missing a scope stays signed in" $?
+
 # --- Summaries -----------------------------------------------------------------
 # PHP error log without timestamps and paths, counted by message
 sed -E 's/^\[[^]]*\] //; s#'"$ROOT"'/##g' "$OUT/php-errors.log" 2>/dev/null | sort | uniq -c | sort -rn > "$OUT/php-errors-summary.txt"
